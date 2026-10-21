@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page not found · Persónuleikasálfræði</title>
+<script>
+/* Folder names with accented letters can be stored in two Unicode forms (macOS uses the decomposed one).
+   If a link used the other form, retry once with it before showing this page. */
+(function () {
+  try {
+    var path = decodeURIComponent(location.pathname);
+    var nfd = path.normalize('NFD'), nfc = path.normalize('NFC');
+    var alt = path === nfd ? nfc : nfd;
+    var key = 'nf-retry:' + nfc;
+    var tried = false;
+    try { tried = sessionStorage.getItem(key) === '1'; sessionStorage.setItem(key, '1'); } catch (e) {}
+    if (alt !== path && !tried) location.replace(encodeURI(alt) + location.search + location.hash);
+  } catch (e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #F1F3F7; --surface: #FFFFFF; --fg: #17202C; --muted: #586477; --line: #D7DDE6; --accent: #3045C2;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441; --accent: #8F9DFF; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441; --accent: #8F9DFF; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.55 var(--f-body); }
+.wrap { max-width: 640px; margin: 0 auto; padding: 64px 16px; display: grid; gap: 12px; }
+.course { font: 500 13px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 0; }
+p { margin: 0; color: var(--muted); }
+a.btn { justify-self: start; margin-top: 10px; font-weight: 600; color: var(--accent); text-decoration: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 16px; }
+a.btn:hover { border-color: var(--accent); }
+a.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="course">Persónuleikasálfræði · 404</p>
+  <h1>This page isn't here</h1>
+  <p>The link may be out of date, or the chapter folder was renamed.</p>
+  <a class="btn" id="home" href="/">← All chapters</a>
+</main>
+<script>
+/* Point "All chapters" at the site root: /<repo>/ for a project site, / for a user site. */
+(function () {
+  try {
+    var segs = decodeURIComponent(location.pathname).split('/').filter(Boolean);
+    var i = segs.findIndex(function (s) { return /Ch \d+$/.test(s.normalize('NFC')); });
+    var root = i >= 0 ? segs.slice(0, i) : (/\.github\.io$/.test(location.hostname) && segs.length ? segs.slice(0, 1) : []);
+    document.getElementById('home').href = encodeURI('/' + root.join('/') + (root.length ? '/' : ''));
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
