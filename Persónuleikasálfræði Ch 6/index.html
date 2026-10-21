@@ -1,0 +1,545 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Persónuleikasálfræði Ch 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: study notes — each recap section sets text beside the slides and book figures it explains; figures stack under text on phones. */
+:root {
+  /* Theme: same palette and fonts as the course page (templates/course.html). scripts/theme.py copies this block
+     and the font link above into older recap pages. */
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --slide: #4A5A9A;
+  --slide-soft: #E9ECF5;
+  --book: #6B5A80;
+  --book-soft: #EFEBF4;
+  --warn: #855700;
+  --warn-soft: #FAEFD6;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+    --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+  --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 22px; border-bottom: 1px solid var(--line); }
+.top .back { display: inline-block; margin: 0 0 10px; font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+.top .back:hover, .top .back:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top .course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; margin: 0; text-wrap: balance; }
+.top .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 14px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 8px; align-items: center; }
+
+/* chips */
+.tag, .warn, .src { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; white-space: nowrap; font-style: normal; vertical-align: 1px; }
+.tag { background: var(--book-soft); color: var(--book); }
+.warn { background: var(--warn-soft); color: var(--warn); }
+.src.slide { background: var(--slide-soft); color: var(--slide); }
+.src.book { background: var(--book-soft); color: var(--book); }
+.src.key { background: var(--warn-soft); color: var(--warn); }
+.src.drawn { background: var(--line); color: var(--fg); }
+em { color: var(--accent); font-style: italic; }
+
+/* toc */
+details.toc { margin-block: 22px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style-position: inside; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 28px; padding: 0 16px 14px; }
+.toc-h { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-ch ol { list-style: none; margin: 0; padding: 0; }
+.toc-ch a { display: flex; gap: 10px; text-decoration: none; color: var(--fg); padding: 3px 0; font-size: 15.5px; }
+.toc-ch a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .78em; color: var(--muted); min-width: 2.6em; padding-top: .2em; font-variant-numeric: tabular-nums; }
+
+/* chapters */
+.chapter { margin-top: 40px; }
+.ch-head { border-top: 3px solid var(--accent); padding-top: 14px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.ch-head h2 { font-family: var(--f-display); font-weight: 650; font-size: clamp(24px, 3vw, 32px); margin: 4px 0 0; text-wrap: balance; }
+
+.sec { display: grid; gap: 22px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+@media (min-width: 980px) {
+  .sec.has-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); gap: 36px; align-items: start; }
+}
+.text { min-width: 0; max-width: 72ch; }
+.text h3 { font-family: var(--f-display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; display: flex; gap: 6px; text-wrap: balance; }
+.text h3 em { color: inherit; }
+.text .meta { margin: 4px 0 10px; font-size: 14px; color: var(--muted); }
+.text p { margin: .55em 0; }
+.text ul, .text ol { padding-left: 1.25em; margin: .5em 0; }
+.text li { margin: .3em 0; }
+.text li::marker { color: var(--muted); }
+.text strong { font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+
+/* figures */
+.figs { display: grid; gap: 16px; min-width: 0; }
+.fig { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.fig.book .zoom { background: #fffef4; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.zoom img { display: block; width: 100%; height: auto; max-width: 100%; }
+.fig.book .zoom img { max-height: 420px; object-fit: contain; }
+figcaption { padding: 9px 12px 11px; font-size: 14px; line-height: 1.45; color: var(--muted); border-top: 1px solid var(--line); }
+figcaption .src { margin-right: 6px; white-space: normal; }
+
+/* drawn by prof: simple diagrams built from cited points (compare, flow, tree, timeline) */
+.dg { padding: 16px; font-size: 14.5px; line-height: 1.35; }
+.dg-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.dg-box strong { display: block; font-weight: 700; }
+.dg-box.main { background: var(--accent-soft); border-color: var(--accent); }
+.dg.flow { display: grid; gap: 4px; justify-items: stretch; }
+.dg-arrow { text-align: center; color: var(--muted); font-size: 13px; }
+.dg-arrow::before { content: "↓"; display: block; font-size: 18px; line-height: 1.1; color: var(--accent); }
+.dg.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.dg.compare .dg-box { text-align: left; }
+.dg.compare ul { margin: 6px 0 0; padding-left: 1.1em; }
+.dg.tree { display: grid; gap: 10px; }
+.dg.tree .dg-box.main { justify-self: center; min-width: 50%; }
+.dg-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 8px; border-top: 2px solid var(--accent); padding-top: 10px; }
+.dg.timeline { list-style: none; margin: 0; padding: 16px 16px 16px 30px; position: relative; }
+.dg.timeline::before { content: ""; position: absolute; left: 20px; top: 20px; bottom: 20px; width: 2px; background: var(--accent); }
+.dg.timeline li { position: relative; margin: 0 0 10px; }
+.dg.timeline li::before { content: ""; position: absolute; left: -14px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+.sec.hit { background: var(--accent-soft); border-radius: 10px; padding-inline: 16px; box-shadow: inset 4px 0 0 var(--accent); }
+.pointers { margin-top: 26px; padding: 12px 16px; border-left: 3px solid var(--line); color: var(--muted); font-size: 15px; }
+.pointers p { margin: 0; }
+
+/* lightbox */
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1500px); max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(10,14,20,.82); }
+.lb-inner { display: grid; gap: 8px; }
+.lb-inner img { max-width: 100%; max-height: 82vh; width: auto; height: auto; margin: 0 auto; display: block; background: #fff; border-radius: 6px; }
+.lb-cap { display: flex; gap: 12px; align-items: start; justify-content: space-between; color: #e8efed; font-size: 14.5px; }
+.lb-cap .src { flex: none; }
+.lb-close { flex: none; font: 600 14px var(--f-body); background: #e8efed; color: #10201c; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.tag.slides { background: var(--slide-soft); color: var(--slide); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="https://claude.ai/artifact/KFMShGsmGKAQ3WMySjdrQb" target="_blank" rel="noopener">← Course page</a>
+    <p class="course">Persónuleikasálfræði · Personality Psychology</p>
+    <h1>Ch 6 recap: Genetics and personality</h1>
+    <p class="sub">Built around the teacher's slides (chapter 6, slides 1–32), with book-only material from book Ch 6 (pp. 154–183) that could be tested. Icelandic terms from the slides are in <em>blue italics</em>. Click any figure to enlarge it.</p>
+    <ul class="legend">
+      <li><span class="src slide">Slide 12</span> from the teacher's slides</li>
+      <li><span class="src book">Book Fig</span> figure from the book</li>
+      <li><span class="src key">Key slide</span> the teacher's own summary</li>
+      <li><span class="src drawn">Drawn by prof</span> diagram made from the cited points</li>
+      <li><span class="tag">Book only</span> not on the slides</li>
+      <li><span class="tag slides">Slides only</span> not in the book</li>
+      <li><span class="warn">Slides ≠ book</span> the two sources disagree</li>
+    </ul>
+  </header>
+
+  <details class="toc" id="toc" open>
+    <summary>Contents</summary>
+    <div class="toc-grid">
+<div class="toc-ch"><p class="toc-h">Ch 6 · Persónuleiki og erfðir</p><ol>
+<li><a href="#s6-1"><span class="n">6.1</span>The human genome</a></li>
+<li><a href="#s6-2"><span class="n">6.2</span>Controversy about genes and personality</a></li>
+<li><a href="#s6-3"><span class="n">6.3</span>Goals of behavioral genetics</a></li>
+<li><a href="#s6-4"><span class="n">6.4</span>What heritability is</a></li>
+<li><a href="#s6-5"><span class="n">6.5</span>What heritability is not</a></li>
+<li><a href="#s6-6"><span class="n">6.6</span>Methods and selective breeding</a></li>
+<li><a href="#s6-7"><span class="n">6.7</span>Family studies</a></li>
+<li><a href="#s6-8"><span class="n">6.8</span>Twin studies</a></li>
+<li><a href="#s6-9"><span class="n">6.9</span>Adoption studies and twins reared apart</a></li>
+<li><a href="#s6-10"><span class="n">6.10</span>Summary of methods</a></li>
+<li><a href="#s6-11"><span class="n">6.11</span>Heritability of personality traits</a></li>
+</ol></div>
+<div class="toc-ch"><p class="toc-h">Ch 6 · continued</p><ol>
+<li><a href="#s6-12"><span class="n">6.12</span>Attitudes and preferences</a></li>
+<li><a href="#s6-13"><span class="n">6.13</span>Sexual orientation</a></li>
+<li><a href="#s6-14"><span class="n">6.14</span>Drinking and smoking</a></li>
+<li><a href="#s6-15"><span class="n">6.15</span>Marriage and satisfaction with life</a></li>
+<li><a href="#s6-16"><span class="n">6.16</span>Molecular genetics</a></li>
+<li><a href="#s6-17"><span class="n">6.17</span>Shared versus nonshared environment</a></li>
+<li><a href="#s6-18"><span class="n">6.18</span>Genotype–environment interaction</a></li>
+<li><a href="#s6-19"><span class="n">6.19</span>Genotype–environment correlation</a></li>
+<li><a href="#s6-20"><span class="n">6.20</span>Environment and gene expression</a></li>
+<li><a href="#s6-21"><span class="n">6.21</span>Science, politics and values</a></li>
+</ol></div>
+    </div>
+  </details>
+
+<section class="chapter" id="ch6"><header class="ch-head"><p class="eyebrow">Chapter 6</p><h2>Genetics and personality (<em>Persónuleiki og erfðir</em>)</h2></header>
+
+<article class="sec has-figs" id="s6-1"><div class="text"><h3><span class="n">6.1</span>The human genome (<em>Erfðamengi mannsins</em>)</h3><p class="meta">slides 2–5, book p. 156</p>
+<p><strong>In short:</strong> The genome is all of a person's genes, packed into 23 pairs of chromosomes. Mapping the DNA sequence was a huge step, but knowing the sequence is not the same as knowing what the genes do.</p>
+<ul>
+<li>The <strong>genome</strong> is the complete set of genes an organism possesses. <span class="src book">book p. 156</span></li>
+<li><span class="tag">Book only</span> The human genome contains between 20,000 and 25,000 genes on 23 pairs of chromosomes. Each person inherits one set of each pair from the mother and one from the father. <span class="src book">book p. 156</span></li>
+<li>The slides show the 23 chromosome pairs (1–22 plus X and Y) <span class="src slide">slide 2</span> and how they nest: a cell contains a nucleus, the nucleus holds the chromosomes, a chromosome is made of DNA, and a gene is a stretch of that DNA. <span class="src slide">slide 3</span></li>
+<li>Genes contain instructions for making proteins, and proteins act alone or in complexes to perform many cellular functions. <span class="src slide">slide 5</span></li>
+<li>The goals of the <strong>Human Genome Project</strong> (<em>mannerfðamengisáætlunarinnar</em>) were to determine the base sequence (<em>basaröð</em>) of these molecules and to locate all genes and determine their characteristics. <span class="src slide">slide 4</span></li>
+<li><span class="tag">Book only</span> Scientists announced the first draft of the complete human genome on June 26, 2000. <span class="src book">book p. 156</span></li>
+<li>Knowing the order of the DNA molecules does <strong>not</strong> mean we know their function. <span class="src slide">slide 4</span> <span class="src book">book p. 156</span></li>
+<li><span class="tag">Book only</span> Protein-coding genes are only about 2% of the genome. Parts of the other 98%, once called "genetic junk", turn out to affect humans, possibly even personality (Gibbs, 2003; Plomin, 2002). <span class="src book">book p. 156</span></li>
+<li><span class="tag">Book only</span> Most genes are the same for everyone, which is why all humans have two eyes, a heart and so on. A small number differ between people, and some of these influence personality. <span class="src book">book p. 156</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-02.jpg" data-cap="Karyotype: the 23 human chromosome pairs, numbered 1–22 plus X and Y" data-srcl="Slide 2" aria-label="Enlarge: Karyotype: the 23 human chromosome pairs, numbered 1–22 plus X and Y"><img src="img/slide-02.jpg" alt="Karyotype: the 23 human chromosome pairs, numbered 1–22 plus X and Y" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 2</span> Karyotype: the 23 human chromosome pairs, numbered 1–22 plus X and Y</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-03.jpg" data-cap="From cell to gene: cell, nucleus, chromosome, DNA, and a gene as a stretch of DNA" data-srcl="Slide 3" aria-label="Enlarge: From cell to gene: cell, nucleus, chromosome, DNA, and a gene as a stretch of DNA"><img src="img/slide-03.jpg" alt="From cell to gene: cell, nucleus, chromosome, DNA, and a gene as a stretch of DNA" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 3</span> From cell to gene: cell, nucleus, chromosome, DNA, and a gene as a stretch of DNA</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-05.jpg" data-cap="Genes contain instructions for making proteins; proteins act alone or in complexes to perform many cellular functions" data-srcl="Slide 5" aria-label="Enlarge: Genes contain instructions for making proteins; proteins act alone or in complexes to perform many cellular functions"><img src="img/slide-05.jpg" alt="Genes contain instructions for making proteins; proteins act alone or in complexes to perform many cellular functions" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 5</span> Genes contain instructions for making proteins; proteins act alone or in complexes to perform many cellular functions</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-2"><div class="text"><h3><span class="n">6.2</span>Controversy about genes and personality (<em>Ágreiningur um gen og persónuleika</em>)</h3><p class="meta">slide 6, book p. 157</p>
+<p><strong>In short:</strong> Behavioral genetics has been very controversial, mainly for ideological reasons and because of fears about eugenics.</p>
+<ul>
+<li><strong>Behavioral genetics</strong> (<em>Atferliserfðafræði</em>) has been highly controversial. <span class="src slide">slide 6</span> <span class="src book">book p. 157</span></li>
+<li>One reason is <strong>ideological concerns</strong> (<em>Hugmyndafræðileg áhyggjuefni</em>): people worry that findings will be used or misused to support political agendas, or will lead to pessimism about the possibility of change. <span class="src slide">slide 6</span> <span class="src book">book p. 157</span></li>
+<li>The other is <strong>eugenics</strong> (<em>Mannkynbótastefna</em>): the notion that we can design the future of the human species by encouraging people with certain traits to reproduce and discouraging those without them. <span class="src slide">slide 6</span> <span class="src book">book p. 157</span></li>
+<li><span class="tag">Book only</span> Modern researchers argue that knowledge is better than ignorance, and that a genetic component does not mean the environment is powerless to change a trait (Harden, 2021; Plomin et al., 2013). <span class="src book">book p. 157</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-06.jpg" data-cap="Ágreiningur um gen og persónuleika: Atferliserfðafræði has been very controversial (mjög umdeild); listed under it: Hugmyndafræðileg áhyggjuefni (ideological concerns) and Mannkynbótastefna (eugenics)" data-srcl="Slide 6 · key slide" aria-label="Enlarge: Ágreiningur um gen og persónuleika: Atferliserfðafræði has been very controversial (mjög umdeild); listed under it: Hugmyndafræðileg áhyggjuefni (ideological concerns) and Mannkynbótastefna (eugenics)"><img src="img/slide-06.jpg" alt="Ágreiningur um gen og persónuleika: Atferliserfðafræði has been very controversial (mjög umdeild); listed under it: Hugmyndafræðileg áhyggjuefni (ideological concerns) and Mannkynbótastefna (eugenics)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 6</span> <span class="src key">Key slide</span> Ágreiningur um gen og persónuleika: Atferliserfðafræði has been very controversial (mjög umdeild); listed under it: Hugmyndafræðileg áhyggjuefni (ideological concerns) and Mannkynbótastefna (eugenics)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-3"><div class="text"><h3><span class="n">6.3</span>Goals of behavioral genetics (<em>Markmið Atferliserfðafræði</em>)</h3><p class="meta">slides 7–8, book pp. 157–159</p>
+<p><strong>In short:</strong> Behavioral genetics asks how much of the differences between people come from genes, how much from environment, and how the two work together.</p>
+<ul>
+<li>Behavioral genetics tries to determine to what extent the causes of individual differences (<em>einstaklingamun</em>) in personality can be traced to variation in genes, environment, or the interplay of both. <span class="src slide">slide 7</span> <span class="src book">book p. 157</span></li>
+<li>Today the emphasis is more on how the <strong>interaction or correlation between genes and environment</strong> (<em>samvirkni eða fylgni milli gena og umhverfis</em>) determines individual differences. <span class="src slide">slide 7</span> <span class="src book">book p. 159</span></li>
+<li>Last but not least, the field tries to find out what explains environmental effects on personality: parental socialization (<em>Félagsmótun foreldra</em>), different teachers (<em>Áhrif mismunandi kennara</em>) or peer groups (<em>Vinahópar</em>). <span class="src slide">slide 8</span> <span class="src book">book p. 159</span></li>
+<li><span class="tag">Book only</span> Height example: about 90% of individual differences in height are due to genetic differences and 10% to environment. Even so, average US adult height rose about 2 inches over the past century, most likely from better nutrition, so a largely heritable trait can still be changed by the environment. <span class="src book">book p. 158</span></li>
+<li><span class="tag">Book only</span> <strong>Percentage of variance</strong> means that the ways people differ can be split into percentages due to different causes. <span class="src book">book p. 159</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-07.jpg" data-cap="Markmið Atferliserfðafræði: how far individual differences (einstaklingamun) in personality can be traced to genes, environment or the interplay of both; today the emphasis is on how interaction or correlation between genes and environment determines individual differences" data-srcl="Slide 7 · key slide" aria-label="Enlarge: Markmið Atferliserfðafræði: how far individual differences (einstaklingamun) in personality can be traced to genes, environment or the interplay of both; today the emphasis is on how interaction or correlation between genes and environment determines individual differences"><img src="img/slide-07.jpg" alt="Markmið Atferliserfðafræði: how far individual differences (einstaklingamun) in personality can be traced to genes, environment or the interplay of both; today the emphasis is on how interaction or correlation between genes and environment determines individual differences" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 7</span> <span class="src key">Key slide</span> Markmið Atferliserfðafræði: how far individual differences (einstaklingamun) in personality can be traced to genes, environment or the interplay of both; today the emphasis is on how interaction or correlation between genes and environment determines individual differences</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-4"><div class="text"><h3><span class="n">6.4</span>What heritability is (<em>Hvað er arfgengi</em>)</h3><p class="meta">slide 9, book pp. 159–160</p>
+<p><strong>In short:</strong> Heritability is a population statistic: the share of the differences between people in a trait that comes from genetic differences.</p>
+<ul>
+<li><strong>Heritability</strong> (<em>arfgengi</em>) is the proportion of variance in a trait in a group of people that can be explained by genetic variation. <span class="src slide">slide 9</span> <span class="src book">book p. 159</span></li>
+<li>Formal definition: the proportion of <strong>phenotypic</strong> variance (<em>svipgerð</em>, observed differences such as height or personality) that is attributable to <strong>genotypic</strong> variance (<em>arfgerð</em>, differences in the genes people carry). <span class="src slide">slide 9</span> <span class="src book">book p. 159</span></li>
+<li><span class="tag">Book only</span> A heritability of .50 means 50% of the observed variation is attributable to genetic variation, so the environmental component is also .50. A heritability of .20 means the environmental component is .80 (assuming no gene–environment correlation or interaction). <span class="src book">book p. 159</span> <span class="src book">book p. 160</span></li>
+<li><span class="tag">Book only</span> <strong>Environmentality</strong> is the proportion of observed variance attributable to environmental (nongenetic) differences. The larger the heritability, the smaller the environmentality, and vice versa. <span class="src book">book p. 160</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-09.jpg" data-cap="Hvað er arfgengi (heritability)?: two definitions, the share of variance in a group explained by genetic variance, or (Eða) the share of variance in svipgerð (phenotypic) attributable to variance in arfgerð (genotypic)" data-srcl="Slide 9 · key slide" aria-label="Enlarge: Hvað er arfgengi (heritability)?: two definitions, the share of variance in a group explained by genetic variance, or (Eða) the share of variance in svipgerð (phenotypic) attributable to variance in arfgerð (genotypic)"><img src="img/slide-09.jpg" alt="Hvað er arfgengi (heritability)?: two definitions, the share of variance in a group explained by genetic variance, or (Eða) the share of variance in svipgerð (phenotypic) attributable to variance in arfgerð (genotypic)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 9</span> <span class="src key">Key slide</span> Hvað er arfgengi (heritability)?: two definitions, the share of variance in a group explained by genetic variance, or (Eða) the share of variance in svipgerð (phenotypic) attributable to variance in arfgerð (genotypic)</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Heritability versus environmentality: heritability .50 goes with environmentality .50; heritability .20 goes with environmentality .80"><div class="dg-box main"><strong>Heritability (arfgengi)</strong><ul><li>share of observed variance due to genetic differences</li><li>the larger it is, the smaller environmentality</li></ul></div><div class="dg-box"><strong>Environmentality</strong><ul><li>share due to environmental (nongenetic) differences</li><li>heritability .50: environmental component .50</li><li>heritability .20: environmental component .80</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Heritability and environmentality: the larger one is, the smaller the other; the .50 and .20 examples assume no gene–environment correlation or interaction (from slide 9, book pp. 159–160)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-5"><div class="text"><h3><span class="n">6.5</span>What heritability is not (<em>Hvað er arfgengi (ekki)</em>)</h3><p class="meta">slide 10, book pp. 160–161</p>
+<p><strong>In short:</strong> Heritability says nothing about one person, it can change, and it is only a rough estimate.</p>
+<ul>
+<li>Heritability says <strong>nothing about the individual</strong>. <span class="src slide">slide 10</span> You cannot say "Meredith's height is 90 percent heritable", because for one person genes and environment are inseparable. <span class="src book">book p. 160</span></li>
+<li>Heritability is <strong>not a constant</strong> (<em>fasti</em>) or unchangeable. <span class="src slide">slide 10</span> It applies to one population, at one time, in one range of environments, so it can be high in one population and low in another, or change over time. <span class="src book">book p. 160</span></li>
+<li>Heritability (<em>erfðarstuðull</em>) is <strong>not a precise statistic</strong>. <span class="src slide">slide 10</span> Measurement error distorts it, and the correlations it is computed from fluctuate from sample to sample. <span class="src book">book p. 160</span></li>
+<li><span class="tag">Book only</span> <strong>Nature–nurture debate clarified:</strong> at the level of the individual there is no debate, just as it makes no sense to ask whether one cake is caused more by the flour or the eggs. At the level of a population, differences can be split into genetic and environmental sources. <span class="src book">book p. 161</span></li>
+<li><span class="tag">Book only</span> Heritability of height is roughly .90, of weight roughly .50 and of mate preferences roughly .10 (Waller, 1994). So genes matter more for height, both matter about equally for weight, and environment dominates mate preferences. <span class="src book">book p. 161</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-10.jpg" data-cap="Hvað er arfgengi (ekki): heritability says nothing about the individual, is not a constant (fasti) or unchangeable, and is not a precise statistic" data-srcl="Slide 10 · key slide" aria-label="Enlarge: Hvað er arfgengi (ekki): heritability says nothing about the individual, is not a constant (fasti) or unchangeable, and is not a precise statistic"><img src="img/slide-10.jpg" alt="Hvað er arfgengi (ekki): heritability says nothing about the individual, is not a constant (fasti) or unchangeable, and is not a precise statistic" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 10</span> <span class="src key">Key slide</span> Hvað er arfgengi (ekki): heritability says nothing about the individual, is not a constant (fasti) or unchangeable, and is not a precise statistic</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-6"><div class="text"><h3><span class="n">6.6</span>Methods and selective breeding (<em>Aðferðir atferliserfðafræðinnar</em>)</h3><p class="meta">slides 11, 19, book pp. 161–162</p>
+<p><strong>In short:</strong> There are four classic methods. Selective breeding shows heritability in animals but can't be used on humans.</p>
+<ul>
+<li>The four methods are <strong>selective breeding</strong> (<em>Ræktun eiginleika</em>), <strong>family studies</strong> (<em>Rannsóknir á fjölskyldum</em>), <strong>twin studies</strong> (<em>Tvíburarannsóknir</em>) and <strong>adoption studies</strong> (<em>Ættleiðingarannsóknir</em>). <span class="src slide">slide 11</span> <span class="src book">book p. 161</span></li>
+<li><span class="tag">Book only</span> Selective breeding only works if the trait is heritable. Because dog breeding has succeeded for personality traits such as boldness, aggressiveness, agreeableness and desire to please, heredity must play a role in them. <span class="src book">book p. 162</span></li>
+<li>Selective breeding lets us infer heritability if it works, but it is unethical to do on humans. <span class="src slide">slide 19</span> <span class="src book">book p. 162</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-11.jpg" data-cap="Aðferðir atferliserfðafræðinnar: the four methods, Ræktun eiginleika (selective breeding), Rannsóknir á fjölskyldum (family studies), Tvíburarannsóknir (twin studies) and Ættleiðingarannsóknir (adoption studies)" data-srcl="Slide 11 · key slide" aria-label="Enlarge: Aðferðir atferliserfðafræðinnar: the four methods, Ræktun eiginleika (selective breeding), Rannsóknir á fjölskyldum (family studies), Tvíburarannsóknir (twin studies) and Ættleiðingarannsóknir (adoption studies)"><img src="img/slide-11.jpg" alt="Aðferðir atferliserfðafræðinnar: the four methods, Ræktun eiginleika (selective breeding), Rannsóknir á fjölskyldum (family studies), Tvíburarannsóknir (twin studies) and Ættleiðingarannsóknir (adoption studies)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 11</span> <span class="src key">Key slide</span> Aðferðir atferliserfðafræðinnar: the four methods, Ræktun eiginleika (selective breeding), Rannsóknir á fjölskyldum (family studies), Tvíburarannsóknir (twin studies) and Ættleiðingarannsóknir (adoption studies)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-7"><div class="text"><h3><span class="n">6.7</span>Family studies (<em>Fjölskyldu rannsóknir</em>)</h3><p class="meta">slide 12, book p. 163</p>
+<p><strong>In short:</strong> Family studies check whether closer relatives are more alike, but relatives share homes as well as genes.</p>
+<ul>
+<li>Family studies compare correlations (<em>fylgnistuðlum</em>) of personality traits according to how closely family members are related. <span class="src slide">slide 12</span> <span class="src book">book p. 163</span></li>
+<li>Genes shared: parents and children 50%, siblings 50%, grandparents and grandchildren 25%. <span class="src slide">slide 12</span> <span class="src book">book p. 163</span></li>
+<li><span class="tag">Book only</span> Uncles and aunts with nieces and nephews also share 25%, and first cousins share 12.5%. <span class="src book">book p. 163</span></li>
+<li>If a trait is heritable, closer relatives should be more similar than more distant ones. <span class="src book">book p. 163</span></li>
+<li>The problem is that people who share the same genes also share the same environment. <span class="src slide">slide 12</span> That is why family studies alone are never definitive. <span class="src book">book p. 163</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-12.jpg" data-cap="Fjölskyldu rannsóknir: comparing correlations by degree of relatedness (parents vs children 50%, siblings 50%, grandparents vs grandchildren 25%); the problem is that those who share genes also share the same environment" data-srcl="Slide 12 · key slide" aria-label="Enlarge: Fjölskyldu rannsóknir: comparing correlations by degree of relatedness (parents vs children 50%, siblings 50%, grandparents vs grandchildren 25%); the problem is that those who share genes also share the same environment"><img src="img/slide-12.jpg" alt="Fjölskyldu rannsóknir: comparing correlations by degree of relatedness (parents vs children 50%, siblings 50%, grandparents vs grandchildren 25%); the problem is that those who share genes also share the same environment" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 12</span> <span class="src key">Key slide</span> Fjölskyldu rannsóknir: comparing correlations by degree of relatedness (parents vs children 50%, siblings 50%, grandparents vs grandchildren 25%); the problem is that those who share genes also share the same environment</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Share of genes by kind of relative: 50 percent for parents and children and for siblings; 25 percent for grandparents and grandchildren and for uncles or aunts and nieces or nephews; 12.5 percent for first cousins"><div class="dg-box main"><strong>50%</strong><ul><li>parents–children</li><li>siblings</li></ul></div><div class="dg-box"><strong>25%</strong><ul><li>grandparents–grandchildren</li><li>uncles/aunts–nieces/nephews</li></ul></div><div class="dg-box"><strong>12.5%</strong><ul><li>first cousins</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Genes shared by kind of relative; if a trait is heritable, closer relatives should be more alike (from slide 12, book p. 163)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-8"><div class="text"><h3><span class="n">6.8</span>Twin studies (<em>Tvíburarannsóknir</em>)</h3><p class="meta">slides 13–15, book pp. 163–165</p>
+<p><strong>In short:</strong> Twin studies compare identical with fraternal twins. If identical twins are more alike, the trait is heritable, as long as both kinds of twins have equally similar environments.</p>
+<ul>
+<li><span class="tag">Book only</span> Identical or <strong>monozygotic (MZ)</strong> twins come from one fertilized egg that splits, so they share 100% of their genes and are always the same sex. Fraternal or <strong>dizygotic (DZ)</strong> twins come from two eggs, share 50% of their genes and can be opposite sex. Two-thirds of twins are DZ. <span class="src book">book p. 163</span> <span class="src book">book p. 164</span></li>
+<li>Twin studies estimate heritability by comparing identical (<em>eineggja</em>) and fraternal (<em>tvíeggja</em>) twins. <span class="src slide">slide 13</span> <span class="src book">book p. 163</span></li>
+<li>If identical twins are more similar than fraternal twins, this is evidence that the trait is heritable. <span class="src slide">slide 13</span> <span class="src book">book p. 164</span></li>
+<li><strong>Simple formula:</strong> heritability = 2(r<sub>MZ</sub> – r<sub>DZ</sub>), that is, double the difference between the two correlations. <span class="src slide">slide 13</span> <span class="src book">book p. 164</span>
+<ul><li>Slide example: 2(0.80 – 0.60) = 0.40. <span class="src slide">slide 13</span></li>
+<li>Book example, height: 2(.93 – .48) = .90, so height is 90% heritable and 10% environmental. <span class="src book">book p. 165</span></li></ul></li>
+<li><span class="tag">Book only</span> For dominance, identical twins correlate +.57 and fraternal twins only +.12 (Loehlin &amp; Nichols, 1976). <span class="src book">book p. 164</span></li>
+<li>Twin studies rest on the <strong>equal environments assumption</strong> (<em>forsendu um sambærilegt umhverfi</em>): the environments of identical twins are not more similar than those of fraternal twins. <span class="src slide">slide 14</span> <span class="src book">book p. 165</span></li>
+<li>If parents treated identical twins more alike (for example dressing them alike), their greater similarity could come from environment instead of genes. <span class="src book">book p. 165</span></li>
+<li>Tests of the assumption suggest it holds (Morris-Yates, 1990). <span class="src slide">slide 15</span></li>
+<li><span class="tag">Book only</span> The book's test: twins misdiagnosed by their parents as identical or fraternal were no more or less similar than correctly labelled twins (Scarr, 1968; Scarr &amp; Carter-Saltzman, 1979). Identical twins do dress alike and spend more time together, but that does not make their personalities more similar (Plomin et al., 2008). <span class="src book">book p. 165</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-13.jpg" data-cap="Tvíburarannsóknir: heritability is estimated by comparing eineggja and tvíeggja twins; greater similarity in eineggja twins is evidence of heritability; Einföld formúla 2(reineggja – rtvíeggja), e.g. 2(0.80 – 0.60) = 0.40" data-srcl="Slide 13 · key slide" aria-label="Enlarge: Tvíburarannsóknir: heritability is estimated by comparing eineggja and tvíeggja twins; greater similarity in eineggja twins is evidence of heritability; Einföld formúla 2(reineggja – rtvíeggja), e.g. 2(0.80 – 0.60) = 0.40"><img src="img/slide-13.jpg" alt="Tvíburarannsóknir: heritability is estimated by comparing eineggja and tvíeggja twins; greater similarity in eineggja twins is evidence of heritability; Einföld formúla 2(reineggja – rtvíeggja), e.g. 2(0.80 – 0.60) = 0.40" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 13</span> <span class="src key">Key slide</span> Tvíburarannsóknir: heritability is estimated by comparing eineggja and tvíeggja twins; greater similarity in eineggja twins is evidence of heritability; Einföld formúla 2(reineggja – rtvíeggja), e.g. 2(0.80 – 0.60) = 0.40</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Identical versus fraternal twins: monozygotic twins come from one fertilized egg, share 100 percent of genes and are always the same sex; dizygotic twins come from two eggs, share 50 percent and can be opposite sex"><div class="dg-box main"><strong>Identical, MZ (eineggja)</strong><ul><li>one fertilized egg that splits</li><li>share 100% of genes</li><li>always the same sex</li></ul></div><div class="dg-box"><strong>Fraternal, DZ (tvíeggja)</strong><ul><li>two eggs</li><li>share 50% of genes</li><li>can be opposite sex</li><li>two-thirds of twins</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Identical vs fraternal twins: if MZ twins are more alike than DZ twins, that is evidence the trait is heritable (from slide 13, book pp. 163–164)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-9"><div class="text"><h3><span class="n">6.9</span>Adoption studies and twins reared apart (<em>Ættleiðingarannsóknir</em>)</h3><p class="meta">slides 16–18, book pp. 165–166</p>
+<p><strong>In short:</strong> Adoption studies separate genes from environment, because birth parents give only genes and adoptive parents give only environment.</p>
+<ul>
+<li>Adoption studies compare how adopted children relate to their adoptive parents (<em>fósturforeldrar</em>) on one hand and to their birth parents (<em>blóðforeldrar</em>) on the other. <span class="src slide">slide 16</span> <span class="src slide">slide 18</span> <span class="src book">book p. 165</span></li>
+<li>A positive correlation between adopted children and adoptive parents is evidence of environmental influence. <span class="src slide">slide 17</span> <span class="src book">book p. 165</span></li>
+<li>A positive correlation between adopted children and birth parents is evidence of heritability. <span class="src slide">slide 17</span> <span class="src book">book p. 166</span></li>
+<li>Adoption studies get around the equal environments assumption, because birth parents provide none of the child's environment. <span class="src slide">slide 17</span> <span class="src book">book p. 166</span></li>
+<li>Problem 1, <strong>representativeness:</strong> the assumption that adoptees, adoptive parents and birth parents are typical of the population may be questionable. <span class="src slide">slide 18</span> <span class="src book">book p. 166</span></li>
+<li>Problem 2, <strong>selective placement:</strong> adoptive parents may be chosen to be too similar to the birth parents (<em>of lík blóðforeldrum</em>). <span class="src slide">slide 18</span> <span class="src book">book p. 166</span></li>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> The slide presents both as weaknesses. The book adds that several studies confirmed the representativeness assumption holds (Plomin &amp; DeFries, 1985; Plomin, DeFries, &amp; Fulker, 1988) and that there does not seem to be selective placement, "so this potential problem is not a real problem in actual studies". <span class="src book">book p. 166</span></li>
+<li>The strongest design is twin studies of pairs separated in childhood, i.e. twins reared apart. <span class="src slide">slide 18</span> The book calls it one of the most powerful designs. <span class="src book">book p. 166</span></li>
+<li><span class="tag">Book only</span> The correlation between identical twins reared apart can be read directly as heritability: a correlation of +.65 means 65% of the individual differences are heritable. <span class="src book">book p. 166</span></li>
+</ul></div><div class="figs">
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="The two comparisons in an adoption study: adopted child with adoptive parents, who give only environment, where a positive correlation is evidence of environmental influence; adopted child with birth parents, who give only genes, where a positive correlation is evidence of heritability"><div class="dg-box"><strong>Child vs adoptive parents (fósturforeldrar)</strong><ul><li>share environment, no genes</li><li>positive correlation: evidence of environmental influence</li></ul></div><div class="dg-box main"><strong>Child vs birth parents (blóðforeldrar)</strong><ul><li>share genes, give no environment</li><li>positive correlation: evidence of heritability</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> The two comparisons in an adoption study (from slide 17, book pp. 165–166)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-18.jpg" data-cap="Ættleiðingarannsóknir II: the slide lists two problems, the representativeness assumption (kann að vera vafasöm) and selective placement (of lík blóðforeldrum), and calls twins reared apart the strongest design; the book (p. 166) says studies confirm representativeness holds, selective placement is not a real problem, and twins reared apart are one of the most powerful designs" data-srcl="Slide 18 · key slide" aria-label="Enlarge: Ættleiðingarannsóknir II: the slide lists two problems, the representativeness assumption (kann að vera vafasöm) and selective placement (of lík blóðforeldrum), and calls twins reared apart the strongest design; the book (p. 166) says studies confirm representativeness holds, selective placement is not a real problem, and twins reared apart are one of the most powerful designs"><img src="img/slide-18.jpg" alt="Ættleiðingarannsóknir II: the slide lists two problems, the representativeness assumption (kann að vera vafasöm) and selective placement (of lík blóðforeldrum), and calls twins reared apart the strongest design; the book (p. 166) says studies confirm representativeness holds, selective placement is not a real problem, and twins reared apart are one of the most powerful designs" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 18</span> <span class="src key">Key slide</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> Ættleiðingarannsóknir II: the slide lists two problems, the representativeness assumption (kann að vera vafasöm) and selective placement (of lík blóðforeldrum), and calls twins reared apart the strongest design; the book (p. 166) says studies confirm representativeness holds, selective placement is not a real problem, and twins reared apart are one of the most powerful designs</figcaption></figure>
+</div></article>
+
+<article class="sec" id="s6-10"><div class="text"><h3><span class="n">6.10</span>Summary of methods (<em>Samantekt á kostum og göllum</em>)</h3><p class="meta">slide 19 (Table 6.1), book p. 166</p>
+<p><strong>In short:</strong> Each method has a typical strength and a typical weakness. <span class="src slide">slide 19</span> <span class="src book">book p. 166</span></p>
+<div class="tbl"><table>
+<tr><th>Method</th><th>Advantages</th><th>Limitations</th></tr>
+<tr><td>Selective breeding studies</td><td>Can infer heritability if selective breeding works</td><td>Are unethical to conduct on humans</td></tr>
+<tr><td>Family studies</td><td>Provide heritability estimates</td><td>Violate equal environments assumption</td></tr>
+<tr><td>Twin studies</td><td>Provide both heritability and environmentality estimates</td><td>Sometimes violate equal environments assumption</td></tr>
+<tr><td>Adoption studies</td><td>Provide both heritability and environmentality estimates; get around the problem of equal environments assumption</td><td>Adopted kids might not be representative of population; problem of selective placement</td></tr>
+</table></div></div></article>
+
+<article class="sec has-figs" id="s6-11"><div class="text"><h3><span class="n">6.11</span>Heritability of personality traits (<em>Arfgengi persónuleikaþátta</em>)</h3><p class="meta">slides 20–21, book pp. 167–169</p>
+<p><strong>In short:</strong> Most personality traits are roughly half heritable.</p>
+<ul>
+<li>Summaries of many studies suggest that the heritability of the five-factor model (<em>fimm þátta líkansins</em>) is about 0.50 on average. <span class="src slide">slide 20</span> <span class="src book">book p. 169</span>
+<ul><li>The slide cites Bezdjaian o.fl, 2011 and Caspi o.fl., 2005; the book cites Bouchard &amp; Loehlin, 2001 and Caspi, Roberts, &amp; Shiner, 2005.</li></ul></li>
+<li><span class="tag">Book only</span> A meta-analysis of more than 100,000 participants found a slightly lower 40% (Vukasovic &amp; Bratko, 2015); another found 48% for Neuroticism and 49% for Extraversion (van den Berg et al., 2014). <span class="src book">book p. 169</span></li>
+<li><span class="tag">Book only</span> Swedish twin study (4,987 pairs): Extraversion MZ +.51 and DZ +.21, heritability .60; Neuroticism MZ +.50 and DZ +.23, heritability .54 (Floderus-Myrhed et al., 1980). <span class="src book">book p. 167</span></li>
+<li><span class="tag">Book only</span> Adoption studies give somewhat lower estimates: about 40% for Extraversion and 30% for Neuroticism (Pedersen, 1993). Adoptive parent–child correlations are around zero. <span class="src book">book p. 167</span></li>
+<li>Activity level (<em>Hreyfiþörf</em>) has a heritability of 0.40 (Spinath o.fl., 2002). <span class="src slide">slide 20</span> <span class="src book">book p. 167</span></li>
+<li><span class="tag slides">Slides only</span> Impulsivity (<em>Hvatvísi</em>): 0.50 (Bezdjaian o.fl. 2011). <span class="src slide">slide 20</span></li>
+<li><span class="tag slides">Slides only</span> Morning/evening type (<em>Morgun/kvöld þáttur</em>): 0.54 (Hur, o.fl., 1998). <span class="src slide">slide 20</span></li>
+<li><strong>Table 6.2</strong> gives correlations between identical twins reared apart from the Minnesota Twin Study (Bouchard &amp; McGue, 1990; Tellegen et al., 1988). Highest: absorption or imagination .74 and neuroticism .70; lowest: social closeness .15; average .54. <span class="src slide">slide 21</span> <span class="src book">book p. 169</span></li>
+<li><span class="tag">Book only</span> Because these are identical twins reared apart, each correlation can be read directly as a heritability estimate (see 6.9). <span class="src book">book p. 166</span></li>
+<li><span class="tag">Book only</span> The study examined 45 sets of identical twins and 26 sets of fraternal twins reared apart. The results startled people, because traits like traditionalism and neuroticism were thought to come from upbringing. <span class="src book">book p. 168</span> <span class="src book">book p. 169</span></li>
+<li><span class="tag">Book only</span> The same studies also show that a substantial part of the variance in personality is environmental. <span class="src book">book p. 169</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-21.jpg" data-cap="Table 6.2: correlations between identical twins reared apart (Bouchard &amp; McGue, 1990; Tellegen et al., 1988); average .54" data-srcl="Slide 21" aria-label="Enlarge: Table 6.2: correlations between identical twins reared apart (Bouchard &amp; McGue, 1990; Tellegen et al., 1988); average .54"><img src="img/slide-21.jpg" alt="Table 6.2: correlations between identical twins reared apart (Bouchard &amp; McGue, 1990; Tellegen et al., 1988); average .54" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 21</span> Table 6.2: correlations between identical twins reared apart (Bouchard &amp; McGue, 1990; Tellegen et al., 1988); average .54</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-20.jpg" data-cap="Arfgengi persónuleikaþátta: the five-factor model about 0.50 on average; also Hreyfiþörf (activity level) 0,40, Hvatvísi 0.50 and Morgun/kvöld þáttur 0.54" data-srcl="Slide 20 · key slide" aria-label="Enlarge: Arfgengi persónuleikaþátta: the five-factor model about 0.50 on average; also Hreyfiþörf (activity level) 0,40, Hvatvísi 0.50 and Morgun/kvöld þáttur 0.54"><img src="img/slide-20.jpg" alt="Arfgengi persónuleikaþátta: the five-factor model about 0.50 on average; also Hreyfiþörf (activity level) 0,40, Hvatvísi 0.50 and Morgun/kvöld þáttur 0.54" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 20</span> <span class="src key">Key slide</span> Arfgengi persónuleikaþátta: the five-factor model about 0.50 on average; also Hreyfiþörf (activity level) 0,40, Hvatvísi 0.50 and Morgun/kvöld þáttur 0.54</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-12"><div class="text"><h3><span class="n">6.12</span>Attitudes and preferences (<em>Viðhorf og forgangsröðun</em>)</h3><p class="meta">slide 22, book pp. 169–170</p>
+<p><strong>In short:</strong> Some attitudes are fairly heritable, others hardly at all.</p>
+<ul>
+<li>The heritability of attitudes varies a great deal (<em>Allmikil dreifni í arfgengi viðhorfa</em>). <span class="src slide">slide 22</span> <span class="src book">book p. 170</span></li>
+<li>Traditionalism (<em>Hefðbundni</em>) and conservatism (<em>íhaldsemi</em>) show relatively high heritability. <span class="src slide">slide 22</span> The Minnesota Twin Study found .59 for traditionalism. <span class="src book">book p. 169</span></li>
+<li>Religious attitudes (<em>trúarviðhorf</em>) show little heritability. <span class="src slide">slide 22</span>
+<ul><li><span class="tag">Book only</span> One study of 400 twin pairs found heritability of essentially zero for belief in God (Loehlin &amp; Nichols, 1976). But religiousness was 12% heritable in adolescence and 44% in adulthood (Koenig et al., 2005), so genes seem to matter more with age. <span class="src book">book p. 170</span></li></ul></li>
+<li><span class="tag slides">Slides only</span> The link between measures of entrepreneurship (<em>athafnasemi/frumkvöðull</em>) and working independently could be explained by heritability (Nicolaou og Shane (2010)). <span class="src slide">slide 22</span></li>
+<li><span class="tag">Book only</span> Twin studies of political ideologies in five countries found heritabilities of 30 to 60 percent (Hatemi et al., 2014). <span class="src book">book p. 170</span></li>
+<li><span class="tag">Book only</span> Occupational preferences are partly genetic: 71% of their correlations with parental status were significant for genetic children but only 3% for adopted children (Ellis &amp; Bonin, 2003). <span class="src book">book p. 170</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-22.jpg" data-cap="Viðhorf og forgangsröðun: heritability of attitudes varies a lot (Allmikil dreifni); Hefðbundni (traditionalism) and íhaldsemi relatively high, trúarviðhorf low; athafnasemi/frumkvöðull and working independently (Nicolaou og Shane (2010))" data-srcl="Slide 22 · key slide" aria-label="Enlarge: Viðhorf og forgangsröðun: heritability of attitudes varies a lot (Allmikil dreifni); Hefðbundni (traditionalism) and íhaldsemi relatively high, trúarviðhorf low; athafnasemi/frumkvöðull and working independently (Nicolaou og Shane (2010))"><img src="img/slide-22.jpg" alt="Viðhorf og forgangsröðun: heritability of attitudes varies a lot (Allmikil dreifni); Hefðbundni (traditionalism) and íhaldsemi relatively high, trúarviðhorf low; athafnasemi/frumkvöðull and working independently (Nicolaou og Shane (2010))" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 22</span> <span class="src key">Key slide</span> Viðhorf og forgangsröðun: heritability of attitudes varies a lot (Allmikil dreifni); Hefðbundni (traditionalism) and íhaldsemi relatively high, trúarviðhorf low; athafnasemi/frumkvöðull and working independently (Nicolaou og Shane (2010))</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-13"><div class="text"><h3><span class="n">6.13</span>Sexual orientation (A Closer Look)</h3><p class="meta"><span class="tag">Book only</span> book pp. 171–172</p>
+<p><strong>In short:</strong> Sexual orientation shows some heritability, but well-controlled studies find it lower than early studies did.</p>
+<ul>
+<li>Early twin and adoptive-sibling studies by Bailey and colleagues gave heritability estimates from 30 to 70 percent (Bailey et al., 1993). <span class="src book">book p. 171</span></li>
+<li>Critics said the samples, recruited through advertisements in gay and lesbian publications, were unrepresentative. <span class="src book">book p. 171</span></li>
+<li>In a large Australian twin study with random sampling (Bailey, Dunne, &amp; Martin, 2000), concordance was 20% for identical twin men and 24% for identical twin women, lower than the 40–50% of earlier studies. <span class="src book">book p. 172</span></li>
+<li><strong>Concordance</strong> is the probability that one twin is gay if the other is also gay. <span class="src book">book p. 172</span></li>
+<li>Childhood gender nonconformity was heritable (50% in men, 37% in women), which supports Bem's (1996) idea that it may be the inherited component of adult sexual orientation. <span class="src book">book p. 172</span></li>
+</ul></div><div class="figs">
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Earlier studies versus the Australian random-sample study of sexual orientation: earlier samples recruited through advertisements gave heritability 30 to 70 percent and concordance 40 to 50 percent; the random-sample study found concordance of 20 percent for identical twin men and 24 percent for identical twin women"><div class="dg-box"><strong>Earlier studies</strong><ul><li>samples recruited through ads in gay and lesbian publications</li><li>heritability 30–70% (Bailey et al., 1993)</li><li>concordance 40–50%</li></ul></div><div class="dg-box main"><strong>Bailey, Dunne &amp; Martin (2000)</strong><ul><li>large Australian twin study, random sampling</li><li>concordance 20% (MZ men), 24% (MZ women)</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Earlier studies vs the random-sample Australian twin study, which found lower concordance; Bailey argues the earlier ad-recruited samples overestimated genetic contributions (from book pp. 171–172)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-14"><div class="text"><h3><span class="n">6.14</span>Drinking and smoking (<em>Neysla áfengis og reykinga</em>)</h3><p class="meta">slide 23, book pp. 170, 172</p>
+<p><strong>In short:</strong> Drinking and smoking are linked to personality, stable over time and moderately heritable.</p>
+<ul>
+<li>Drinking and smoking are linked to traits such as sensation seeking (<em>æsisækni</em>), extraversion (<em>úthverfu</em>) and neuroticism (<em>taugaveiklun</em>). <span class="src slide">slide 23</span> <span class="src book">book p. 170</span></li>
+<li>Use of each is stable over time. <span class="src slide">slide 23</span> <span class="src book">book p. 172</span></li>
+<li>Heritability figures on the slide: <span class="src slide">slide 23</span>
+<ul><li><span class="tag slides">Slides only</span> Starting to smoke: 0.44 (Vink o.fl., 2005).</li>
+<li><span class="tag slides">Slides only</span> Persistent smoking (<em>Þrálátar reykingar</em>): 0.53 (Li o.fl. 2003).</li>
+<li>Alcohol use: written "021-056" (Geels o.fl., 2012), i.e. 0.21 to 0.56.</li>
+<li>Alcoholism (<em>Alkóhólismi</em>): +0.50 (Shuckitt, 2009).</li></ul></li>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> For alcohol drinking the slide's range starts at 0.21 (Geels o.fl., 2012); the book says most studies show moderate heritability for both sexes, ranging from .36 to .56 (Rose, 1995). <span class="src slide">slide 23</span> <span class="src book">book p. 172</span></li>
+<li><span class="tag">Book only</span> For alcoholism the book says nearly all studies show heritabilities of .50 or greater (Kendler et al., 1992), with 67% in women and 71% in men in one study (Heath et al., 1994). <span class="src book">book p. 172</span></li>
+<li><span class="tag">Book only</span> In Australian twins, an MZ twin who smoked was about 16 times more likely to have a twin who also smoked; for DZ twins the increase was only sevenfold (Hooper et al., 1992). <span class="src book">book p. 172</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-23.jpg" data-cap="Neysla áfengis og reykinga: linked to æsisækni, úthverfu and taugaveiklun, stable over time, with heritability figures for smoking, alcohol use and Alkóhólismi; the slide gives alcohol use as &quot;021-056&quot; (Geels o.fl., 2012), the book (p. 172) .36 to .56 (Rose, 1995)" data-srcl="Slide 23 · key slide" aria-label="Enlarge: Neysla áfengis og reykinga: linked to æsisækni, úthverfu and taugaveiklun, stable over time, with heritability figures for smoking, alcohol use and Alkóhólismi; the slide gives alcohol use as &quot;021-056&quot; (Geels o.fl., 2012), the book (p. 172) .36 to .56 (Rose, 1995)"><img src="img/slide-23.jpg" alt="Neysla áfengis og reykinga: linked to æsisækni, úthverfu and taugaveiklun, stable over time, with heritability figures for smoking, alcohol use and Alkóhólismi; the slide gives alcohol use as &quot;021-056&quot; (Geels o.fl., 2012), the book (p. 172) .36 to .56 (Rose, 1995)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 23</span> <span class="src key">Key slide</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> Neysla áfengis og reykinga: linked to æsisækni, úthverfu and taugaveiklun, stable over time, with heritability figures for smoking, alcohol use and Alkóhólismi; the slide gives alcohol use as "021-056" (Geels o.fl., 2012), the book (p. 172) .36 to .56 (Rose, 1995)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-15"><div class="text"><h3><span class="n">6.15</span>Marriage and satisfaction with life (<em>Hvað með hjónabönd?</em>)</h3><p class="meta">slide 24, book pp. 172–173</p>
+<p><strong>In short:</strong> Genes affect whether people marry and how satisfied they are, partly through heritable personality traits.</p>
+<ul>
+<li>Genes influence the tendency to marry or stay single, with a heritability (<em>erfðanleiki</em>) of 68% (Johnson et al., 2004). <span class="src slide">slide 24</span> <span class="src book">book p. 172</span></li>
+<li>Genes explain about 50% of the variation in women's marital satisfaction (Spotts et al., 2004). <span class="src slide">slide 24</span> <span class="src book">book p. 173</span></li>
+<li>These effects may run through heritable personality traits: <span class="src slide">slide 24</span>
+<ul><li>Men: social potential and success (<em>Félagslegir möguleikar og árangur karla</em>). The book says married men scored higher on social potency and achievement, traits valued by women choosing partners. <span class="src book">book p. 172</span> <span class="src book">book p. 173</span></li>
+<li>Women: warmth, positivity and low aggressiveness (<em>Hlýleiki, jákvæðni &amp; lágt ýgi kvenna</em>). The book says wives' optimism, warmth and low aggressiveness explained both their own and their husbands' marital satisfaction (Spotts et al., 2005). <span class="src book">book p. 173</span></li></ul></li>
+<li><span class="tag">Book only</span> Husbands' personality did not explain as much of either partner's satisfaction. <span class="src book">book p. 173</span></li>
+<li><span class="tag">Book only</span> Four moderately heritable factors (sense of purpose, personal growth, feeling in control of one's life, positive relationships) predict life satisfaction (Archontaki, Lewis, &amp; Bates, 2013). <span class="src book">book p. 173</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-24.jpg" data-cap="Hvað með hjónabönd?: genes and the tendency to marry (erfðanleiki 68%) and about 50% of women&#x27;s marital satisfaction, possibly through heritable traits: Félagslegir möguleikar og árangur karla; Hlýleiki, jákvæðni &amp; lágt ýgi kvenna" data-srcl="Slide 24 · key slide" aria-label="Enlarge: Hvað með hjónabönd?: genes and the tendency to marry (erfðanleiki 68%) and about 50% of women&#x27;s marital satisfaction, possibly through heritable traits: Félagslegir möguleikar og árangur karla; Hlýleiki, jákvæðni &amp; lágt ýgi kvenna"><img src="img/slide-24.jpg" alt="Hvað með hjónabönd?: genes and the tendency to marry (erfðanleiki 68%) and about 50% of women&#x27;s marital satisfaction, possibly through heritable traits: Félagslegir möguleikar og árangur karla; Hlýleiki, jákvæðni &amp; lágt ýgi kvenna" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 24</span> <span class="src key">Key slide</span> Hvað með hjónabönd?: genes and the tendency to marry (erfðanleiki 68%) and about 50% of women's marital satisfaction, possibly through heritable traits: Félagslegir möguleikar og árangur karla; Hlýleiki, jákvæðni &amp; lágt ýgi kvenna</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-16"><div class="text"><h3><span class="n">6.16</span>Molecular genetics (<em>Sameindaerfðafræði</em>)</h3><p class="meta">slides 25–26, book pp. 178–180</p>
+<p><strong>In short:</strong> Molecular genetics hunts for specific genes linked to traits. The best-known candidate is DRD4 and novelty seeking, but each gene has only a tiny effect.</p>
+<ul>
+<li>The aim is to identify specific genes linked to personality traits. <span class="src slide">slide 25</span> <span class="src book">book p. 178</span></li>
+<li><span class="tag">Book only</span> The most common method is the <strong>association method</strong>: checking whether people with a particular gene (allele) score higher or lower on a trait. <span class="src book">book p. 178</span></li>
+<li>The <strong>DRD4 gene</strong> is located on the short arm of chromosome 11 (<em>litningi nr. 11</em>) and codes for a dopamine receptor. <span class="src slide">slide 25</span> <span class="src book">book p. 178</span></li>
+<li>DRD4 has been studied mostly for <strong>novelty seeking</strong> (<em>nýungarsækni</em>). People who score high seem more likely to have the longer version of the gene than the shorter one (Benjamin et al., 1996). <span class="src slide">slide 25</span> <span class="src book">book p. 179</span></li>
+<li><span class="tag">Book only</span> The proposed reason: people with long DRD4 genes are relatively unresponsive to dopamine, so they seek novel experiences for a "dopamine buzz". <span class="src book">book p. 179</span></li>
+<li><span class="tag">Book only</span> The association has replicated several times but also failed to replicate several times (Plomin &amp; Crabbe, 2000). <span class="src book">book p. 179</span></li>
+<li><span class="tag">Book only</span> Men with the 7-repeat (7R) allele of DRD4 invested more money in a financial risk game. The effect was statistically significant but small (Dreber et al., 2009; Figure 6.1). <span class="src book">book p. 179</span></li>
+<li><span class="tag">Book only</span> Effects are so small that there may be 10 other equally important genes for novelty seeking, and perhaps 500 genes for other aspects of personality. <span class="src book">book p. 179</span></li>
+<li>Therefore findings in molecular genetics must be interpreted carefully. <span class="src slide">slide 26</span> <span class="src book">book p. 179</span></li>
+<li>Recent research has broadened to <strong>genome-wide association studies</strong> (<em>erfðamengis rannsókna</em>, GWAS). <span class="src slide">slide 26</span> <span class="src book">book p. 180</span></li>
+<li><span class="tag slides">Slides only</span> These studies examine variation between people in SNIPS (DNA single nucleotide polymorphisms; spelled "SNIPS" on the slide). <span class="src slide">slide 26</span></li>
+<li><span class="tag">Book only</span> Personality seems linked to many genes, each with tiny effects, which has led to <strong>polygenic risk scores</strong>, mathematical sums of many genetic variants. <span class="src book">book p. 180</span></li>
+</ul></div><div class="figs">
+<figure class="fig book"><button class="zoom" type="button" data-src="img/book-fig-6-1.jpg" data-cap="Men with DRD4 7R+ invest more money in a financial risk game (Dreber et al., 2009)" data-srcl="Book Fig 6.1 · p. 179" aria-label="Enlarge: Men with DRD4 7R+ invest more money in a financial risk game (Dreber et al., 2009)"><img src="img/book-fig-6-1.jpg" alt="Men with DRD4 7R+ invest more money in a financial risk game (Dreber et al., 2009)" width="372" height="408" loading="lazy"></button><figcaption><span class="src book">Book Fig 6.1 · p. 179</span> Men with DRD4 7R+ invest more money in a financial risk game (Dreber et al., 2009)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-25.jpg" data-cap="Sameindaerfðafræði: the aim is to identify specific genes linked to personality traits; DRD4 sits on the short arm of litningi nr. 11 and codes for a dopamine receptor; high scorers on nýungarsækni (novelty seeking) more often have the longer version" data-srcl="Slide 25 · key slide" aria-label="Enlarge: Sameindaerfðafræði: the aim is to identify specific genes linked to personality traits; DRD4 sits on the short arm of litningi nr. 11 and codes for a dopamine receptor; high scorers on nýungarsækni (novelty seeking) more often have the longer version"><img src="img/slide-25.jpg" alt="Sameindaerfðafræði: the aim is to identify specific genes linked to personality traits; DRD4 sits on the short arm of litningi nr. 11 and codes for a dopamine receptor; high scorers on nýungarsækni (novelty seeking) more often have the longer version" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 25</span> <span class="src key">Key slide</span> Sameindaerfðafræði: the aim is to identify specific genes linked to personality traits; DRD4 sits on the short arm of litningi nr. 11 and codes for a dopamine receptor; high scorers on nýungarsækni (novelty seeking) more often have the longer version</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-17"><div class="text"><h3><span class="n">6.17</span>Shared versus nonshared environment (<em>Áhrif umhverfis: Munur milli eða innan fjölskyldna</em>)</h3><p class="meta">slides 27–28, book pp. 173–175</p>
+<p><strong>In short:</strong> The environment matters a lot, but mostly through experiences siblings do not share.</p>
+<ul>
+<li>If genes explain 30–50% of the variation in personality, environment must explain 50–70%. <span class="src slide">slide 27</span> <span class="src book">book p. 173</span></li>
+<li>A problem is that measurement error (<em>mælingarvillu</em>) must be taken into account: some differences are due neither to genes nor to environment. <span class="src slide">slide 27</span> <span class="src book">book p. 173</span></li>
+<li><strong>Shared environmental influences</strong> (<em>Munur milli fjölskyldna</em>) are features siblings share, such as the books in the home, the parents' values and the schools they attend. <span class="src slide">slide 27</span> <span class="src book">book p. 173</span></li>
+<li><strong>Nonshared environmental influences</strong> (<em>Munur innan fjölskyldna</em>) are features siblings experience differently, such as special treatment, different friends or summer camp. <span class="src slide">slide 27</span> <span class="src book">book p. 173</span></li>
+<li>Environmental effects come mainly from differences <strong>within</strong> families. <span class="src slide">slide 28</span> <span class="src book">book p. 174</span></li>
+<li>The correlation in personality between adopted siblings, who share environment but not genes, was 0.05. <span class="src slide">slide 28</span> <span class="src book">book p. 174</span></li>
+<li>It is not known which within-family factors matter. <span class="src slide">slide 28</span> <span class="src book">book p. 174</span> <span class="tag">Book only</span> Different peer influences may be one candidate (Harris, 2007), or there may be so many environmental variables that each accounts for only a tiny fraction of the variance (Willerman, 1979). <span class="src book">book p. 174</span></li>
+<li>Shared-environment effects have been found for religious attitudes and for alcohol use and smoking. <span class="src slide">slide 28</span> <span class="src book">book p. 174</span>
+<ul><li><span class="tag">Book only</span> Genetically unrelated adoptive siblings correlate .41 (girls) and .46 (boys) in smoking and drinking (Willerman, 1979). <span class="src book">book p. 174</span></li></ul></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-27.jpg" data-cap="Áhrif umhverfis: Munur milli eða innan fjölskyldna: if genes explain 30-50%, environment explains 50-70%; mælingarvillu must be taken into account; Munur milli fjölskyldna (shared) vs Munur innan fjölskyldna (non-shared)" data-srcl="Slide 27 · key slide" aria-label="Enlarge: Áhrif umhverfis: Munur milli eða innan fjölskyldna: if genes explain 30-50%, environment explains 50-70%; mælingarvillu must be taken into account; Munur milli fjölskyldna (shared) vs Munur innan fjölskyldna (non-shared)"><img src="img/slide-27.jpg" alt="Áhrif umhverfis: Munur milli eða innan fjölskyldna: if genes explain 30-50%, environment explains 50-70%; mælingarvillu must be taken into account; Munur milli fjölskyldna (shared) vs Munur innan fjölskyldna (non-shared)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 27</span> <span class="src key">Key slide</span> Áhrif umhverfis: Munur milli eða innan fjölskyldna: if genes explain 30-50%, environment explains 50-70%; mælingarvillu must be taken into account; Munur milli fjölskyldna (shared) vs Munur innan fjölskyldna (non-shared)</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Shared versus nonshared environment: shared features such as books in the home, parents values and schools, with effects found for religious attitudes and drinking or smoking; nonshared features such as special treatment, different friends and summer camp, the main source of environmental effects"><div class="dg-box"><strong>Shared (Munur milli fjölskyldna)</strong><ul><li>siblings share it</li><li>e.g. books in the home, parents' values, schools</li><li>effects found for religious attitudes, drinking and smoking</li></ul></div><div class="dg-box main"><strong>Nonshared (Munur innan fjölskyldna)</strong><ul><li>siblings experience it differently</li><li>e.g. special treatment, different friends, summer camp</li><li>main source of environmental effects (which factors matter is not known)</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Shared vs nonshared environment: examples of each, where shared-environment effects have been found, and that most environmental effects stem from nonshared differences (from slides 27–28, book pp. 173–174)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-18"><div class="text"><h3><span class="n">6.18</span>Genotype–environment interaction (<em>Samvirkni arfgerðar og umhverfis</em>)</h3><p class="meta">slide 29, book pp. 175–176, 180</p>
+<p><strong>In short:</strong> People with different genotypes react differently to the same environment.</p>
+<ul>
+<li><strong>Genotype–environment interaction</strong> is the different response of individuals with different genotypes to the same environment. <span class="src slide">slide 29</span> <span class="src book">book p. 175</span></li>
+<li>Example 1: introverts (<em>innhverfra</em>) and extraverts (<em>úthverfra</em>) perform differently on tasks done in different settings. <span class="src slide">slide 29</span> Introverts do well in quiet rooms but poorly with distractions; extraverts do fine with noise but make many errors when the task is boring. <span class="src book">book p. 175</span></li>
+<li>Example 2: the role of MAOA for children raised by abusive parents (Caspi o.fl., 2003). <span class="src slide">slide 29</span> Abused children with a genotype producing low monoamine oxidase A (MAOA) often developed conduct disorders and antisocial, violent dispositions; those with high MAOA were far less likely to. <span class="src book">book p. 175</span> <span class="src book">book p. 176</span></li>
+<li><span class="tag">Book only</span> Similarly, childhood maltreatment or stressful life events led to persistent depression or depressive symptoms only in people with the short version of the serotonin transporter (5-HTT) gene (Uher et al., 2011). <span class="src book">book p. 176</span> <span class="src book">book p. 180</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-29.jpg" data-cap="Samvirkni arfgerðar og umhverfis: different responses of individuals with different genotypes to the same environment (sama umhverfis), &quot;Framkalla ólík viðbrögð við sömu aðstæðum!&quot;; examples: introverts and extraverts, and MAOA for children of abusive parents (Caspi o.fl., 2003)" data-srcl="Slide 29 · key slide" aria-label="Enlarge: Samvirkni arfgerðar og umhverfis: different responses of individuals with different genotypes to the same environment (sama umhverfis), &quot;Framkalla ólík viðbrögð við sömu aðstæðum!&quot;; examples: introverts and extraverts, and MAOA for children of abusive parents (Caspi o.fl., 2003)"><img src="img/slide-29.jpg" alt="Samvirkni arfgerðar og umhverfis: different responses of individuals with different genotypes to the same environment (sama umhverfis), &quot;Framkalla ólík viðbrögð við sömu aðstæðum!&quot;; examples: introverts and extraverts, and MAOA for children of abusive parents (Caspi o.fl., 2003)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 29</span> <span class="src key">Key slide</span> Samvirkni arfgerðar og umhverfis: different responses of individuals with different genotypes to the same environment (sama umhverfis), "Framkalla ólík viðbrögð við sömu aðstæðum!"; examples: introverts and extraverts, and MAOA for children of abusive parents (Caspi o.fl., 2003)</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Same environment, different genotypes: abused children with low MAOA often developed conduct disorders and antisocial, violent dispositions; maltreated children with high MAOA were far less likely to develop aggressive antisocial personalities"><div class="dg-box main"><strong>Abused + low MAOA</strong><ul><li>often conduct disorders</li><li>antisocial, violent dispositions</li></ul></div><div class="dg-box"><strong>Abused + high MAOA</strong><ul><li>far less likely to develop aggressive antisocial personalities</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Genotype–environment interaction: the same environment (abusive parents) has different effects depending on MAOA genotype (from slide 29, book pp. 175–176)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-19"><div class="text"><h3><span class="n">6.19</span>Genotype–environment correlation (<em>Fylgni arfgerðar og umhverfis</em>)</h3><p class="meta">slide 30, book pp. 176–178</p>
+<p><strong>In short:</strong> People with different genotypes end up in different environments, and those environments can either boost or hold back the genetic tendency.</p>
+<ul>
+<li><span class="tag">Book only</span> <strong>Genotype–environment correlation</strong> is the differential exposure of individuals with different genotypes to different environments; for example, parents give a verbally gifted child more books. <span class="src book">book p. 176</span></li>
+<li><span class="tag">Book only</span> There are three kinds (Plomin, DeFries, and Loehlin, 1977): <span class="src book">book p. 176</span> <span class="src book">book p. 177</span></li>
+</ul>
+<div class="tbl"><table>
+<tr><th>Type</th><th>What happens</th><th>Example</th></tr>
+<tr><td>Passive</td><td>Parents provide both genes and environment; the child does nothing</td><td>Verbal parents pass on verbal genes and buy many books</td></tr>
+<tr><td>Reactive</td><td>Others react to the child differently depending on its genotype</td><td>A mother keeps hugging the cuddler and hugs the noncuddler less</td></tr>
+<tr><td>Active</td><td>The person seeks out or creates environments ("niche picking", Scarr &amp; McCartney, 1983)</td><td>High sensation seekers go skydiving</td></tr>
+</table></div>
+<ul>
+<li>Genotype–environment correlation can be positive or negative: the environment can encourage or discourage the effects of the genotype. <span class="src slide">slide 30</span> <span class="src book">book p. 177</span></li>
+<li>Positive example: a positive disposition (<em>Jákvætt upplag</em>, optimism and cheerfulness). <span class="src slide">slide 30</span> Adolescents with positive emotionality evoke more affirmative regard from their parents. <span class="src book">book p. 177</span>
+<ul><li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> Minor: the slide spells the citation "Kruger o.fl., 2008"; the book has "Krueger et al., 2008". <span class="src slide">slide 30</span> <span class="src book">book p. 177</span></li></ul></li>
+<li>Negative example: high or low activity in children's behavior (Buss, 1981). <span class="src slide">slide 30</span> Parents try to calm very active children and liven up less active ones, which opposes the trait. <span class="src book">book p. 177</span></li>
+<li><span class="tag">Book only</span> In twins reared apart, perceived family cohesion was explained by genetic influence on Constraint and low Negative Emotionality, and a culturally stimulating family by Positive Emotionality (Krueger, Markon, &amp; Bouchard, 2003). <span class="src book">book p. 177</span> <span class="src book">book p. 178</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-30.jpg" data-cap="Fylgni arfgerðar og umhverfis II: the correlation can be jákvæð or neikvæð; Umhverfi getur hvatt eða dregið úr áhrifum arfgerðar; examples: Jákvætt upplag (Kruger o.fl., 2008) and high or low activity in children (Buss, 1981)" data-srcl="Slide 30 · key slide" aria-label="Enlarge: Fylgni arfgerðar og umhverfis II: the correlation can be jákvæð or neikvæð; Umhverfi getur hvatt eða dregið úr áhrifum arfgerðar; examples: Jákvætt upplag (Kruger o.fl., 2008) and high or low activity in children (Buss, 1981)"><img src="img/slide-30.jpg" alt="Fylgni arfgerðar og umhverfis II: the correlation can be jákvæð or neikvæð; Umhverfi getur hvatt eða dregið úr áhrifum arfgerðar; examples: Jákvætt upplag (Kruger o.fl., 2008) and high or low activity in children (Buss, 1981)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 30</span> <span class="src key">Key slide</span> Fylgni arfgerðar og umhverfis II: the correlation can be jákvæð or neikvæð; Umhverfi getur hvatt eða dregið úr áhrifum arfgerðar; examples: Jákvætt upplag (Kruger o.fl., 2008) and high or low activity in children (Buss, 1981)</figcaption></figure>
+<figure class="fig drawn"><div class="dg compare" role="img" aria-label="Positive versus negative genotype–environment correlation: in the positive case the environment encourages the disposition, as with adolescents high in positive emotionality who evoke affirmative regard from parents; in the negative case it discourages it, as when parents calm very active children and liven up less active ones"><div class="dg-box main"><strong>Positive</strong><ul><li>environment encourages the disposition</li><li>e.g. positive disposition: upbeat adolescents evoke more affirmative regard from parents</li></ul></div><div class="dg-box"><strong>Negative</strong><ul><li>environment discourages the disposition</li><li>e.g. parents calm very active children and liven up less active ones</li></ul></div></div><figcaption><span class="src drawn">Drawn by prof</span> Positive vs negative genotype–environment correlation, with the examples from slide 30 (from slide 30, book p. 177)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-20"><div class="text"><h3><span class="n">6.20</span>Environment and gene expression (<em>Áhrif umhverfis á skráningu eða framleiðslu gena</em>)</h3><p class="meta"><span class="tag slides">Slides only</span> slide 31</p>
+<p><strong>In short:</strong> The slide shows that environment can affect which genes are expressed.</p>
+<ul>
+<li>The slide's title says environment affects the transcription or production of genes. <span class="src slide">slide 31</span></li>
+<li>The figure compares an "Isolated" group with an "Integrated" group on "Isolation related transcripts". <span class="src slide">slide 31</span></li>
+<li>In the bar chart, the "Down-regulated" bar is longer than the "Up-regulated" bar, and the difference is marked p = .0001. <span class="src slide">slide 31</span></li>
+<li>The slide gives no study name, and the book chapter does not discuss this figure.</li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-31.jpg" data-cap="Gene expression in &quot;Isolated&quot; vs &quot;Integrated&quot; groups: isolation related transcripts, down-regulated vs up-regulated (difference p = .0001)" data-srcl="Slide 31" aria-label="Enlarge: Gene expression in &quot;Isolated&quot; vs &quot;Integrated&quot; groups: isolation related transcripts, down-regulated vs up-regulated (difference p = .0001)"><img src="img/slide-31.jpg" alt="Gene expression in &quot;Isolated&quot; vs &quot;Integrated&quot; groups: isolation related transcripts, down-regulated vs up-regulated (difference p = .0001)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 31</span> Gene expression in "Isolated" vs "Integrated" groups: isolation related transcripts, down-regulated vs up-regulated (difference p = .0001)</figcaption></figure>
+</div></article>
+
+<article class="sec has-figs" id="s6-21"><div class="text"><h3><span class="n">6.21</span>Science, politics and values (<em>Atferliserfðafræði, vísindi, pólitík og gildi</em>)</h3><p class="meta">slide 32, book pp. 180–181</p>
+<p><strong>In short:</strong> Behavioral genetics was long met with suspicion, but it is now fairly mainstream.</p>
+<ul>
+<li>Reactions to behavioral genetics and its possibilities have been mixed. <span class="src slide">slide 32</span> <span class="src book">book p. 180</span></li>
+<li>Its findings partly contradict the <strong>environmentalist view</strong> that personality is shaped by the social environment, such as parenting. <span class="src slide">slide 32</span> <span class="src book">book p. 180</span></li>
+<li><span class="tag">Book only</span> In the past century the field got a "frosty reception", because environmentalism, especially behaviorism, dominated and people recalled Nazi ideas of a master race. <span class="src book">book p. 180</span></li>
+<li>People feared that findings would be applied to discriminate in job choice and education. <span class="src slide">slide 32</span> <span class="src book">book p. 180</span></li>
+<li>Attitudes are more positive today, and research increases understanding of individuals and their environment. <span class="src slide">slide 32</span> The book says findings are now seen as fairly mainstream. <span class="src book">book p. 181</span></li>
+<li><span class="tag">Book only</span> Science (methods for discovering what exists) can be separated from values (what people want to exist). Scientists can be biased, but the scientific method is self-correcting because its methods are public. <span class="src book">book p. 181</span></li>
+</ul></div><div class="figs">
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/slide-32.jpg" data-cap="Atferliserfðafræði, vísindi, pólitík og gildi: mixed reactions (misjöfn); findings contradict the environmentalist view; fear of misuse and discrimination in starfsvali og menntun; attitudes more positive today" data-srcl="Slide 32 · key slide" aria-label="Enlarge: Atferliserfðafræði, vísindi, pólitík og gildi: mixed reactions (misjöfn); findings contradict the environmentalist view; fear of misuse and discrimination in starfsvali og menntun; attitudes more positive today"><img src="img/slide-32.jpg" alt="Atferliserfðafræði, vísindi, pólitík og gildi: mixed reactions (misjöfn); findings contradict the environmentalist view; fear of misuse and discrimination in starfsvali og menntun; attitudes more positive today" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 32</span> <span class="src key">Key slide</span> Atferliserfðafræði, vísindi, pólitík og gildi: mixed reactions (misjöfn); findings contradict the environmentalist view; fear of misuse and discrimination in starfsvali og menntun; attitudes more positive today</figcaption></figure>
+</div></article>
+
+<aside class="pointers"><p><strong>Pointers to other chapters</strong> (not studied now): generalizing across persons and places (Chapter 2, book p. 160); activity level and the actometer (Chapter 5, book p. 167); the definition of personality (Chapter 1, book p. 171); evolutionary selection of the DRD4 7R allele (Chapter 7, book p. 179).</p></aside>
+</section>
+</div>
+
+
+<dialog class="lb" id="lb" aria-label="Enlarged figure">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-cap"><div><span class="src" id="lb-src"></span> <span id="lb-text"></span></div><button class="lb-close" id="lb-close" type="button">Close</button></div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'),
+      src = document.getElementById('lb-src'), txt = document.getElementById('lb-text');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.zoom');
+    if (b) {
+      img.src = b.dataset.src; img.alt = b.dataset.cap;
+      src.textContent = b.dataset.srcl; txt.textContent = b.dataset.cap;
+      src.className = 'src ' + (b.closest('.fig').classList.contains('book') ? 'book' : 'slide');
+      if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      return;
+    }
+    if (e.target === lb || e.target.id === 'lb-close') lb.close();
+  });
+  try { if (window.matchMedia('(max-width: 700px)').matches) document.getElementById('toc').open = false; } catch (e) {}
+  // Deep links from grading summaries: #s1-5 opens and highlights section 1.5
+  function go() {
+    var id = (location.hash || '').slice(1), el = id && document.getElementById(id);
+    if (!el) return;
+    document.querySelectorAll('.sec.hit').forEach(function (s) { s.classList.remove('hit'); });
+    el.classList.add('hit');
+    el.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', go);
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  setTimeout(go, 60);
+})();
+</script>
+
+</body></html>

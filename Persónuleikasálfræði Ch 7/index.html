@@ -1,0 +1,612 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Persónuleikasálfræði Ch 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: study notes — each recap section sets text beside the slides and book figures it explains; figures stack under text on phones. */
+:root {
+  /* Theme: same palette and fonts as the course page (templates/course.html). scripts/theme.py copies this block
+     and the font link above into older recap pages. */
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --slide: #4A5A9A;
+  --slide-soft: #E9ECF5;
+  --book: #6B5A80;
+  --book-soft: #EFEBF4;
+  --warn: #855700;
+  --warn-soft: #FAEFD6;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+    --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+  --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 22px; border-bottom: 1px solid var(--line); }
+.top .back { display: inline-block; margin: 0 0 10px; font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+.top .back:hover, .top .back:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top .course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; margin: 0; text-wrap: balance; }
+.top .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 14px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 8px; align-items: center; }
+
+/* chips */
+.tag, .warn, .src { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; white-space: nowrap; font-style: normal; vertical-align: 1px; }
+.tag { background: var(--book-soft); color: var(--book); }
+.warn { background: var(--warn-soft); color: var(--warn); }
+.src.slide { background: var(--slide-soft); color: var(--slide); }
+.src.book { background: var(--book-soft); color: var(--book); }
+.src.key { background: var(--warn-soft); color: var(--warn); }
+.src.drawn { background: var(--line); color: var(--fg); }
+em { color: var(--accent); font-style: italic; }
+
+/* toc */
+details.toc { margin-block: 22px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style-position: inside; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 28px; padding: 0 16px 14px; }
+.toc-h { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-ch ol { list-style: none; margin: 0; padding: 0; }
+.toc-ch a { display: flex; gap: 10px; text-decoration: none; color: var(--fg); padding: 3px 0; font-size: 15.5px; }
+.toc-ch a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .78em; color: var(--muted); min-width: 2.6em; padding-top: .2em; font-variant-numeric: tabular-nums; }
+
+/* chapters */
+.chapter { margin-top: 40px; }
+.ch-head { border-top: 3px solid var(--accent); padding-top: 14px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.ch-head h2 { font-family: var(--f-display); font-weight: 650; font-size: clamp(24px, 3vw, 32px); margin: 4px 0 0; text-wrap: balance; }
+
+.sec { display: grid; gap: 22px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+@media (min-width: 980px) {
+  .sec.has-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); gap: 36px; align-items: start; }
+}
+.text { min-width: 0; max-width: 72ch; }
+.text h3 { font-family: var(--f-display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; display: flex; gap: 6px; text-wrap: balance; }
+.text h3 em { color: inherit; }
+.text .meta { margin: 4px 0 10px; font-size: 14px; color: var(--muted); }
+.text p { margin: .55em 0; }
+.text ul, .text ol { padding-left: 1.25em; margin: .5em 0; }
+.text li { margin: .3em 0; }
+.text li::marker { color: var(--muted); }
+.text strong { font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+
+/* figures */
+.figs { display: grid; gap: 16px; min-width: 0; }
+.fig { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.fig.book .zoom { background: #fffef4; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.zoom img { display: block; width: 100%; height: auto; max-width: 100%; }
+.fig.book .zoom img { max-height: 420px; object-fit: contain; }
+figcaption { padding: 9px 12px 11px; font-size: 14px; line-height: 1.45; color: var(--muted); border-top: 1px solid var(--line); }
+figcaption .src { margin-right: 6px; white-space: normal; }
+
+/* drawn by prof: simple diagrams built from cited points (compare, flow, tree, timeline) */
+.dg { padding: 16px; font-size: 14.5px; line-height: 1.35; }
+.dg-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.dg-box strong { display: block; font-weight: 700; }
+.dg-box.main { background: var(--accent-soft); border-color: var(--accent); }
+.dg.flow { display: grid; gap: 4px; justify-items: stretch; }
+.dg-arrow { text-align: center; color: var(--muted); font-size: 13px; }
+.dg-arrow::before { content: "↓"; display: block; font-size: 18px; line-height: 1.1; color: var(--accent); }
+.dg.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.dg.compare .dg-box { text-align: left; }
+.dg.compare ul { margin: 6px 0 0; padding-left: 1.1em; }
+.dg.tree { display: grid; gap: 10px; }
+.dg.tree .dg-box.main { justify-self: center; min-width: 50%; }
+.dg-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 8px; border-top: 2px solid var(--accent); padding-top: 10px; }
+.dg.timeline { list-style: none; margin: 0; padding: 16px 16px 16px 30px; position: relative; }
+.dg.timeline::before { content: ""; position: absolute; left: 20px; top: 20px; bottom: 20px; width: 2px; background: var(--accent); }
+.dg.timeline li { position: relative; margin: 0 0 10px; }
+.dg.timeline li::before { content: ""; position: absolute; left: -14px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+.sec.hit { background: var(--accent-soft); border-radius: 10px; padding-inline: 16px; box-shadow: inset 4px 0 0 var(--accent); }
+.pointers { margin-top: 26px; padding: 12px 16px; border-left: 3px solid var(--line); color: var(--muted); font-size: 15px; }
+.pointers p { margin: 0; }
+
+/* lightbox */
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1500px); max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(10,14,20,.82); }
+.lb-inner { display: grid; gap: 8px; }
+.lb-inner img { max-width: 100%; max-height: 82vh; width: auto; height: auto; margin: 0 auto; display: block; background: #fff; border-radius: 6px; }
+.lb-cap { display: flex; gap: 12px; align-items: start; justify-content: space-between; color: #e8efed; font-size: 14.5px; }
+.lb-cap .src { flex: none; }
+.lb-close { flex: none; font: 600 14px var(--f-body); background: #e8efed; color: #10201c; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.tag.slides { background: var(--slide-soft); color: var(--slide); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="https://claude.ai/artifact/KFMShGsmGKAQ3WMySjdrQb" target="_blank" rel="noopener">← Course page</a>
+    <p class="course">Persónuleikasálfræði · Personality Psychology</p>
+    <h1>Ch 7 recap: Physiological approaches to personality</h1>
+    <p class="sub">Built around the teacher's slides (part 1, slides 1–17 and part 2, slides 1–19), with book-only material from book ch 7 (book pp. 184–221) that could be tested. Icelandic terms from the slides are in <em>blue italics</em>. Click a slide or book figure to enlarge it.</p>
+    <ul class="legend">
+      <li><span class="src slide">Slide 12</span> from the teacher's slides</li>
+      <li><span class="src book">Book Fig</span> figure from the book</li>
+      <li><span class="src key">Key slide</span> the teacher's own summary</li>
+      <li><span class="src drawn">Drawn by prof</span> diagram made from the cited points</li>
+      <li><span class="tag">Book only</span> not on the slides</li>
+      <li><span class="tag slides">Slides only</span> not in the book</li>
+      <li><span class="warn">Slides ≠ book</span> the two sources disagree</li>
+    </ul>
+  </header>
+
+  <details class="toc" id="toc" open>
+    <summary>Contents</summary>
+    <div class="toc-grid">
+<div class="toc-ch"><p class="toc-h">Ch 7 · Physiological approaches to personality (<em>Lífeðlisfræði og persónuleiki</em>)</p><ol><li><a href="#s7-1"><span class="n">7.1</span>Physiology and personality: the basic idea</a></li><li><a href="#s7-2"><span class="n">7.2</span>The theoretical bridge</a></li><li><a href="#s7-3"><span class="n">7.3</span>Digit ratio (2D:4D)</a></li><li><a href="#s7-4"><span class="n">7.4</span>Physiological measures: an overview</a></li><li><a href="#s7-5"><span class="n">7.5</span>Skin conductance and cardiovascular activity</a></li><li><a href="#s7-6"><span class="n">7.6</span>Measuring the brain</a></li><li><a href="#s7-7"><span class="n">7.7</span>Hormones, neurotransmitters and other biochemical measures</a></li><li><a href="#s7-8"><span class="n">7.8</span>Physiologically based theories: the map</a></li><li><a href="#s7-9"><span class="n">7.9</span>Eysenck's arousal theory of extraversion</a></li><li><a href="#s7-10"><span class="n">7.10</span>Testing Eysenck: arousability and chosen stimulation</a></li><li><a href="#s7-11"><span class="n">7.11</span>Gray's reinforcement sensitivity theory</a></li><li><a href="#s7-12"><span class="n">7.12</span>BIS, BAS and Eysenck's dimensions</a></li><li><a href="#s7-13"><span class="n">7.13</span>Research on reward and punishment</a></li><li><a href="#s7-14"><span class="n">7.14</span>Sensation seeking: origins</a></li><li><a href="#s7-15"><span class="n">7.15</span>The biological basis: MAO</a></li><li><a href="#s7-16"><span class="n">7.16</span>Sensation seeking and gambling</a></li><li><a href="#s7-17"><span class="n">7.17</span>Neurotransmitters and Cloninger's tridimensional model</a></li><li><a href="#s7-18"><span class="n">7.18</span>Genes and levels of explanation</a></li><li><a href="#s7-19"><span class="n">7.19</span>Morningness–eveningness: circadian rhythms</a></li><li><a href="#s7-20"><span class="n">7.20</span>Measuring chronotype and what it predicts</a></li><li><a href="#s7-21"><span class="n">7.21</span>Brain asymmetry and affective style</a></li><li><a href="#s7-22"><span class="n">7.22</span>Meditation and left-hemisphere activity</a></li><li><a href="#s7-23"><span class="n">7.23</span>Summary: two ways to use physiology</a></li></ol></div>
+    </div>
+  </details>
+
+<section class="chapter" id="ch7"><header class="ch-head"><p class="eyebrow">Chapter 7</p><h2>Physiological approaches to personality (<em>Lífeðlisfræði og persónuleiki</em>)</h2></header>
+<article class="sec has-figs" id="s7-1"><div class="text"><h3><span class="n">7.1</span>Physiology and personality: the basic idea</h3><p class="meta">part 1, slides 1–3; book pp. 185–190</p>
+<p><strong>In short:</strong> The physiological approach tries to explain differences in personality traits and behaviour by differences in how the body works, mostly the nervous system and the heart and blood vessels.</p>
+<ul>
+<li>The approach (<em>Tengsl lífeðlisfræði og persónuleika</em>) holds that differences in personality traits and behaviour can be explained by the physiological activity of the body. <span class="src slide">part 1, slide 2</span></li>
+<li>The systems studied most are the nervous system and the cardiovascular system (heart and blood vessels). <span class="src slide">part 1, slide 2</span> The book defines physiological characteristics as the functioning of organ systems and gives the nervous, cardiac and musculoskeletal systems as examples. <span class="src book">book p. 186</span></li>
+<li><span class="tag">Book only</span> An advantage of the approach is that physiological characteristics can be measured mechanically and reliably. <span class="src book">book p. 186</span></li>
+<li><strong>Theoretical approach</strong> (<em>Kenningaleg nálgun</em>): research starts from theory, with hypotheses that predict a link between a personality factor and a physiological variable. <span class="src slide">part 1, slide 3</span></li>
+<li><strong>Simplicity or parsimony</strong> (<em>einfaldleikinn ráðandi</em>): theories here often explain a lot of behaviour with very few constructs. <span class="src slide">part 1, slide 3</span> <span class="src book">book p. 189</span></li>
+<li>The book's example: one theory says people take up skydiving or motorcycle racing because they lack a certain chemical in the nervous system, which gives rise to sensation seeking. <span class="src book">book p. 189</span></li>
+<li><span class="tag">Book only</span> Human nature is more complicated than that, because two people equally high on sensation seeking may satisfy the need in very different ways (an emergency room physician versus illegal gambling or reckless driving). <span class="src book">book pp. 189–190</span></li>
+<li><span class="tag">Book only</span> So most physiologically oriented psychologists would not say that "physiology is destiny": physiology is one cause among many. <span class="src book">book p. 190</span></li>
+<li><span class="tag">Book only</span> The book links this to Allport's (1937) view that personality involves "both body and mind, inextricably fused into a personal unity". <span class="src book">book p. 190</span></li>
+</ul>
+<p><strong>Brain injury and personality</strong> <span class="tag">Book only</span></p>
+<ul>
+<li><strong>Elliot</strong> (Damasio, 1994): a tumour damaged part of his prefrontal cortex. His IQ, memory, language and other cognitive functions stayed normal or above normal, but his personality changed. He could not manage his time, became impulsive, lost his job, his savings and two marriages, and reported feeling little emotion. <span class="src book">book pp. 185–186</span></li>
+<li>The lesson is that body and mind are intimately connected: the biggest change in Elliot was in his personality, not his memory, reasoning or knowledge. <span class="src book">book p. 186</span></li>
+<li>Traumatic brain injury often reduces the ability to inhibit impulses, most likely because of disruptions between the frontal lobes (the brain's executive control centre) and other parts of the brain. <span class="src book">book p. 186</span></li>
+<li><strong>Phineas Gage</strong> (1823–1860): on September 13, 1848 an iron rod was blasted through the left frontal part of his brain. Most of his intellectual functions stayed intact, but he went from industrious, agreeable and conscientious to impulsive, aggressive, profane and unable to plan. <span class="src book">book p. 187</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-02.jpg" data-cap="The approach: differences in personality traits and behaviour explained by the body&#x27;s physiological activity, mainly the nervous system and the cardiovascular system." data-srcl="Part 1 · Slide 2 · key slide" aria-label="Enlarge: The approach: differences in personality traits and behaviour explained by the body&#x27;s physiological activity, mainly the nervous system and the cardiovascular system."><img src="img/p1-slide-02.jpg" alt="The approach: differences in personality traits and behaviour explained by the body&#x27;s physiological activity, mainly the nervous system and the cardiovascular system." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 2</span> <span class="src key">Key slide</span> The approach: differences in personality traits and behaviour explained by the body&#x27;s physiological activity, mainly the nervous system and the cardiovascular system.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-2"><div class="text"><h3><span class="n">7.2</span>The theoretical bridge</h3><p class="meta">part 1, slide 4; book pp. 186–191 (Figure 7.1)</p>
+<p><strong>In short:</strong> To link a trait to physiology, a researcher must spell out which situation, acting on which trait, produces which psychological and physiological response, and which behaviour follows.</p>
+<ul>
+<li>The slide (<em>Tengsl lífeðlisfræði og persónuleika II</em>) shows the book's Figure 7.1. <span class="src slide">part 1, slide 4</span> <span class="src book">book p. 190</span></li>
+</ul>
+<p>The chain in the figure, with introversion as the example:</p>
+<ol>
+<li>A specific environmental condition (loud parties)</li>
+<li>meets a personality characteristic (introversion)</li>
+<li>and produces a psychological response (overstimulation),</li>
+<li>which shows up in a physiological indicator (increased heart rate)</li>
+<li>and leads to a behavioural response (avoidance).</li>
+</ol>
+<ul>
+<li>The book's starting example: some people find loud noise very distracting, so they seek quiet places and avoid crowds. The physiological psychologist would say such a person is introverted (a psychological characteristic) because of an overly sensitive nervous system (a physiological characteristic). <span class="src book">book pp. 187–188</span></li>
+<li>Most physiological personality psychologists today ask whether some people show more or less of a specific physiological response than others under certain conditions. <span class="src book">book p. 190</span></li>
+<li><span class="tag">Book only</span> A <strong>theoretical bridge</strong> is this kind of specific statement about which traits connect to which reactions under which conditions. Researchers must build one before physiology can help explain personality. <span class="src book">book p. 191</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-04.jpg" data-cap="Figure 7.1 on the slide: environmental condition and personality characteristic lead to a psychological response, a physiological indicator and a behavioural response." data-srcl="Part 1 · Slide 4" aria-label="Enlarge: Figure 7.1 on the slide: environmental condition and personality characteristic lead to a psychological response, a physiological indicator and a behavioural response."><img src="img/p1-slide-04.jpg" alt="Figure 7.1 on the slide: environmental condition and personality characteristic lead to a psychological response, a physiological indicator and a behavioural response." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 4</span> Figure 7.1 on the slide: environmental condition and personality characteristic lead to a psychological response, a physiological indicator and a behavioural response.</figcaption></figure></div></article>
+<article class="sec" id="s7-3"><div class="text"><h3><span class="n">7.3</span>Digit ratio (2D:4D)</h3><p class="meta"><span class="tag">Book only</span> book pp. 188–189</p>
+<p><strong>In short:</strong> The ratio of index-finger to ring-finger length seems to be a lifelong marker of prenatal testosterone exposure, and it correlates modestly with risk taking, sensation seeking and social dominance.</p>
+<ul>
+<li>The 2D:4D ratio is the length of the index finger (2D) divided by the length of the ring finger (4D). Below 1.0 means the ring finger is longer. <span class="src book">book p. 188</span></li>
+<li>Women tend to have a higher digit ratio than men. <span class="src book">book p. 188</span></li>
+<li>The ratio is set before birth by the fetus's exposure to testosterone in the womb: the more testosterone, the smaller the ratio. <span class="src book">book p. 188</span></li>
+<li>Wacker, Mueller and Stemmler (2012) studied more than 200 young men and found a strong link between lower digit ratio and impulsive sensation seeking. <span class="src book">book pp. 188–189</span></li>
+<li>Other studies link lower digit ratio to risk taking (riskier lotteries, more traffic violations, riskier finance careers), to competitiveness in both sexes (Bönte et al., 2017, more than 1,000 people) and to higher sports rankings. <span class="src book">book p. 189</span></li>
+<li>The book's conclusion: the ratio is very likely a lifelong signature of prenatal testosterone and correlates modestly with risk taking, sensation seeking and social dominance; correlates are similar but somewhat weaker in women. <span class="src book">book p. 189</span></li>
+</ul></div></article>
+<article class="sec has-figs" id="s7-4"><div class="text"><h3><span class="n">7.4</span>Physiological measures: an overview</h3><p class="meta">part 1, slides 5–7 and 11; book pp. 191, 199–200 (Table 7.1)</p>
+<p><strong>In short:</strong> Personality researchers mainly use skin conductance, heart and blood vessel activity, brain measures and biochemical analyses; Table 7.1 shows what each one measures and which stimuli are used.</p>
+<p>The <strong>physiological measures</strong> (<em>Lífeðlisfræðilegar mælingar</em>) on the slides: <span class="src slide">part 1, slide 5</span> <span class="src slide">part 1, slide 6</span> <span class="src slide">part 1, slide 7</span></p>
+<ul>
+<li>Skin conductance (<em>Rafspenna í húð</em>, electrodermal activity).</li>
+<li>Cardiovascular activity (<em>Starfsemi hjarta og æðakerfis</em>).</li>
+<li>Brain activity (<em>Heilastarfsemi</em>): EEG (electroencephalography), PET (positron emission tomography), MRI (magnetic resonance imaging) and fMRI (functional magnetic resonance imaging).</li>
+<li>Biochemical analyses (<em>Lífefnafræðilegar mælingar</em>): in blood, for example immune system activity (<em>ónæmiskerfisvirkni</em>); in saliva, for example cortisol.</li>
+<li>The slides give immune system activity as their example of a <strong>blood</strong> measure and cortisol as the saliva measure. <span class="src slide">part 1, slide 5</span> The book says biochemical analyses use blood and saliva; its own immune example extracts indicators of immune functioning <strong>from saliva</strong> samples. <span class="src book">book p. 199</span></li>
+<li><span class="tag">Book only</span> Most measures come from <strong>electrodes</strong>, sensors on the skin surface. They are noninvasive and cause practically no discomfort. <span class="src book">book p. 191</span></li>
+<li><span class="tag">Book only</span> Participants used to be wired to a recording machine (a polygraph). <strong>Telemetry</strong> now sends the signals by Bluetooth, Wi-Fi or radio waves, and wearable sensors (watches, rings, phones) are coming into use. <span class="src book">book p. 191</span></li>
+</ul>
+<p><strong>Table 7.1</strong>, the rows to know. On the slide the four biochemical rows are boxed in red. <span class="src slide">part 1, slide 11</span> <span class="src book">book p. 200</span></p>
+<div class="tbl"><table>
+<tr><th>Measure</th><th>Physiological system</th><th>Psychological response</th><th>Example stimuli</th></tr>
+<tr><td>Electrodermal activity</td><td>Sweat glands, controlled by the sympathetic nervous system</td><td>Anxiety, startle, guilt, effort, pain</td><td>Noise, mental effort, emotional and painful stimuli</td></tr>
+<tr><td>Cardiovascular activity</td><td>Blood pressure and heart rate, controlled by the autonomic nervous system</td><td>Fight-or-flight response, mental effort, stress</td><td>Stress, social anxiety, effort, high cognitive load</td></tr>
+<tr><td>EEG</td><td>Brain's spontaneous electrical activity</td><td>Brain activation, alertness</td><td>Resting with eyes closed, reading</td></tr>
+<tr><td>Evoked EEG</td><td>Brain's electrical activity in response to specific stimuli</td><td>Attention, recognition, cognitive processing</td><td>Brief sensory stimuli, emotional stimuli</td></tr>
+<tr><td>Neuroimaging (e.g., fMRI, PET)</td><td>Brain's energy metabolism</td><td>Brain areas for cognitive control, emotion, memory, pain, decision making, sensory processing</td><td>Wide variety of tasks</td></tr>
+<tr><td>Antibodies</td><td>Immune system</td><td>Immune response to infection, stress</td><td>Virus, bacteria, stress</td></tr>
+<tr><td>Testosterone</td><td>Hormone system (steroid)</td><td>Aggression, competitiveness, drive and libido, muscle bulk</td><td>Tasks involving competition, aggression, attraction</td></tr>
+<tr><td>Cortisol</td><td>Hormone system (adrenal)</td><td>Stress response</td><td>Life events, stress, anxiety stimuli</td></tr>
+<tr><td>Serotonin, dopamine, MAO, etc.</td><td>Neurotransmitters</td><td>Transmission of specific nerve signals</td><td>Rewarding stimuli, emotions</td></tr>
+</table></div></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-05.jpg" data-cap="The four kinds of physiological measures: skin conductance, cardiovascular activity, brain activity and biochemical analyses of blood and saliva." data-srcl="Part 1 · Slide 5 · key slide" aria-label="Enlarge: The four kinds of physiological measures: skin conductance, cardiovascular activity, brain activity and biochemical analyses of blood and saliva."><img src="img/p1-slide-05.jpg" alt="The four kinds of physiological measures: skin conductance, cardiovascular activity, brain activity and biochemical analyses of blood and saliva." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 5</span> <span class="src key">Key slide</span> The four kinds of physiological measures: skin conductance, cardiovascular activity, brain activity and biochemical analyses of blood and saliva.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-5"><div class="text"><h3><span class="n">7.5</span>Skin conductance and cardiovascular activity</h3><p class="meta">part 1, slides 5–6; book pp. 191–193</p>
+<p><strong>In short:</strong> Sweaty palms and a racing heart are both signs that the body's fight-or-flight system is active. Neuroticism goes with spontaneous skin conductance responses, and the Type A personality with large heart rate reactions to stress.</p>
+<p><strong>Skin conductance</strong> (<em>Rafspenna í húð</em>, electrodermal activity) <span class="src slide">part 1, slide 5</span> <span class="src slide">part 1, slide 6</span></p>
+<ul>
+<li>The palms have many sweat glands controlled by the <strong>sympathetic nervous system</strong>, the branch of the <strong>autonomic nervous system</strong> that prepares the body for action (fight or flight). <span class="src book">book p. 191</span></li>
+<li>When the sympathetic system is active (anxiety, startle, anger), the glands fill with salty water. Water conducts electricity, so the skin carries a tiny current better, even before any sweat is visible. <span class="src book">book p. 191</span></li>
+<li>Measurement: two electrodes on the palm or a finger. A very low voltage goes in at one electrode and the researcher measures how much arrives at the other. <span class="src book">book pp. 191–192</span></li>
+<li>Responses can be triggered by sudden noises, emotional images, mental effort, pain, anxiety, fear and guilt (the lie detector uses skin conductance). <span class="src book">book p. 192</span></li>
+<li><span class="tag">Book only</span> Some people show skin conductance responses with no external stimulus. The trait most consistently linked to this nonspecific responding is <strong>neuroticism</strong> (Cruz &amp; Larsen, 1995). <span class="src book">book p. 192</span></li>
+<li><span class="tag">Book only</span> Neuroticism also goes with larger and longer-lasting responses to unpleasant images (Norris, Larsen, &amp; Cacioppo, 2007), so a person high on neuroticism seems to have a chronically activated fight-or-flight system. <span class="src book">book p. 192</span></li>
+</ul>
+<p><strong>Cardiovascular activity</strong> (<em>Starfsemi hjarta og æðakerfis</em>) <span class="src slide">part 1, slide 5</span> <span class="src slide">part 1, slide 6</span></p>
+<ul>
+<li><span class="tag">Book only</span> <strong>Blood pressure</strong> has two numbers: systolic (the larger, the maximum pressure when the heart contracts) and diastolic (the smaller, the resting pressure between contractions). <span class="src book">book p. 192</span></li>
+<li><span class="tag">Book only</span> <strong>Heart rate</strong> is given in beats per minute (BPM). It can be measured beat by beat from the interval between beats; one second means 60 BPM. <span class="src book">book p. 192</span></li>
+<li>A rising heart rate means the body is preparing for action. It also rises with cognitive effort, such as a hard math problem. <span class="src book">book p. 193</span></li>
+<li><span class="tag">Book only</span> <strong>Heart rate variability (HRV)</strong> is how much heart rate changes from beat to beat. High HRV is normal and healthy, because the sympathetic and parasympathetic branches are in balance; stress, fatigue or overtraining lower it. Traits tied to stress or emotionality can correlate negatively with HRV. <span class="src book">book p. 193</span></li>
+<li><span class="tag">Book only</span> <strong>Cardiac reactivity</strong>: in stressful tasks (singing in front of an audience, counting backwards from 784 by 7) everyone's heart rate rises, but some people show much larger increases. <span class="src book">book p. 193</span></li>
+<li><span class="tag">Book only</span> Cardiac reactivity is associated with the <strong>Type A personality</strong> (impatience, competitiveness, hostility). Chronic cardiac reactivity may contribute to coronary artery disease, which may be why Type A is linked to heart disease. <span class="src book">book p. 193</span></li>
+</ul></div><div class="figs"><figure class="fig drawn"><div class="dg flow" role="img" aria-label="How skin conductance works: the sympathetic nervous system becomes active, the sweat glands fill with salty water, the skin conducts a tiny current better, and two electrodes on the palm or a finger measure it."><div class="dg-box main"><strong>Sympathetic nervous system active</strong>anxiety, startle, anger (fight or flight)</div><div class="dg-arrow">controls the sweat glands in the palms</div><div class="dg-box"><strong>Sweat glands fill with salty water</strong></div><div class="dg-arrow">water conducts electricity</div><div class="dg-box"><strong>Skin carries a tiny current better</strong>even before sweat is visible</div><div class="dg-arrow">measured by</div><div class="dg-box"><strong>Two electrodes on palm or finger</strong>low voltage in at one, measured at the other</div></div><figcaption><span class="src drawn">Drawn by prof</span> How a skin conductance response arises and is measured (from book pp. 191–192)</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-6"><div class="text"><h3><span class="n">7.6</span>Measuring the brain</h3><p class="meta">part 1, slides 7–10; book pp. 193–199</p>
+<p><strong>In short:</strong> Brain measures cover four things: which areas are active (function), how big they are (structure), how strongly they are linked (connections) and their electrical activity (EEG).</p>
+<ul>
+<li>The slides list four brain measures under brain activity (<em>Heilastarfsemi</em>): EEG, PET, MRI and fMRI, with an example image of PET, MRI and fMRI. The PET slide shows scans labelled NORMAL, SCHIZO and DEPRESSED. <span class="src slide">part 1, slide 7</span> <span class="src slide">part 1, slide 8</span> <span class="src slide">part 1, slide 9</span> <span class="src slide">part 1, slide 10</span></li>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> The slides list MRI as a measure of brain activity. <span class="src slide">part 1, slide 7</span> The book uses PET and fMRI for brain function (activation) and MRI for brain structure, meaning the volume or thickness of brain areas. <span class="src book">book pp. 194–195</span></li>
+<li><span class="tag">Book only</span> The 1990s were the "Decade of the Brain". Imaging became cheaper and better, which allowed the large samples personality research needs and created the field of <strong>personality neuroscience</strong>; a journal of that name started in 2018. <span class="src book">book pp. 193–194</span></li>
+</ul>
+<p><span class="tag">Book only</span> The book's four categories of brain measures: <span class="src book">book p. 194</span></p>
+<div class="tbl"><table>
+<tr><th>Category</th><th>What it measures</th><th>Example finding</th></tr>
+<tr><td>Brain function</td><td>Changes in activation of regions during a task (PET, fMRI; fMRI tracks glucose use)</td><td>Neuroticism correlated with more frontal activation to 20 negative images (Canli, Mangum, &amp; Wells, 2001)</td></tr>
+<tr><td>Brain structure</td><td>Volume or thickness of areas (MRI)</td><td>Extraversion correlated with volume of the medial orbitofrontal cortex, a reward area (DeYoung et al., 2012, N = 116)</td></tr>
+<tr><td>Brain connections</td><td>Strength of connections between regions</td><td>Openness linked to the default network (Beaty et al., 2016); conscientiousness to connectivity with executive control centres (Toschi et al., 2018)</td></tr>
+<tr><td>Brain electrical activity</td><td>EEG from scalp electrodes; evoked potentials to a tone or flash</td><td>Extraversion and sensation seeking linked to diminished evoked potentials</td></tr>
+</table></div>
+<ul>
+<li><span class="tag">Book only</span> Neuroticism does <strong>not</strong> correlate with resting brain activity. It correlates with activation during tasks relevant to the trait (fear conditioning, anticipating punishment, processing negative images), which fits the theoretical bridge. <span class="src book">book p. 195</span></li>
+<li><span class="tag">Book only</span> A review of 18 studies (Servaas et al., 2013) found more activation to anxiety- or fear-evoking tasks in people high in neuroticism; DeYoung (2015) describes a theoretical bridge for each Big Five trait. <span class="src book">book pp. 194–195</span></li>
+<li><span class="tag">Book only</span> People with higher self-esteem showed more activation in reward centres when looking at images of themselves (Izuma et al., 2018). <span class="src book">book p. 195</span></li>
+<li><span class="tag">Book only</span> Structure: neuroticism correlated with the volume of regions tied to threat and punishment (DeYoung et al., 2012); conscientiousness with a thicker cortex in 578 people (Lewis et al., 2018). In studies of over 1,000 people each, all Big Five traits correlated with the volume of various regions, with small to moderate correlations. <span class="src book">book p. 195</span></li>
+<li><span class="tag">Book only</span> <strong>Einstein's brain</strong> weighed 1230 grams, within normal limits. In over 7,000 people total brain volume correlated .28 with general intelligence (Cox et al., 2019). The volume of the caudate nucleus, a learning area, correlates with IQ, but the direction of cause is unknown. <span class="src book">book p. 196</span></li>
+<li><span class="tag">Book only</span> The <strong>Human Connectome Project</strong> started in 2011 to map the brain wiring of 1,200 healthy adults. In 460 participants, stronger connectivity in more than 30 circuits correlated with more positive life outcomes (Smith, Williams, &amp; Segerstrom, 2015); correlation does not establish causation. <span class="src book">book pp. 197–198</span></li>
+<li><strong>EEG</strong> records the brain's small electrical currents through electrodes on the scalp, during sleep, rest or a task. In the <strong>evoked potential</strong> technique the participant gets a stimulus such as a tone or a flash of light. <span class="src book">book p. 199</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-07.jpg" data-cap="Brain activity measures named on the slide: EEG, PET, MRI and fMRI (the slide lists MRI under brain activity; the book treats it as a measure of brain structure)." data-srcl="Part 1 · Slide 7 · key slide" aria-label="Enlarge: Brain activity measures named on the slide: EEG, PET, MRI and fMRI (the slide lists MRI under brain activity; the book treats it as a measure of brain structure)."><img src="img/p1-slide-07.jpg" alt="Brain activity measures named on the slide: EEG, PET, MRI and fMRI (the slide lists MRI under brain activity; the book treats it as a measure of brain structure)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 7</span> <span class="src key">Key slide</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> Brain activity measures named on the slide: EEG, PET, MRI and fMRI (the slide lists MRI under brain activity; the book treats it as a measure of brain structure).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-08.jpg" data-cap="PET scans labelled NORMAL, SCHIZO and DEPRESSED, with a colour scale." data-srcl="Part 1 · Slide 8" aria-label="Enlarge: PET scans labelled NORMAL, SCHIZO and DEPRESSED, with a colour scale."><img src="img/p1-slide-08.jpg" alt="PET scans labelled NORMAL, SCHIZO and DEPRESSED, with a colour scale." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 8</span> PET scans labelled NORMAL, SCHIZO and DEPRESSED, with a colour scale.</figcaption></figure></div></article>
+<article class="sec" id="s7-7"><div class="text"><h3><span class="n">7.7</span>Hormones, neurotransmitters and other biochemical measures</h3><p class="meta">part 1, slides 5–6 and 11; book pp. 199–200</p>
+<p><strong>In short:</strong> Blood and saliva samples give hormone, immune and enzyme levels that relate to personality, such as cortisol in shy children and dopamine in extraverts.</p>
+<ul>
+<li>Biochemical analyses (<em>Lífefnafræðilegar mælingar</em>) use blood (<em>Í blóði</em>) and saliva (<em>Í munnvatni</em>). <span class="src slide">part 1, slide 5</span> <span class="src slide">part 1, slide 6</span> <span class="src book">book p. 199</span></li>
+<li><strong>Immune functioning</strong> can go up and down with stress or emotions, so it may relate to personality. <span class="src book">book p. 199</span></li>
+<li><span class="tag">Book only</span> <strong>Testosterone</strong> has been linked to uninhibited, aggressive and risk-taking behaviour (Dabbs &amp; Dabbs, 2000). <span class="src book">book p. 199</span></li>
+<li><span class="tag">Book only</span> <strong>Oxytocin</strong> is related to affiliation and bonding and is higher in extraverts than introverts (Andari, 2015). <span class="src book">book p. 199</span></li>
+<li><strong>Cortisol</strong> can be measured in saliva. <span class="src slide">part 1, slide 5</span> The book calls it a byproduct of the hormone noradrenaline and reports that shy children have high cortisol levels (Kagan &amp; Snidman, 1991), suggesting they experience more stress. <span class="src book">book p. 199</span></li>
+<li><strong>Monoamine oxidase (MAO)</strong> is an enzyme in the blood that regulates neurotransmitters; it may be a causal factor in sensation seeking (see 7.15). <span class="src book">book p. 199</span></li>
+<li><span class="tag">Book only</span> <strong>Dopamine</strong> responds to rewarding stimuli ("liking", "wanting", "enjoyment") and promotes exploration. Evidence is growing that extraversion is related to increased dopamine function (Wacker &amp; Smillie, 2015). <span class="src book">book pp. 199–200</span></li>
+</ul></div></article>
+<article class="sec has-figs" id="s7-8"><div class="text"><h3><span class="n">7.8</span>Physiologically based theories: the map</h3><p class="meta">part 1, slide 12; part 2, slide 19; book pp. 200, 212</p>
+<p><strong>In short:</strong> The chapter covers four theories built on physiological reactivity, plus two biologically based traits that do not depend on reactivity.</p>
+<p>The theories on the slide (<em>Kenningar um persónuleika og lífeðlisfræði</em>): <span class="src slide">part 1, slide 12</span></p>
+<ol>
+<li>Extraversion–introversion (<em>Úthverfa-Innhverfa</em>), see 7.9–7.10.</li>
+<li>Sensitivity to reward and punishment (<em>Næmi fyrir umbun eða refsingu</em>), see 7.11–7.13.</li>
+<li>Sensation seeking (<em>Æsisækni</em>), see 7.14–7.16.</li>
+<li>Neurotransmitters and personality (<em>Taugaboðefni og persónuleiki</em>), see 7.17–7.18.</li>
+</ol>
+<ul>
+<li>Two more dimensions have a biological base but are <strong>not</strong> related to physiological reactivity: morningness–eveningness (<em>Dægurgerð</em>) and brain asymmetry (affective style), see 7.19–7.21. <span class="src slide">part 2, slide 19</span> <span class="src book">book p. 212</span></li>
+<li>Eysenck's extraversion theory is perhaps the most widely studied physiological theory of personality. <span class="src book">book p. 200</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-12.jpg" data-cap="The four groups of physiologically based theories: extraversion–introversion, sensitivity to reward and punishment, sensation seeking, and neurotransmitters and personality." data-srcl="Part 1 · Slide 12 · key slide" aria-label="Enlarge: The four groups of physiologically based theories: extraversion–introversion, sensitivity to reward and punishment, sensation seeking, and neurotransmitters and personality."><img src="img/p1-slide-12.jpg" alt="The four groups of physiologically based theories: extraversion–introversion, sensitivity to reward and punishment, sensation seeking, and neurotransmitters and personality." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 12</span> <span class="src key">Key slide</span> The four groups of physiologically based theories: extraversion–introversion, sensitivity to reward and punishment, sensation seeking, and neurotransmitters and personality.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-9"><div class="text"><h3><span class="n">7.9</span>Eysenck's arousal theory of extraversion</h3><p class="meta">part 1, slides 13–15; book pp. 200–202</p>
+<p><strong>In short:</strong> Eysenck said introverts are more aroused than extraverts because a brain-stem gateway lets in too much stimulation. So introverts avoid stimulation and extraverts seek it, each trying to stay at an optimal level of arousal.</p>
+<p><strong>Who is who</strong> (<em>Úthverfa-Innhverfa II</em>) <span class="src slide">part 1, slide 15</span> <span class="src book">book pp. 200–201</span></p>
+<div class="tbl"><table>
+<tr><th>High on extraversion</th><th>Low on extraversion (introverts)</th></tr>
+<tr><td>Talk a lot, like variety, meet new people (sociable)</td><td>Quiet, withdrawn</td></tr>
+<tr><td>Active</td><td>Seek solitude or the company of a few friends</td></tr>
+<tr><td>Get bored easily, cannot stand routine</td><td>Want order and routine, prefer the familiar, dislike the unexpected</td></tr>
+</table></div>
+<ul>
+<li>The theory comes from Eysenck's book <i>The Biological Basis of Personality</i>. <span class="src slide">part 1, slide 14</span> <span class="src book">book p. 201</span></li>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> Part 1, slide 13 dates the theory "Eysenck, 1976". Part 1, slide 14 and the book give 1967, the year of <i>The Biological Basis of Personality</i>. <span class="src slide">part 1, slide 13</span> <span class="src slide">part 1, slide 14</span> <span class="src book">book p. 201</span></li>
+<li>Eysenck held that the difference comes from different <strong>arousal levels</strong> (<em>örvunarstigi</em>) in the <strong>ascending reticular activating system, ARAS</strong> (<em>dreif</em>). <span class="src slide">part 1, slide 13</span> <span class="src book">book p. 201</span></li>
+<li>The ARAS is a brain-stem structure thought to control overall cortical arousal; in the 1960s it was seen as a gateway for stimulation from the senses into the cortex. <span class="src book">book p. 201</span></li>
+<li>The introvert's ARAS lets in too much stimulation (<em>Að dreif innhverfra hleypi of mikilli örvun inn</em>), so introverts have higher resting cortical arousal and keep it in check by seeking quiet settings. Extraverts seek out more arousal. <span class="src slide">part 1, slide 13</span> <span class="src book">book p. 201</span></li>
+<li>Eysenck built in Hebb's (1955) <strong>optimal level of arousal</strong>: a level that is just right for a task. Being underaroused (sleepy) is as bad for an exam as being overaroused (panicked). <span class="src book">book p. 202</span></li>
+<li>The <strong>inverted-U graph</strong> plots performance against arousal. Performance rises with arousal ("increasing attention and interest") up to optimal arousal and optimal performance, then falls ("impaired performance because of strong anxiety"). The slide marks extraverts (<em>Extrovertar</em>) lower on the rising side and introverts (<em>introvertar</em>) higher up, near the peak. <span class="src slide">part 1, slide 14</span></li>
+<li>The book adds that because introverts have a higher baseline level of arousal, they are <strong>above</strong> their optimal level of arousal more often than extraverts. <span class="src book">book p. 202</span> The slide's labels only show introverts further along the arousal axis than extraverts. <span class="src slide">part 1, slide 14</span></li>
+<li>So introverts' quiet, withdrawn behaviour regulates arousal downward, and extraverts' outgoing behaviour regulates it upward. <span class="src book">book p. 202</span></li>
+<li><span class="tag">Book only</span> Table 7.2 gives items from the Eysenck extraversion scale ("Are you a talkative person?"); the average college student scores about 6. <span class="src book">book p. 201</span></li>
+<li><span class="tag">Book only</span> The theory rests on a need for arousal and stimulation, not on a need to be with people. <span class="src book">book p. 202</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-13.jpg" data-cap="The ARAS (dreif) in the brain stem, with arrows showing how it projects arousal up to the cortex. The slide title dates Eysenck&#x27;s theory 1976; slide 14 and the book give 1967." data-srcl="Part 1 · Slide 13" aria-label="Enlarge: The ARAS (dreif) in the brain stem, with arrows showing how it projects arousal up to the cortex. The slide title dates Eysenck&#x27;s theory 1976; slide 14 and the book give 1967."><img src="img/p1-slide-13.jpg" alt="The ARAS (dreif) in the brain stem, with arrows showing how it projects arousal up to the cortex. The slide title dates Eysenck&#x27;s theory 1976; slide 14 and the book give 1967." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 13</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> The ARAS (dreif) in the brain stem, with arrows showing how it projects arousal up to the cortex. The slide title dates Eysenck&#x27;s theory 1976; slide 14 and the book give 1967.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-14.jpg" data-cap="Inverted U of performance against arousal, with extraverts marked on the rising side and introverts higher up near the peak." data-srcl="Part 1 · Slide 14" aria-label="Enlarge: Inverted U of performance against arousal, with extraverts marked on the rising side and introverts higher up near the peak."><img src="img/p1-slide-14.jpg" alt="Inverted U of performance against arousal, with extraverts marked on the rising side and introverts higher up near the peak." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 14</span> Inverted U of performance against arousal, with extraverts marked on the rising side and introverts higher up near the peak.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-10"><div class="text"><h3><span class="n">7.10</span>Testing Eysenck: arousability and chosen stimulation</h3><p class="meta">part 1, slides 16–17; book pp. 202–204</p>
+<p><strong>In short:</strong> Introverts and extraverts do not differ at rest, only in how strongly they react to moderate stimulation, so Eysenck revised the theory from arousal level to arousability.</p>
+<ul>
+<li><strong>Key finding</strong> (<em>Úthverfa-Innhverfa III</em>): no difference between introverts and extraverts at rest, but a large difference in reactions to stimuli of moderate intensity. <span class="src slide">part 1, slide 16</span> <span class="src book">book pp. 202–203</span></li>
+<li>With no or very mild stimulation the differences are small or nonexistent; with moderate stimulation introverts show larger or faster responses. <span class="src book">book p. 202</span></li>
+<li><strong>Revision in 1985</strong> (Eysenck &amp; Eysenck, 1985): the real difference is <strong>arousability</strong> (<em>næmni örvunar</em>), the arousal response to stimulation, not the baseline arousal level. <span class="src slide">part 1, slide 16</span> <span class="src book">book p. 203</span></li>
+<li>Introverts and extraverts do not differ in brain activity while sleeping or lying quietly in a dark room (Stelmack, 1990). <span class="src book">book p. 203</span></li>
+<li><strong>The noise graph</strong> (<em>Úthverfa-innhverfa IV</em>) shows pulse rate (BPM) and skin conductance at two noise intensities, "introvert choice" and "extravert choice". Introverts have higher pulse rate and skin conductance than extraverts at both levels, and both groups react more at the louder "extravert choice" level. <span class="src slide">part 1, slide 17</span></li>
+</ul>
+<p>The book describes a related noise study by <strong>Geen (1984)</strong>: <span class="src book">book pp. 203–204</span></p>
+<ol>
+<li>Participants did a learning task with noise and could set the volume.</li>
+<li>Extraverts chose louder noise than introverts.</li>
+<li>At their own chosen levels the two groups performed equally well.</li>
+<li>Introverts given the extraverts' louder level did worse, and extraverts given the introverts' quieter level also did worse.</li>
+<li>This supports an optimal level of stimulation that is higher for extraverts.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> Extraverts also press a button more often to change the visual display (Brebner &amp; Cooper, 1978), and students in a noisy library reading room were more extraverted (Campbell &amp; Hawley, 1982). <span class="src book">book p. 203</span></li>
+<li><span class="tag">Book only</span> <strong>Lemon juice demonstration</strong>: after 4 drops of lemon juice under the tongue, introverts typically produce more saliva than extraverts (Eysenck &amp; Eysenck, 1967; Corcoran, 1964). <span class="src book">book p. 203</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-16.jpg" data-cap="No difference between introverts and extraverts at rest, but a large difference in reactions to moderate stimuli; the 1985 revision to arousability." data-srcl="Part 1 · Slide 16 · key slide" aria-label="Enlarge: No difference between introverts and extraverts at rest, but a large difference in reactions to moderate stimuli; the 1985 revision to arousability."><img src="img/p1-slide-16.jpg" alt="No difference between introverts and extraverts at rest, but a large difference in reactions to moderate stimuli; the 1985 revision to arousability." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 16</span> <span class="src key">Key slide</span> No difference between introverts and extraverts at rest, but a large difference in reactions to moderate stimuli; the 1985 revision to arousability.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-17.jpg" data-cap="Pulse rate (a) and skin conductance (b) of introverts and extraverts at the noise levels chosen by introverts and by extraverts." data-srcl="Part 1 · Slide 17" aria-label="Enlarge: Pulse rate (a) and skin conductance (b) of introverts and extraverts at the noise levels chosen by introverts and by extraverts."><img src="img/p1-slide-17.jpg" alt="Pulse rate (a) and skin conductance (b) of introverts and extraverts at the noise levels chosen by introverts and by extraverts." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 17</span> Pulse rate (a) and skin conductance (b) of introverts and extraverts at the noise levels chosen by introverts and by extraverts.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-11"><div class="text"><h3><span class="n">7.11</span>Gray's reinforcement sensitivity theory</h3><p class="meta">part 2, slides 2–3; book p. 204</p>
+<p><strong>In short:</strong> Gray proposed two brain systems: one that drives approach toward reward (BAS, the accelerator) and one that inhibits behaviour when punishment threatens (BIS, the brakes).</p>
+<ul>
+<li><strong>Sensitivity to reward or punishment</strong> (<em>Næmni fyrir umbun eða refsingu</em>): reinforcement sensitivity theory (Gray, 1972). <span class="src slide">part 2, slide 2</span> <span class="src book">book p. 204</span></li>
+<li>Gray based the model on brain function research with animals. <span class="src book">book p. 204</span></li>
+<li><strong>Behavioural activation system, BAS</strong> (<em>Kerfi um virkjun hegðunar</em>): the organism is receptive to cues of reward in the environment; it regulates approach behaviour. <span class="src slide">part 2, slide 2</span> The book adds that it probably works through the dopamine system. <span class="src book">book p. 204</span></li>
+<li><strong>Behavioural inhibition system, BIS</strong> (<em>Kerfi um hömlun hegðunar</em>): the organism is receptive to cues of punishment in the environment; it regulates avoidance behaviour. <span class="src slide">part 2, slide 2</span> The book adds frustration and uncertainty as triggers. <span class="src book">book p. 204</span></li>
+<li><span class="tag">Book only</span> The book's analogy: BAS is like an accelerator and BIS is like the brakes. <span class="src book">book p. 204</span></li>
+<li>People differ in how sensitive each system is. A reactive BIS makes a person vulnerable to anxiety, fear and sadness, so BIS underlies the dimension of <strong>anxiety</strong>. A reactive BAS makes a person prone to positive emotions and approach, so BAS underlies <strong>impulsivity</strong>, the inability to inhibit behaviour. <span class="src book">book p. 204</span></li>
+<li><span class="tag slides">Slides only</span> <strong>Gray's model</strong> (<em>Kenning Gray</em>), "a conceptual nervous system for personality (adapted from Gray, 1987a)". An arousal mechanism is fed by both BAS and BIS (+) and in turn excites BAS, the consummatory mechanisms and the fight/flight system (+). BAS and BIS inhibit each other (–), BIS also inhibits the consummatory mechanisms and the fight/flight system (–), and those two inhibit each other (–). <span class="src slide">part 2, slide 3</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-02.jpg" data-cap="Gray&#x27;s reinforcement sensitivity theory: BAS responds to cues of reward (approach), BIS to cues of punishment (avoidance)." data-srcl="Part 2 · Slide 2 · key slide" aria-label="Enlarge: Gray&#x27;s reinforcement sensitivity theory: BAS responds to cues of reward (approach), BIS to cues of punishment (avoidance)."><img src="img/p2-slide-02.jpg" alt="Gray&#x27;s reinforcement sensitivity theory: BAS responds to cues of reward (approach), BIS to cues of punishment (avoidance)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 2</span> <span class="src key">Key slide</span> Gray&#x27;s reinforcement sensitivity theory: BAS responds to cues of reward (approach), BIS to cues of punishment (avoidance).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-03.jpg" data-cap="Gray&#x27;s conceptual nervous system: arousal mechanism, BAS, BIS, consummatory mechanisms and fight/flight system, with excitatory (+) and inhibitory (–) links." data-srcl="Part 2 · Slide 3" aria-label="Enlarge: Gray&#x27;s conceptual nervous system: arousal mechanism, BAS, BIS, consummatory mechanisms and fight/flight system, with excitatory (+) and inhibitory (–) links."><img src="img/p2-slide-03.jpg" alt="Gray&#x27;s conceptual nervous system: arousal mechanism, BAS, BIS, consummatory mechanisms and fight/flight system, with excitatory (+) and inhibitory (–) links." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 3</span> Gray&#x27;s conceptual nervous system: arousal mechanism, BAS, BIS, consummatory mechanisms and fight/flight system, with excitatory (+) and inhibitory (–) links.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-12"><div class="text"><h3><span class="n">7.12</span>BIS, BAS and Eysenck's dimensions</h3><p class="meta">part 2, slide 4; book pp. 204–205 (Figure 7.2)</p>
+<p><strong>In short:</strong> Gray's anxiety and impulsivity axes are Eysenck's extraversion and neuroticism axes turned diagonally; today BAS is seen as close to extraversion and BIS as close to neuroticism.</p>
+<ul>
+<li>The slide (<em>Næmni fyrir umbun eða refsingu II</em>) shows the book's Figure 7.2. <span class="src slide">part 2, slide 4</span> <span class="src book">book p. 205</span></li>
+<li>Eysenck's axes run from extraversion to introversion and from emotionally stable to neurotic. Gray's axes run diagonally between them. <span class="src slide">part 2, slide 4</span> <span class="src book">book p. 205</span></li>
+<li>The <strong>impulsivity</strong> axis runs from high impulsivity (the extraverted, neurotic corner) to low impulsivity (the introverted, stable corner); BAS points to high impulsivity. <span class="src slide">part 2, slide 4</span></li>
+<li>The <strong>anxiety</strong> axis runs from low anxiety (the extraverted, stable corner) to high anxiety (the introverted, neurotic corner); BIS points to the anxiety axis. <span class="src slide">part 2, slide 4</span></li>
+<li><span class="tag">Book only</span> The book's view is that the relation is direct: BAS is equivalent to extraversion and BIS to neuroticism. <span class="src book">book p. 204</span></li>
+<li><span class="tag">Book only</span> Extraverts are more reactive to cues of reward ("wanting"), not necessarily to consuming rewards ("liking") (Wilt &amp; Revelle, 2017). <span class="src book">book p. 204</span></li>
+<li><span class="tag">Book only</span> Gray revised his model to place BIS much closer to neuroticism and BAS much closer to extraversion (Pickering et al., 1999). <span class="src book">book p. 205</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-04.jpg" data-cap="Figure 7.2 on the slide: Gray&#x27;s impulsivity (BAS) and anxiety (BIS) axes placed diagonally across Eysenck&#x27;s extraversion and neuroticism dimensions." data-srcl="Part 2 · Slide 4" aria-label="Enlarge: Figure 7.2 on the slide: Gray&#x27;s impulsivity (BAS) and anxiety (BIS) axes placed diagonally across Eysenck&#x27;s extraversion and neuroticism dimensions."><img src="img/p2-slide-04.jpg" alt="Figure 7.2 on the slide: Gray&#x27;s impulsivity (BAS) and anxiety (BIS) axes placed diagonally across Eysenck&#x27;s extraversion and neuroticism dimensions." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 4</span> Figure 7.2 on the slide: Gray&#x27;s impulsivity (BAS) and anxiety (BIS) axes placed diagonally across Eysenck&#x27;s extraversion and neuroticism dimensions.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-13"><div class="text"><h3><span class="n">7.13</span>Research on reward and punishment</h3><p class="meta">part 2, slide 5; book pp. 205–207</p>
+<p><strong>In short:</strong> Learning from reward and learning from punishment seem to run on different brain systems, and impulsive people learn poorly from punishment because their BIS is weak.</p>
+<ul>
+<li><strong>Research findings</strong> (<em>Niðurstöður rannsókna</em>): studies by Gray and others suggest that learning with positive and negative reinforcement on the one hand, and punishment on the other, are controlled by different areas of the central nervous system. <span class="src slide">part 2, slide 5</span> <span class="src book">book p. 206</span></li>
+<li>Gray's idea: impulsive people (<em>hvatvísir</em>) learn less well under punishment because they have a weak BIS. <span class="src slide">part 2, slide 5</span> <span class="src book">book p. 206</span></li>
+<li>Research supports this (e.g., Newman, 1987): impulsive college students, juvenile delinquents, psychopaths and criminals are deficient in learning through punishment. <span class="src slide">part 2, slide 5</span> <span class="src book">book p. 206</span></li>
+<li><strong>The BIS/BAS scale</strong> (<em>BIS/BAS kvarðinn</em>) was developed by Carver and White (1994). <span class="src slide">part 2, slide 5</span> <span class="src book">book p. 205</span> Zelenski and Larsen (1999) found it one of the best measures of BIS and BAS. <span class="src book">book p. 205</span></li>
+<li><span class="tag">Book only</span> Carver and colleagues called BIS and BAS the "Big Two" personality dimensions. <span class="src book">book p. 205</span></li>
+<li><span class="tag">Book only</span> Gray: an overly sensitive BIS explains susceptibility to anxiety, fears, worry, depression, phobias, obsessions and compulsions; an overly sensitive BAS explains positive emotions and approach. <span class="src book">book p. 205</span></li>
+<li><span class="tag">Book only</span> <strong>Stroop study</strong> (Larsen, Chen, &amp; Zelenski, 2003): one group earned $5 for fast, correct answers; another started with $10 and lost $5 for slow or wrong ones. BAS scores predicted better performance under reward, and BIS scores predicted better performance under punishment. <span class="src book">book p. 206</span></li>
+<li><span class="tag">Book only</span> During COVID-19, fear-driven compliance correlated with BIS, and BAS correlated with more difficulty with social isolation (Bacon et al., 2021). <span class="src book">book pp. 206–207</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-05.jpg" data-cap="Research findings: reward and punishment learning are controlled by different areas of the central nervous system, impulsive people learn less from punishment (weak BIS; Newman, 1987), and the BIS/BAS scale (Carver &amp; White, 1994)." data-srcl="Part 2 · Slide 5 · key slide" aria-label="Enlarge: Research findings: reward and punishment learning are controlled by different areas of the central nervous system, impulsive people learn less from punishment (weak BIS; Newman, 1987), and the BIS/BAS scale (Carver &amp; White, 1994)."><img src="img/p2-slide-05.jpg" alt="Research findings: reward and punishment learning are controlled by different areas of the central nervous system, impulsive people learn less from punishment (weak BIS; Newman, 1987), and the BIS/BAS scale (Carver &amp; White, 1994)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 5</span> <span class="src key">Key slide</span> Research findings: reward and punishment learning are controlled by different areas of the central nervous system, impulsive people learn less from punishment (weak BIS; Newman, 1987), and the BIS/BAS scale (Carver &amp; White, 1994).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-14"><div class="text"><h3><span class="n">7.14</span>Sensation seeking: origins</h3><p class="meta">part 2, slides 6–7; book pp. 207–209</p>
+<p><strong>In short:</strong> Sensation seeking began with Zuckerman's sensory deprivation research: the people who coped worst with no stimulation turned out to be those who seek thrills in daily life.</p>
+<ul>
+<li><strong>Sensation seeking</strong> (<em>Æsisækni</em>) is the tendency to seek out activities that involve excitement, take risks and avoid boredom. <span class="src slide">part 2, slide 6</span> <span class="src book">book p. 207</span></li>
+<li>It started with Zuckerman's research on the effects of removing all sensory input (<strong>sensory deprivation research</strong>). <span class="src slide">part 2, slide 6</span> <span class="src book">book p. 208</span></li>
+<li>It builds on Hebb's research in this area and his ideas about arousal (<em>örvun</em>). <span class="src slide">part 2, slide 6</span> <span class="src book">book pp. 207–208</span></li>
+<li><span class="tag">Book only</span> In a dark, silent chamber people first feel relaxed, then bored, then anxious, and the brain creates its own sensory events. Hebb's (1955) participants chose to listen over and over to a taped lecture for 6-year-olds on the dangers of alcohol. <span class="src book">book p. 207</span></li>
+<li><span class="tag">Book only</span> <strong>Hebb's optimal level of arousal</strong>: when underaroused an increase in arousal is rewarding; when overaroused a decrease is rewarding. This was controversial, because most researchers then thought all motives aimed at reducing tension. <span class="src book">book pp. 207–208</span></li>
+<li><strong>Zuckerman's original idea</strong>: people high on sensation seeking tolerate a lack of sensory experience (<em>skorti á skynreynslu</em>, sensory deprivation) less well, and need more stimulation to reach an optimal arousal state (<em>ákjósanlegu örvunarástandi</em>). <span class="src slide">part 2, slide 7</span> <span class="src book">book p. 208</span></li>
+<li><span class="tag">Book only</span> Zuckerman and Haber (1965) noticed that the participants who found deprivation most unpleasant asked for lots of sensory material and quit early. The Sensation-Seeking Scale later predicted who tolerated deprivation poorly. <span class="src book">book p. 208</span></li>
+<li><strong>Correlation with extraversion</strong>: positive and moderate, r = 0.40–0.60. <span class="src slide">part 2, slide 7</span> The book calls it a moderately strong positive correlation (Zuckerman &amp; Glicksohn, 2016) and gives no figure. <span class="src book">book p. 208</span></li>
+</ul>
+<p><span class="tag">Book only</span> The four aspects of the Sensation-Seeking Scale (Table 7.3): <span class="src book">book p. 208</span></p>
+<div class="tbl"><table>
+<tr><th>Aspect</th><th>What it covers</th></tr>
+<tr><td>Thrill and adventure seeking</td><td>Risky outdoor sports and activities (flying, scuba diving, parachuting)</td></tr>
+<tr><td>Experience seeking</td><td>New sensory or mental experiences through unconventional lifestyle choices</td></tr>
+<tr><td>Disinhibition</td><td>Getting "out of control": wild parties, gambling, sexual variety</td></tr>
+<tr><td>Boredom susceptibility</td><td>Dislike of repetition, routine and dull people</td></tr>
+</table></div>
+<ul>
+<li><span class="tag">Book only</span> Correlates: police officers who volunteer for riot duty and skydivers score higher; in 550 motorcycle riders sensation seeking went with speeding and stunts (Antoniazzi &amp; Klein, 2019); high scorers volunteer for unusual studies, make riskier bets, and report more sex partners and earlier sex. <span class="src book">book p. 209</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-06.jpg" data-cap="Sensation seeking defined, and its start in Zuckerman&#x27;s sensory deprivation research building on Hebb&#x27;s ideas about arousal." data-srcl="Part 2 · Slide 6 · key slide" aria-label="Enlarge: Sensation seeking defined, and its start in Zuckerman&#x27;s sensory deprivation research building on Hebb&#x27;s ideas about arousal."><img src="img/p2-slide-06.jpg" alt="Sensation seeking defined, and its start in Zuckerman&#x27;s sensory deprivation research building on Hebb&#x27;s ideas about arousal." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 6</span> <span class="src key">Key slide</span> Sensation seeking defined, and its start in Zuckerman&#x27;s sensory deprivation research building on Hebb&#x27;s ideas about arousal.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-15"><div class="text"><h3><span class="n">7.15</span>The biological basis: MAO</h3><p class="meta">part 2, slides 8–9; book pp. 209–210</p>
+<p><strong>In short:</strong> High sensation seekers tend to have low levels of the enzyme MAO, which leaves more neurotransmitter in the synapse, so their nervous system has weaker "brakes".</p>
+<ul>
+<li><strong>Neurotransmitters</strong> carry a nerve impulse across the <strong>synapse</strong>, the small gap between nerve cells. <span class="src book">book p. 209</span> The slide (<em>Líffræðilegur grunnur æsisækni</em>) shows a stimulus, a receptor, the nerve impulse along the axon, and at the synapse vesicles releasing neurotransmitter molecules onto receptor sites of the postsynaptic neuron. <span class="src slide">part 2, slide 8</span></li>
+<li><strong>Monoamine oxidase (MAO)</strong> is an enzyme (<em>Lífhvati</em>) linked to the amount of neurotransmitter at the synapses (<em>taugamótum</em>). <span class="src slide">part 2, slide 9</span> <span class="src book">book p. 209</span></li>
+<li>MAO breaks the neurotransmitter down after the impulse has passed. <span class="src book">book p. 209</span> So: <span class="src slide">part 2, slide 9</span>
+<ul><li>too little MAO means too much neurotransmitter (too much transmission, for example shaky fingers);</li>
+<li>too much MAO means too little neurotransmitter (diminished transmission, for example clumsy movement).</li></ul></li>
+<li><span class="tag">Book only</span> The book compares the system to a turnstile that must let the right number of people through. <span class="src book">book p. 209</span></li>
+<li><strong>Zuckerman's revised idea</strong> (<em>Endurskoðuð hugmynd Zukerman</em>; slide title <em>Lífeðlisfræðilegur grunnur</em>): sensation seekers have low MAO, which gives them less inhibition in the nervous system. <span class="src slide">part 2, slide 9</span> <span class="src book">book p. 210</span></li>
+<li><span class="tag">Book only</span> Across studies the correlation between sensation seeking and MAO is small to moderate but consistently negative (Zuckerman, 1991b, 2005). <span class="src book">book p. 209</span></li>
+<li><span class="tag">Book only</span> Imprisoned violent offenders scored higher on sensation seeking and had lower MAO than a community sample (Skondras et al., 2004). <span class="src book">book p. 210</span></li>
+<li>So, according to Zuckerman (1991a), sensation-seeking behaviour comes less from seeking optimal arousal and more from having too little of the biochemical brakes in the synapses. <span class="src book">book p. 210</span></li>
+<li><span class="tag">Book only</span> A recent review supports this neurotransmitter theory (Norbury &amp; Husain, 2015). <span class="src book">book p. 209</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-08.jpg" data-cap="A nerve impulse travels from a receptor along the axon; the enlarged synapse shows vesicles releasing neurotransmitter onto receptor sites of the postsynaptic neuron." data-srcl="Part 2 · Slide 8" aria-label="Enlarge: A nerve impulse travels from a receptor along the axon; the enlarged synapse shows vesicles releasing neurotransmitter onto receptor sites of the postsynaptic neuron."><img src="img/p2-slide-08.jpg" alt="A nerve impulse travels from a receptor along the axon; the enlarged synapse shows vesicles releasing neurotransmitter onto receptor sites of the postsynaptic neuron." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 8</span> A nerve impulse travels from a receptor along the axon; the enlarged synapse shows vesicles releasing neurotransmitter onto receptor sites of the postsynaptic neuron.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-09.jpg" data-cap="MAO and the amount of neurotransmitter at the synapse, and Zuckerman&#x27;s revised idea that sensation seekers have low MAO and so less inhibition." data-srcl="Part 2 · Slide 9 · key slide" aria-label="Enlarge: MAO and the amount of neurotransmitter at the synapse, and Zuckerman&#x27;s revised idea that sensation seekers have low MAO and so less inhibition."><img src="img/p2-slide-09.jpg" alt="MAO and the amount of neurotransmitter at the synapse, and Zuckerman&#x27;s revised idea that sensation seekers have low MAO and so less inhibition." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 9</span> <span class="src key">Key slide</span> MAO and the amount of neurotransmitter at the synapse, and Zuckerman&#x27;s revised idea that sensation seekers have low MAO and so less inhibition.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-16"><div class="text"><h3><span class="n">7.16</span>Sensation seeking and gambling</h3><p class="meta"><span class="tag slides">Slides only</span> part 2, slides 10–11</p>
+<p><strong>In short:</strong> Sensation seeking is linked to gambling problems, but impulsivity is linked even more strongly, and gambling problems go with attention-deficit/hyperactivity symptoms.</p>
+<ul>
+<li><strong>Links to gambling addiction</strong> (<em>Tengsl við spilafíkn</em>): research suggests positive links between scores on sensation seeking (SS), impulsivity (<em>hvatvísi</em>) and gambling problems (<em>spilavanda</em>). <span class="src slide">part 2, slide 10</span></li>
+<li>Sensation seekers take more risks in gambling for money, and they seek out certain types of gambling more. <span class="src slide">part 2, slide 10</span></li>
+<li>But the strongest link is with impulsivity. <span class="src slide">part 2, slide 10</span></li>
+<li>The book also notes that high sensation seekers make riskier bets in gambling studies. <span class="src book">book p. 209</span></li>
+<li><strong>AMO and gambling problems</strong> (<em>AMO og spilavandi</em>): attention-deficit/hyperactivity (<em>Athyglisbrestur/Ofvirkni</em>) was assessed with DSM-IV scales from the Conners behaviour checklist. <span class="src slide">part 2, slide 11</span></li>
+</ul>
+<div class="tbl"><table>
+<tr><th>Group (Table 5)</th><th>Without AMO symptoms</th><th>With AMO symptoms</th></tr>
+<tr><td>Do not gamble for money</td><td>96,1% (993)</td><td>3,9% (40)</td></tr>
+<tr><td>Gamble without problems</td><td>93,3% (2024)</td><td>6,7% (146)</td></tr>
+<tr><td>At risk for gambling problems</td><td>75,6% (90)</td><td>24,4% (29)</td></tr>
+<tr><td>Have gambling problems</td><td>47,3% (26)</td><td>52,7% (29)</td></tr>
+</table></div>
+<ul>
+<li>The share with AMO symptoms rises across the groups, from 3,9% among non-gamblers to 52,7% among those with gambling problems; chi-square (<em>Kíkvaðrat</em>) = 240,18***. <span class="src slide">part 2, slide 11</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-10.jpg" data-cap="Sensation seeking, impulsivity and gambling problems: sensation seekers take more risks in gambling, but the link is strongest with impulsivity." data-srcl="Part 2 · Slide 10 · key slide" aria-label="Enlarge: Sensation seeking, impulsivity and gambling problems: sensation seekers take more risks in gambling, but the link is strongest with impulsivity."><img src="img/p2-slide-10.jpg" alt="Sensation seeking, impulsivity and gambling problems: sensation seekers take more risks in gambling, but the link is strongest with impulsivity." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 10</span> <span class="src key">Key slide</span> Sensation seeking, impulsivity and gambling problems: sensation seekers take more risks in gambling, but the link is strongest with impulsivity.</figcaption></figure></div></article>
+<article class="sec" id="s7-17"><div class="text"><h3><span class="n">7.17</span>Neurotransmitters and Cloninger's tridimensional model</h3><p class="meta">part 2, slides 12–13; book pp. 210–211</p>
+<p><strong>In short:</strong> Cloninger ties three traits to three neurotransmitters: novelty seeking to low dopamine, harm avoidance to serotonin and reward dependence to low norepinephrine.</p>
+<p><strong>Neurotransmitters and personality</strong> (<em>Taugaboðefni og Persónuleiki</em>) <span class="src slide">part 2, slide 12</span> <span class="src book">book p. 211</span></p>
+<div class="tbl"><table>
+<tr><th>Neurotransmitter</th><th>Linked to</th></tr>
+<tr><td>Dopamine (<em>Dópamín</em>)</td><td>Feelings of pleasure; works like a reward system, the "feeling good chemical" (Hamer, 1997)</td></tr>
+<tr><td>Serotonin (<em>Serótónín</em>)</td><td>Depression and other mood disorders, such as anxiety</td></tr>
+<tr><td>Norepinephrine (<em>NorAdrenalín</em>)</td><td>Activating the sympathetic nervous system (fight or flight)</td></tr>
+</table></div>
+<ul>
+<li><span class="tag">Book only</span> Animals will work to raise their dopamine. Cocaine mimics dopamine but depletes natural levels, which creates the urge for more (addiction). <span class="src book">book p. 211</span></li>
+<li><span class="tag">Book only</span> Prozac, Zoloft and Paxil block serotonin reuptake. Nondepressed people given Prozac reported less negative affect and were more outgoing (Knutson et al., 1998); monkeys higher in serotonin were more dominant, and those low in serotonin more fearful. <span class="src book">book p. 211</span></li>
+</ul>
+<p><strong>Cloninger's tridimensional model</strong> (<em>Þrívíddarkenning Cloningers</em>; Cloninger, 1986, 1987) <span class="src slide">part 2, slide 13</span> <span class="src book">book p. 211</span></p>
+<div class="tbl"><table>
+<tr><th>Trait</th><th>Neurotransmitter</th><th>Description (book)</th></tr>
+<tr><td>Novelty seeking (<em>Nýungarsækni</em>)</td><td>Low dopamine</td><td>Novelty and thrills make up for low dopamine</td></tr>
+<tr><td>Harm avoidance (<em>Forðast skaða/tjón</em>)</td><td>Serotonin (see the disagreement below)</td><td>High: cautious, inhibited, shy, apprehensive; low: energetic, outgoing, optimistic</td></tr>
+<tr><td>Reward dependence (<em>Ánetjun umbunar</em>)</td><td>Low norepinephrine</td><td>Persistent; keep striving after others have given up</td></tr>
+</table></div>
+<ul>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> The slide says harm avoidance goes with a <strong>low</strong> amount of serotonin (<em>Lítið magn af Seretónín</em>). <span class="src slide">part 2, slide 13</span> The book links it to <strong>abnormalities in serotonin metabolism</strong> and quotes Cloninger saying the link with absolute serotonin levels is not linear; descriptions of the theory differ on whether higher or lower serotonin goes with more harm avoidance. <span class="src book">book p. 211</span></li>
+</ul></div></article>
+<article class="sec has-figs" id="s7-18"><div class="text"><h3><span class="n">7.18</span>Genes and levels of explanation</h3><p class="meta">part 2, slide 14; book pp. 211–212</p>
+<p><strong>In short:</strong> Eysenck, Gray, Zuckerman and Cloninger may describe the same traits, but they explain them at different levels of the body, from the whole brain down to particular chemicals.</p>
+<p><strong>Levels of explanation</strong> (<em>Ólík skýringarstig</em>) <span class="src slide">part 2, slide 14</span> <span class="src book">book p. 212</span></p>
+<div class="tbl"><table>
+<tr><th>Theorist</th><th>Level of explanation</th></tr>
+<tr><td>Eysenck</td><td>The nervous system and the brain</td></tr>
+<tr><td>Gray <span class="tag">Book only</span></td><td>Brain systems for learning through reward and punishment</td></tr>
+<tr><td>Zuckerman</td><td>The synapses (<em>taugamótum</em>)</td></tr>
+<tr><td>Cloninger</td><td>Specific neurotransmitters</td></tr>
+</table></div>
+<ul>
+<li><span class="tag slides">Slides only</span> Cloninger's account of heavy drinking (<em>ofdrykkju</em>): novelty seeking (<em>Nýjungarsækni</em>) with low dopamine, and high harm avoidance with serotonin. <span class="src slide">part 2, slide 14</span></li>
+<li><span class="tag">Book only</span> The theories overlap; for example, novelty seeking looks a lot like the reward sensitivity of Gray's BAS. <span class="src book">book p. 212</span></li>
+<li><span class="tag">Book only</span> <strong>Genes work through neurotransmitter systems</strong>: the type 4 dopamine receptor gene (DRD4) is associated with higher novelty seeking (Keltikangas-Järvinen et al., 2003), and a meta-analysis linked DRD4 variants to novelty seeking and impulsivity (Munafo et al., 2008). <span class="src book">book pp. 211–212</span></li>
+<li><span class="tag">Book only</span> Personality traits are likely massively polygenic: many interacting genes, possibly needing environmental triggers, rather than one gene per trait. <span class="src book">book p. 212</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-14.jpg" data-cap="Cloninger&#x27;s account of heavy drinking (novelty seeking with low dopamine, high harm avoidance with serotonin), and the level of explanation of each theory: Eysenck the nervous system and brain, Zuckerman the synapses, Cloninger specific neurotransmitters." data-srcl="Part 2 · Slide 14 · key slide" aria-label="Enlarge: Cloninger&#x27;s account of heavy drinking (novelty seeking with low dopamine, high harm avoidance with serotonin), and the level of explanation of each theory: Eysenck the nervous system and brain, Zuckerman the synapses, Cloninger specific neurotransmitters."><img src="img/p2-slide-14.jpg" alt="Cloninger&#x27;s account of heavy drinking (novelty seeking with low dopamine, high harm avoidance with serotonin), and the level of explanation of each theory: Eysenck the nervous system and brain, Zuckerman the synapses, Cloninger specific neurotransmitters." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 14</span> <span class="src key">Key slide</span> Cloninger&#x27;s account of heavy drinking (novelty seeking with low dopamine, high harm avoidance with serotonin), and the level of explanation of each theory: Eysenck the nervous system and brain, Zuckerman the synapses, Cloninger specific neurotransmitters.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-19"><div class="text"><h3><span class="n">7.19</span>Morningness–eveningness: circadian rhythms</h3><p class="meta">part 2, slide 15; book pp. 212–214 (Figure 7.3)</p>
+<p><strong>In short:</strong> Whether you are a morning lark or a night owl seems to depend on the length of your inner biological day: short rhythms make morning types and long rhythms evening types.</p>
+<ul>
+<li><strong>Morningness–eveningness</strong> (<em>Dægurgerð</em>): the tendency to be a morning person (<em>morgunhani</em>) or a night person (<em>næturhrafn</em>) has a biological basis. <span class="src slide">part 2, slide 15</span> <span class="src book">book p. 212</span> The term comes from Horne and Ostberg (1976), and the book calls the types "larks" and "owls". <span class="src book">book p. 212</span></li>
+<li><span class="warn" title="Slides and book disagree">Slides ≠ book</span> The slide says the body clock (<em>Líkamsklukkan</em>) is set by body temperature. <span class="src slide">part 2, slide 15</span> In the book, body temperature is a rhythm that follows the circadian cycle, and the clock is fitted to the 24-hour day by outside time cues, most notably the light–dark cycle. <span class="src book">book pp. 213–214</span></li>
+<li><strong>Circadian rhythms</strong> are biological processes that cycle about every 24 to 25 hours (<i>circa</i> "around", <i>dia</i> "day"). Body temperature peaks around mid-evening (8 to 9 p.m.) and is lowest in the early morning (around 6 a.m.). <span class="src book">book p. 213</span></li>
+<li><span class="tag">Book only</span> <strong>Temporal-isolation design</strong>: volunteers live for weeks or months with no time cues (no windows, meals on request). Living like this is called <strong>free running</strong>. <span class="src book">book p. 213</span></li>
+<li><span class="tag">Book only</span> Rhythms average 24 to 25 hours but vary widely, from 16 hours in one person to 50 hours in another (Wehr &amp; Goodwin, 1981). <span class="src book">book p. 213</span></li>
+<li>In real life, time cues, above all the light–dark cycle, <strong>entrain</strong> us to a 24-hour day, but people still differ in when their peaks come. <span class="src book">book pp. 213–214</span></li>
+<li><span class="tag">Book only</span> Someone with a 26-hour rhythm peaks late (perhaps 10 p.m.) and struggles to get up at 6; someone with a 22-hour rhythm peaks early (perhaps 6 p.m.) and wakes easily. <span class="src book">book p. 214</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-15.jpg" data-cap="The slide&#x27;s daily body-temperature cycle across day and night. The slide says the body clock is set by body temperature; the book says the light–dark cycle entrains it." data-srcl="Part 2 · Slide 15" aria-label="Enlarge: The slide&#x27;s daily body-temperature cycle across day and night. The slide says the body clock is set by body temperature; the book says the light–dark cycle entrains it."><img src="img/p2-slide-15.jpg" alt="The slide&#x27;s daily body-temperature cycle across day and night. The slide says the body clock is set by body temperature; the book says the light–dark cycle entrains it." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 15</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> The slide&#x27;s daily body-temperature cycle across day and night. The slide says the body clock is set by body temperature; the book says the light–dark cycle entrains it.</figcaption></figure>
+<figure class="fig book"><button class="zoom" type="button" data-src="img/book-c7-244-1.jpg" data-cap="Circadian rhythm in body temperature over ten days, with sleep and wakefulness periods marked." data-srcl="Book Fig 7.3 · p. 213" aria-label="Enlarge: Circadian rhythm in body temperature over ten days, with sleep and wakefulness periods marked."><img src="img/book-c7-244-1.jpg" alt="Circadian rhythm in body temperature over ten days, with sleep and wakefulness periods marked." width="995" height="405" loading="lazy"></button><figcaption><span class="src book">Book Fig 7.3 · p. 213</span> Circadian rhythm in body temperature over ten days, with sleep and wakefulness periods marked.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-20"><div class="text"><h3><span class="n">7.20</span>Measuring chronotype and what it predicts</h3><p class="meta">part 2, slide 16; book pp. 214–217</p>
+<p><strong>In short:</strong> A questionnaire measures morningness–eveningness well: it tracks peak body temperature and daily habits, stays stable over years, and mismatched roommates get along badly.</p>
+<p><strong>Individual differences</strong> (<em>Dægurgerð II</em>) <span class="src slide">part 2, slide 16</span></p>
+<ul>
+<li>People differ in the length of their body clock, and this can be measured with a questionnaire.</li>
+<li>Morningness–eveningness is linked to the time of day when body temperature peaks.</li>
+<li><span class="tag slides">Slides only</span> It is linked to activity, neuroticism and impulsivity (<em>Virkni, taugaveiklun og hvatvísi</em>); the book does not mention these three.</li>
+<li>It is linked to the time of best performance and to bedtime.</li>
+</ul>
+<ul>
+<li>Horne and Ostberg (1976, 1977) developed a <strong>19-item questionnaire</strong> about preferences for activities earlier or later in the day (items in Table 7.4). <span class="src book">book pp. 214–215</span></li>
+<li>In 48 participants, scores correlated <strong>–.51</strong> with the time of peak body temperature. The original study was done in Sweden and has been replicated in the United States, Italy, Spain, Croatia and Japan. <span class="src book">book p. 214</span></li>
+<li><span class="tag">Book only</span> <strong>Stability</strong>: 90 Croatian students retested seven years later showed a significant positive correlation; the whole sample also shifted toward morningness, as expected when students start jobs (Sverko &amp; Fabulic, 1985). <span class="src book">book pp. 214–215</span></li>
+<li><strong>Validity</strong>: over 84 days, questionnaire scores correlated strongly with rise and retire times and with the time of day students felt best (Larsen, 1985). <span class="src book">book p. 215</span></li>
+<li><span class="tag">Book only</span> <strong>Roommates</strong>: the bigger the difference in Morningness–Eveningness Questionnaire (MEQ) scores between roommates, the worse they rated their relationship (Watts, 1982). <span class="src book">book p. 216</span></li>
+<li><span class="tag">Book only</span> <strong>Couples</strong>: in 84 couples partners' scores correlated, and the correlation did not change with relationship length, implying selective mating on chronotype (Randler &amp; Kretz, 2011). <span class="src book">book p. 216</span></li>
+<li><span class="tag">Book only</span> Going against one's chronotype (shift work, jet lag, an evening type getting up early) is stressful and lowers HRV. <span class="src book">book p. 216</span></li>
+<li>The book calls this a good example of the physiological approach: a consistent behaviour pattern (time-of-day preference) based on an underlying physiological mechanism (circadian rhythm). <span class="src book">book p. 217</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-16.jpg" data-cap="Individual differences in body-clock length, measured by questionnaire and linked to peak body temperature, activity, neuroticism, impulsivity, best performance and bedtime." data-srcl="Part 2 · Slide 16 · key slide" aria-label="Enlarge: Individual differences in body-clock length, measured by questionnaire and linked to peak body temperature, activity, neuroticism, impulsivity, best performance and bedtime."><img src="img/p2-slide-16.jpg" alt="Individual differences in body-clock length, measured by questionnaire and linked to peak body temperature, activity, neuroticism, impulsivity, best performance and bedtime." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 16</span> <span class="src key">Key slide</span> Individual differences in body-clock length, measured by questionnaire and linked to peak body temperature, activity, neuroticism, impulsivity, best performance and bedtime.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-21"><div class="text"><h3><span class="n">7.21</span>Brain asymmetry and affective style</h3><p class="meta">part 2, slide 17; book pp. 217–220</p>
+<p><strong>In short:</strong> The left frontal hemisphere is more active during positive emotions and the right during negative ones, and a person's stable asymmetry predicts how strongly they react emotionally.</p>
+<p><strong>Brain asymmetry and emotion</strong> (<em>Ósamhverfa heila og tilfinninga</em>): the hemispheres (<em>Heilahvel</em>) have different roles. <span class="src slide">part 2, slide 17</span> <span class="src book">book p. 217</span></p>
+<ul>
+<li>The left hemisphere (<em>Vinstra heilahvel</em>) is more active than the right when a person experiences positive emotions.</li>
+<li>The right hemisphere (<em>Hægra heilahvelið</em>) is more active when emotions are negative.</li>
+<li>The same pattern appears in adults, children and infants, and it is stable over time.</li>
+<li>It reflects reactions to stimuli of different strength (threshold for responding). <span class="src slide">part 2, slide 17</span></li>
+<li><span class="tag">Book only</span> <strong>Measurement</strong>: EEG over the frontal lobes. <strong>Alpha waves</strong> (8 to 12 per second) are given off when a person is calm and relaxed, so less alpha means more activity; alpha is an inverse indicator of brain activity. <span class="src book">book p. 217</span></li>
+</ul>
+<p><strong>Key studies</strong> <span class="src book">book pp. 217–218</span></p>
+<ol>
+<li>Adults smiling at funny films had more left frontal activation; adults showing disgust had more right activation (Davidson et al., 1990).</li>
+<li>10-month-old infants showed more left activation to a sweet solution and more right activation to a bitter one (Fox &amp; Davidson, 1986).</li>
+<li>Infants who cried when their mother left had more right-sided activation than those who did not cry (Fox &amp; Davidson, 1987).</li>
+<li>Asymmetry at 7 and 12 months was highly correlated (Fox et al., 1992); in adults test–retest correlations are .66 to .73 (Davidson, 1993, 2003).</li>
+<li>Asymmetry measured at rest predicted reactions to films: right-dominant participants reported more distress to unpleasant films, left-dominant ones more pleasant reactions (Tomarken, Davidson, &amp; Henriques, 1990; Wheeler, Davidson, &amp; Tomarken, 1993).</li>
+<li>Monkeys with more right-sided activation had higher cortisol (Davidson and colleagues, reviewed in Kosslyn et al., 2002), and so did 6-month-old infants facing a stranger; the most right-activated infants also cried more and showed more fear (Buss et al., 2003).</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> Frontal asymmetry works as a <strong>moderator</strong> of the link between an emotional stimulus and the emotional response (Coan &amp; Allen, 2004); for example, freshmen with more right asymmetry felt more homesick (Steiner &amp; Coan, 2011). <span class="src book">book pp. 218–220</span></li>
+<li><strong>Thresholds for responding</strong> (Fox &amp; Calkins, 1993): a right-dominant person needs less of a negative event to feel unpleasant emotion, and a left-dominant person needs less of a positive event to feel pleasant emotion. <span class="src slide">part 2, slide 17</span> <span class="src book">book p. 220</span></li>
+<li>So frontal asymmetry acts much like a traditional personality trait. <span class="src book">book p. 220</span></li>
+<li><span class="tag">Book only</span> Among right-handers, eyes drifting right while thinking suggest left-sided activation, and eyes drifting left suggest right-sided activation (Davidson, 1991); this is only a rough gauge. <span class="src book">book p. 219</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-17.jpg" data-cap="Brain asymmetry and emotion: left hemisphere more active in positive emotions, right in negative, the same in adults, children and infants, and stable over time." data-srcl="Part 2 · Slide 17 · key slide" aria-label="Enlarge: Brain asymmetry and emotion: left hemisphere more active in positive emotions, right in negative, the same in adults, children and infants, and stable over time."><img src="img/p2-slide-17.jpg" alt="Brain asymmetry and emotion: left hemisphere more active in positive emotions, right in negative, the same in adults, children and infants, and stable over time." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 17</span> <span class="src key">Key slide</span> Brain asymmetry and emotion: left hemisphere more active in positive emotions, right in negative, the same in adults, children and infants, and stable over time.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s7-22"><div class="text"><h3><span class="n">7.22</span>Meditation and left-hemisphere activity</h3><p class="meta"><span class="tag slides">Slides only</span> part 2, slide 18</p>
+<p><strong>In short:</strong> The slide links meditation to more left-hemisphere activity, the side tied to positive emotion.</p>
+<ul>
+<li><strong>Effects of meditation on brain activity</strong> (<em>Áhrif hugleiðslu á heilavirkni</em>): meditation is linked to activity of the left hemisphere. <span class="src slide">part 2, slide 18</span></li>
+<li>The left graph compares a meditation (treatment) group and a control group at Time 1 and Time 3; its caption says higher numbers mean greater left-sided activation. At Time 3 the treatment group is above zero and the control group below it. <span class="src slide">part 2, slide 18</span></li>
+<li>The right graph shows a larger antibody rise after a vaccine in the meditation group than in the control group. <span class="src slide">part 2, slide 18</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-18-graphs.jpg" data-cap="Graphs from the slide: left-sided activation in meditation and control groups at Time 1 and Time 3, and antibody rise after a vaccine in each group." data-srcl="Part 2 · Slide 18" aria-label="Enlarge: Graphs from the slide: left-sided activation in meditation and control groups at Time 1 and Time 3, and antibody rise after a vaccine in each group."><img src="img/p2-slide-18-graphs.jpg" alt="Graphs from the slide: left-sided activation in meditation and control groups at Time 1 and Time 3, and antibody rise after a vaccine in each group." width="1238" height="362" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 18</span> Graphs from the slide: left-sided activation in meditation and control groups at Time 1 and Time 3, and antibody rise after a vaccine in each group.</figcaption></figure></div></article>
+<article class="sec" id="s7-23"><div class="text"><h3><span class="n">7.23</span>Summary: two ways to use physiology</h3><p class="meta">part 2, slide 19; book pp. 220–221 (Table 7.5)</p>
+<p><strong>In short:</strong> A physiological variable can be merely a correlate of a trait, or the biological basis that produces it; the six theories in this chapter claim the second.</p>
+<ul>
+<li><span class="tag">Book only</span> <strong>Correlate view</strong>: a physiological measure goes along with a trait. For example, spontaneous skin conductance correlates with neuroticism, but it probably does not cause neuroticism. <span class="src book">book p. 220</span></li>
+<li><strong>Substrate view</strong>: the physiology contributes to, or underlies, the trait. The six theories in the chapter take this view. <span class="src book">book p. 220</span></li>
+</ul>
+<p><strong>Summary table</strong> (<em>Samantekt</em>, Table 7.5) <span class="src slide">part 2, slide 19</span> <span class="src book">book p. 221</span></p>
+<div class="tbl"><table>
+<tr><th>Personality trait</th><th>Biological underpinnings</th></tr>
+<tr><td colspan="2"><strong>Related to physiological reactivity</strong></td></tr>
+<tr><td>Extraversion–introversion</td><td>Arousal level of the brain (early theory); arousability of the nervous system</td></tr>
+<tr><td>Sensitivity to reward and punishment</td><td>BAS responds to incentives and reward; BIS responds to threat and punishment</td></tr>
+<tr><td>Sensation seeking</td><td>Optimal arousal level (early theory); MAO levels</td></tr>
+<tr><td>Tridimensional model: novelty seeking / harm avoidance / reward dependence</td><td>Dopamine / serotonin / norepinephrine</td></tr>
+<tr><td colspan="2"><strong>Not related to physiological reactivity</strong></td></tr>
+<tr><td>Morningness–eveningness</td><td>Length of circadian rhythm: shorter = morning type, longer = evening type</td></tr>
+<tr><td>Affective style</td><td>Asymmetry in frontal brain activation: left = tendency toward positive, right = tendency toward negative</td></tr>
+</table></div></div></article>
+<aside class="pointers"><p><strong>Pointers to other chapters</strong> (not studied now): Allport's definition of personality (book ch 1, book p. 190); Eysenck's descriptive trait taxonomy (book ch 3, book p. 201); behaviour genetics (book ch 6, book p. 211); extraversion and positive emotions (book ch 13, book p. 199); self-esteem (book ch 14, book p. 195); testosterone, sex and gender (book ch 16, book p. 189); Type A and heart disease (book ch 18, book p. 193).</p></aside>
+</section>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Enlarged figure">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-cap"><div><span class="src" id="lb-src"></span> <span id="lb-text"></span></div><button class="lb-close" id="lb-close" type="button">Close</button></div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'),
+      src = document.getElementById('lb-src'), txt = document.getElementById('lb-text');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.zoom');
+    if (b) {
+      img.src = b.dataset.src; img.alt = b.dataset.cap;
+      src.textContent = b.dataset.srcl; txt.textContent = b.dataset.cap;
+      src.className = 'src ' + (b.closest('.fig').classList.contains('book') ? 'book' : 'slide');
+      if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      return;
+    }
+    if (e.target === lb || e.target.id === 'lb-close') lb.close();
+  });
+  try { if (window.matchMedia('(max-width: 700px)').matches) document.getElementById('toc').open = false; } catch (e) {}
+  // Deep links from grading summaries: #s1-5 opens and highlights section 1.5
+  function go() {
+    var id = (location.hash || '').slice(1), el = id && document.getElementById(id);
+    if (!el) return;
+    document.querySelectorAll('.sec.hit').forEach(function (s) { s.classList.remove('hit'); });
+    el.classList.add('hit');
+    el.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', go);
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  setTimeout(go, 60);
+})();
+</script>
+
+</body></html>
