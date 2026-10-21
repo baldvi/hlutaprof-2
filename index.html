@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Persónuleikasálfræði</title>
+<meta name="description" content="Chapter recaps for Persónuleikasálfræði (Personality Psychology), built around the teacher's slides and the Larsen &amp; Buss textbook.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Welcome page for the chapter recaps. Same palette and fonts as the recap pages in each chapter folder. */
+:root {
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+em { color: var(--accent); font-style: italic; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 26px; border-bottom: 1px solid var(--line); }
+.course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(34px, 6vw, 60px); line-height: 1.05; letter-spacing: -0.015em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.sub { margin: 0; color: var(--muted); max-width: 68ch; }
+.stats { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 4px 0 0; padding: 0; list-style: none; font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stats b { color: var(--fg); font-weight: 500; }
+
+/* search */
+.search { margin-top: 22px; display: grid; gap: 8px; }
+.search label { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.search input { width: 100%; max-width: 560px; font: 400 16px/1.4 var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 11px 14px; }
+.search input::placeholder { color: var(--muted); }
+.search input:focus-visible { border-color: var(--accent); outline-offset: 0; }
+.results { margin-top: 14px; }
+.results[hidden] { display: none; }
+.results .count { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
+.results ol { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.results li + li { border-top: 1px solid var(--line); }
+.results a { display: grid; grid-template-columns: 4.2em 1fr; gap: 10px; padding: 10px 14px; text-decoration: none; color: var(--fg); }
+.results a:hover { background: var(--accent-soft); }
+.results .ch { font-family: var(--f-mono); font-size: 12px; color: var(--muted); display: block; }
+
+/* chapter cards */
+.section-h { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 34px 0 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px; align-items: start; }
+.grid[hidden] { display: none; }
+.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 10px; box-shadow: var(--shadow); min-width: 0; }
+.card-main { position: relative; display: grid; gap: 4px; padding: 16px 18px 16px; text-decoration: none; color: var(--fg); border-radius: 8px 8px 0 0; }
+.card-main:hover h2 { color: var(--accent); }
+.card-main:hover .open { text-decoration: underline; text-underline-offset: 3px; }
+.num { position: absolute; top: 8px; right: 14px; font-family: var(--f-display); font-weight: 700; font-size: 54px; line-height: 1; color: var(--accent-soft); pointer-events: none; font-variant-numeric: tabular-nums; }
+.eyebrow { position: relative; font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.card h2 { position: relative; font-family: var(--f-display); font-weight: 650; font-size: 23px; line-height: 1.18; margin: 2px 0 0; text-wrap: balance; padding-right: 76px; }
+.card .is { margin: 0; font-size: 15.5px; }
+.card .meta { margin: 6px 0 0; font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card .open { margin-top: 10px; font-weight: 600; font-size: 15px; color: var(--accent); }
+
+details.secs { border-top: 1px solid var(--line); }
+details.secs summary { cursor: pointer; padding: 10px 18px; font-size: 14.5px; font-weight: 600; color: var(--muted); list-style-position: inside; }
+details.secs summary:hover { color: var(--fg); }
+details.secs[open] summary { color: var(--fg); }
+details.secs ol { list-style: none; margin: 0; padding: 0 18px 14px; }
+details.secs a { display: flex; gap: 10px; padding: 3px 0; text-decoration: none; color: var(--fg); font-size: 15px; line-height: 1.4; }
+details.secs a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .8em; color: var(--muted); min-width: 2.8em; padding-top: .15em; font-variant-numeric: tabular-nums; flex: none; }
+
+.foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14.5px; }
+.foot p { margin: 0; max-width: 72ch; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="course">Personality Psychology · Study notes</p>
+    <h1>Persónuleikasálfræði</h1>
+    <p class="sub">Chapter recaps built around the teacher's slides, with the book-only material from Larsen &amp; Buss that could be tested. Every recap sets the text beside the slides and book figures it explains. Icelandic terms from the slides are in <em>blue italics</em>.</p>
+    <ul class="stats" aria-label="What's here">
+      <li><b>5</b> chapters</li>
+      <li><b>87</b> sections</li>
+      <li><b>116</b> figures</li>
+    </ul>
+  </header>
+
+  <div class="search" role="search">
+    <label for="q">Find a topic</label>
+    <input id="q" type="search" placeholder="e.g. heritability, Eysenck, Flynn" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="results" id="results" hidden aria-live="polite">
+    <p class="count" id="count"></p>
+    <ol id="list"></ol>
+  </div>
+
+  <div id="chapters">
+    <h2 class="section-h">Chapters</h2>
+    <div class="grid">
+    <article class="card" data-ch="6">
+      <a class="card-main" href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/">
+        <span class="num" aria-hidden="true">06</span>
+        <p class="eyebrow">Chapter 6</p>
+        <h2>Genetics and personality</h2>
+        <p class="is"><em>Persónuleiki og erfðir</em></p>
+        <p class="meta">21 sections · 31 figures</p>
+        <span class="open">Open the recap <span aria-hidden="true">→</span></span>
+      </a>
+      <details class="secs">
+        <summary>Sections</summary>
+        <ol>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-1"><span class="n">6.1</span><span>The human genome <em>Erfðamengi mannsins</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-2"><span class="n">6.2</span><span>Controversy about genes and personality <em>Ágreiningur um gen og persónuleika</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-3"><span class="n">6.3</span><span>Goals of behavioral genetics <em>Markmið Atferliserfðafræði</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-4"><span class="n">6.4</span><span>What heritability is <em>Hvað er arfgengi</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-5"><span class="n">6.5</span><span>What heritability is not <em>Hvað er arfgengi (ekki)</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-6"><span class="n">6.6</span><span>Methods and selective breeding <em>Aðferðir atferliserfðafræðinnar</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-7"><span class="n">6.7</span><span>Family studies <em>Fjölskyldu rannsóknir</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-8"><span class="n">6.8</span><span>Twin studies <em>Tvíburarannsóknir</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-9"><span class="n">6.9</span><span>Adoption studies and twins reared apart <em>Ættleiðingarannsóknir</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-10"><span class="n">6.10</span><span>Summary of methods <em>Samantekt á kostum og göllum</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-11"><span class="n">6.11</span><span>Heritability of personality traits <em>Arfgengi persónuleikaþátta</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-12"><span class="n">6.12</span><span>Attitudes and preferences <em>Viðhorf og forgangsröðun</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-13"><span class="n">6.13</span><span>Sexual orientation (A Closer Look)</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-14"><span class="n">6.14</span><span>Drinking and smoking <em>Neysla áfengis og reykinga</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-15"><span class="n">6.15</span><span>Marriage and satisfaction with life <em>Hvað með hjónabönd?</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-16"><span class="n">6.16</span><span>Molecular genetics <em>Sameindaerfðafræði</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-17"><span class="n">6.17</span><span>Shared versus nonshared environment <em>Áhrif umhverfis: Munur milli eða innan fjölskyldna</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-18"><span class="n">6.18</span><span>Genotype–environment interaction <em>Samvirkni arfgerðar og umhverfis</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-19"><span class="n">6.19</span><span>Genotype–environment correlation <em>Fylgni arfgerðar og umhverfis</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-20"><span class="n">6.20</span><span>Environment and gene expression <em>Áhrif umhverfis á skráningu eða framleiðslu gena</em></span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%206/#s6-21"><span class="n">6.21</span><span>Science, politics and values <em>Atferliserfðafræði, vísindi, pólitík og gildi</em></span></a></li>
+        </ol>
+      </details>
+    </article>
+    <article class="card" data-ch="7">
+      <a class="card-main" href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/">
+        <span class="num" aria-hidden="true">07</span>
+        <p class="eyebrow">Chapter 7</p>
+        <h2>Physiological approaches to personality</h2>
+        <p class="is"><em>Lífeðlisfræði og persónuleiki</em></p>
+        <p class="meta">23 sections · 25 figures</p>
+        <span class="open">Open the recap <span aria-hidden="true">→</span></span>
+      </a>
+      <details class="secs">
+        <summary>Sections</summary>
+        <ol>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-1"><span class="n">7.1</span><span>Physiology and personality: the basic idea</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-2"><span class="n">7.2</span><span>The theoretical bridge</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-3"><span class="n">7.3</span><span>Digit ratio (2D:4D)</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-4"><span class="n">7.4</span><span>Physiological measures: an overview</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-5"><span class="n">7.5</span><span>Skin conductance and cardiovascular activity</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-6"><span class="n">7.6</span><span>Measuring the brain</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-7"><span class="n">7.7</span><span>Hormones, neurotransmitters and other biochemical measures</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-8"><span class="n">7.8</span><span>Physiologically based theories: the map</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-9"><span class="n">7.9</span><span>Eysenck&#x27;s arousal theory of extraversion</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-10"><span class="n">7.10</span><span>Testing Eysenck: arousability and chosen stimulation</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-11"><span class="n">7.11</span><span>Gray&#x27;s reinforcement sensitivity theory</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-12"><span class="n">7.12</span><span>BIS, BAS and Eysenck&#x27;s dimensions</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-13"><span class="n">7.13</span><span>Research on reward and punishment</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-14"><span class="n">7.14</span><span>Sensation seeking: origins</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-15"><span class="n">7.15</span><span>The biological basis: MAO</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-16"><span class="n">7.16</span><span>Sensation seeking and gambling</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-17"><span class="n">7.17</span><span>Neurotransmitters and Cloninger&#x27;s tridimensional model</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-18"><span class="n">7.18</span><span>Genes and levels of explanation</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-19"><span class="n">7.19</span><span>Morningness–eveningness: circadian rhythms</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-20"><span class="n">7.20</span><span>Measuring chronotype and what it predicts</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-21"><span class="n">7.21</span><span>Brain asymmetry and affective style</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-22"><span class="n">7.22</span><span>Meditation and left-hemisphere activity</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%207/#s7-23"><span class="n">7.23</span><span>Summary: two ways to use physiology</span></a></li>
+        </ol>
+      </details>
+    </article>
+    <article class="card" data-ch="11">
+      <a class="card-main" href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/">
+        <span class="num" aria-hidden="true">11</span>
+        <p class="eyebrow">Chapter 11</p>
+        <h2>Cognition and personality</h2>
+        <p class="is"><em>Hugarstarf og persónuleiki</em></p>
+        <p class="meta">15 sections · 22 figures</p>
+        <span class="open">Open the recap <span aria-hidden="true">→</span></span>
+      </a>
+      <details class="secs">
+        <summary>Sections</summary>
+        <ol>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-1"><span class="n">11.1</span><span>Cognition and the cognitive approach</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-2"><span class="n">11.2</span><span>Field dependence and independence: what it is and how it is measured</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-3"><span class="n">11.3</span><span>Field dependence and independence: research and life outcomes</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-4"><span class="n">11.4</span><span>Pain tolerance and reducing/augmenting</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-5"><span class="n">11.5</span><span>Kelly: people as scientists and personal constructs</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-6"><span class="n">11.6</span><span>Kelly: the fundamental postulate and the corollaries</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-7"><span class="n">11.7</span><span>Locus of control and Rotter&#x27;s expectancy model</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-8"><span class="n">11.8</span><span>Locus of control: research and specific expectancies</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-9"><span class="n">11.9</span><span>Learned helplessness</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-10"><span class="n">11.10</span><span>Explanatory (attributional) style</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-11"><span class="n">11.11</span><span>Goals and personal projects</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-12"><span class="n">11.12</span><span>Social understanding, cognitive social learning and self-efficacy</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-13"><span class="n">11.13</span><span>Dweck: the theory of mastery orientation</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-14"><span class="n">11.14</span><span>Higgins: regulatory focus</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2011/#s11-15"><span class="n">11.15</span><span>Mischel&#x27;s cognitive-affective personality system (CAPS)</span></a></li>
+        </ol>
+      </details>
+    </article>
+    <article class="card" data-ch="12">
+      <a class="card-main" href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/">
+        <span class="num" aria-hidden="true">12</span>
+        <p class="eyebrow">Chapter 12</p>
+        <h2>Intelligence</h2>
+        <p class="is"><em>Greind</em></p>
+        <p class="meta">14 sections · 22 figures</p>
+        <span class="open">Open the recap <span aria-hidden="true">→</span></span>
+      </a>
+      <details class="secs">
+        <summary>Sections</summary>
+        <ol>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-1"><span class="n">12.1</span><span>What intelligence is and why it matters</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-2"><span class="n">12.2</span><span>Lay (implicit) and expert (explicit) theories</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-3"><span class="n">12.3</span><span>Intelligence across cultures</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-4"><span class="n">12.4</span><span>The psychometric approach: from Galton to Stanford-Binet</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-5"><span class="n">12.5</span><span>Spearman&#x27;s g and separate abilities</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-6"><span class="n">12.6</span><span>Wechsler, deviation IQ and standard scores</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-7"><span class="n">12.7</span><span>The Wechsler tests: WAIS III and WAIS IV</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-8"><span class="n">12.8</span><span>Cattell: fluid and crystallized intelligence</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-9"><span class="n">12.9</span><span>Hierarchical theories: Vernon and Carroll</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-10"><span class="n">12.10</span><span>Multiple intelligences and emotional intelligence</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-11"><span class="n">12.11</span><span>The cognitive approach and inspection time</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-12"><span class="n">12.12</span><span>The biological approach and family resemblance</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-13"><span class="n">12.13</span><span>Environment and the Flynn effect</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2012/#s12-14"><span class="n">12.14</span><span>Criticism, limitations and open debates</span></a></li>
+        </ol>
+      </details>
+    </article>
+    <article class="card" data-ch="13">
+      <a class="card-main" href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/">
+        <span class="num" aria-hidden="true">13</span>
+        <p class="eyebrow">Chapter 13</p>
+        <h2>Emotion and personality</h2>
+        <p class="is"><em>Geðhrif og persónuleiki</em></p>
+        <p class="meta">14 sections · 16 figures</p>
+        <span class="open">Open the recap <span aria-hidden="true">→</span></span>
+      </a>
+      <details class="secs">
+        <summary>Sections</summary>
+        <ol>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-1"><span class="n">13.1</span><span>What emotions are: components, states and traits</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-2"><span class="n">13.2</span><span>Categorical versus dimensional approach</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-3"><span class="n">13.3</span><span>Content versus style of emotional life</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-4"><span class="n">13.4</span><span>Happiness: definition and measurement</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-5"><span class="n">13.5</span><span>Does happiness lead to success?</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-6"><span class="n">13.6</span><span>Who is happy? Gender, age, ethnicity and nations</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-7"><span class="n">13.7</span><span>Does money make people happy?</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-8"><span class="n">13.8</span><span>Negative emotions: neuroticism and its biology</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-9"><span class="n">13.9</span><span>Neuroticism: cognitive theories, health and attention</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-10"><span class="n">13.10</span><span>Depression</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-11"><span class="n">13.11</span><span>Anger proneness and hostility</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-12"><span class="n">13.12</span><span>Emotional style: affect intensity</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-13"><span class="n">13.13</span><span>How content and style combine</span></a></li>
+          <li><a href="Pers%C3%B3nuleikas%C3%A1lfr%C3%A6%C3%B0i%20Ch%2013/#s13-14"><span class="n">13.14</span><span>Personality and well-being</span></a></li>
+        </ol>
+      </details>
+    </article>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <p>Click a chapter to open its recap, or open <b>Sections</b> to jump straight to a topic. Every recap links back here from its top-left corner.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById('q'), results = document.getElementById('results'),
+      list = document.getElementById('list'), count = document.getElementById('count'),
+      chapters = document.getElementById('chapters');
+  // Search index built from the section lists on the cards, so there is one source of truth.
+  var fold = function (s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[ðđ]/g, 'd').replace(/þ/g, 'th').replace(/æ/g, 'ae').replace(/ö/g, 'o'); };
+  var items = [];
+  document.querySelectorAll('.card').forEach(function (card) {
+    var ch = card.dataset.ch, chTitle = card.querySelector('h2').textContent;
+    card.querySelectorAll('details.secs a').forEach(function (a) {
+      var text = a.lastElementChild.textContent;
+      items.push({ href: a.getAttribute('href'), num: a.querySelector('.n').textContent, ch: ch, chTitle: chTitle,
+                   html: a.lastElementChild.innerHTML, text: text, key: fold(text + ' ' + chTitle) });
+    });
+  });
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function run() {
+    var raw = q.value.trim();
+    if (!raw) { results.hidden = true; chapters.hidden = false; return; }
+    var terms = fold(raw).split(/\s+/).filter(Boolean);
+    var hits = items.filter(function (it) { return terms.every(function (t) { return it.key.indexOf(t) !== -1; }); });
+    count.textContent = hits.length ? hits.length + (hits.length === 1 ? ' section matches' : ' sections match')
+                                    : 'No sections match. Try a shorter word or a name from the book.';
+    list.innerHTML = hits.map(function (it) {
+      return '<li><a href="' + esc(it.href) + '"><span class="n">' + esc(it.num) + '</span><span>' + it.html +
+             '<span class="ch">Chapter ' + esc(it.ch) + ' · ' + esc(it.chTitle) + '</span></span></a></li>';
+    }).join('');
+    list.hidden = !hits.length;
+    results.hidden = false; chapters.hidden = true;
+  }
+  q.addEventListener('input', run);
+  q.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { q.value = ''; run(); }
+    if (e.key === 'Enter') { var first = list.querySelector('a'); if (first) location.href = first.href; }
+  });
+  run();
+})();
+</script>
+</body>
+</html>
