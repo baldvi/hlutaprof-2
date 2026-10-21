@@ -1,0 +1,498 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Persónuleikasálfræði Ch 12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: study notes — each recap section sets text beside the slides and book figures it explains; figures stack under text on phones. */
+:root {
+  /* Theme: same palette and fonts as the course page (templates/course.html). scripts/theme.py copies this block
+     and the font link above into older recap pages. */
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --slide: #4A5A9A;
+  --slide-soft: #E9ECF5;
+  --book: #6B5A80;
+  --book-soft: #EFEBF4;
+  --warn: #855700;
+  --warn-soft: #FAEFD6;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+    --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+  --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 22px; border-bottom: 1px solid var(--line); }
+.top .back { display: inline-block; margin: 0 0 10px; font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+.top .back:hover, .top .back:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top .course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; margin: 0; text-wrap: balance; }
+.top .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 14px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 8px; align-items: center; }
+
+/* chips */
+.tag, .warn, .src { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; white-space: nowrap; font-style: normal; vertical-align: 1px; }
+.tag { background: var(--book-soft); color: var(--book); }
+.warn { background: var(--warn-soft); color: var(--warn); }
+.src.slide { background: var(--slide-soft); color: var(--slide); }
+.src.book { background: var(--book-soft); color: var(--book); }
+.src.key { background: var(--warn-soft); color: var(--warn); }
+.src.drawn { background: var(--line); color: var(--fg); }
+em { color: var(--accent); font-style: italic; }
+
+/* toc */
+details.toc { margin-block: 22px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style-position: inside; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 28px; padding: 0 16px 14px; }
+.toc-h { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-ch ol { list-style: none; margin: 0; padding: 0; }
+.toc-ch a { display: flex; gap: 10px; text-decoration: none; color: var(--fg); padding: 3px 0; font-size: 15.5px; }
+.toc-ch a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .78em; color: var(--muted); min-width: 2.6em; padding-top: .2em; font-variant-numeric: tabular-nums; }
+
+/* chapters */
+.chapter { margin-top: 40px; }
+.ch-head { border-top: 3px solid var(--accent); padding-top: 14px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.ch-head h2 { font-family: var(--f-display); font-weight: 650; font-size: clamp(24px, 3vw, 32px); margin: 4px 0 0; text-wrap: balance; }
+
+.sec { display: grid; gap: 22px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+@media (min-width: 980px) {
+  .sec.has-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); gap: 36px; align-items: start; }
+}
+.text { min-width: 0; max-width: 72ch; }
+.text h3 { font-family: var(--f-display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; display: flex; gap: 6px; text-wrap: balance; }
+.text h3 em { color: inherit; }
+.text .meta { margin: 4px 0 10px; font-size: 14px; color: var(--muted); }
+.text p { margin: .55em 0; }
+.text ul, .text ol { padding-left: 1.25em; margin: .5em 0; }
+.text li { margin: .3em 0; }
+.text li::marker { color: var(--muted); }
+.text strong { font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+
+/* figures */
+.figs { display: grid; gap: 16px; min-width: 0; }
+.fig { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.fig.book .zoom { background: #fffef4; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.zoom img { display: block; width: 100%; height: auto; max-width: 100%; }
+.fig.book .zoom img { max-height: 420px; object-fit: contain; }
+figcaption { padding: 9px 12px 11px; font-size: 14px; line-height: 1.45; color: var(--muted); border-top: 1px solid var(--line); }
+figcaption .src { margin-right: 6px; white-space: normal; }
+
+/* drawn by prof: simple diagrams built from cited points (compare, flow, tree, timeline) */
+.dg { padding: 16px; font-size: 14.5px; line-height: 1.35; }
+.dg-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.dg-box strong { display: block; font-weight: 700; }
+.dg-box.main { background: var(--accent-soft); border-color: var(--accent); }
+.dg.flow { display: grid; gap: 4px; justify-items: stretch; }
+.dg-arrow { text-align: center; color: var(--muted); font-size: 13px; }
+.dg-arrow::before { content: "↓"; display: block; font-size: 18px; line-height: 1.1; color: var(--accent); }
+.dg.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.dg.compare .dg-box { text-align: left; }
+.dg.compare ul { margin: 6px 0 0; padding-left: 1.1em; }
+.dg.tree { display: grid; gap: 10px; }
+.dg.tree .dg-box.main { justify-self: center; min-width: 50%; }
+.dg-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 8px; border-top: 2px solid var(--accent); padding-top: 10px; }
+.dg.timeline { list-style: none; margin: 0; padding: 16px 16px 16px 30px; position: relative; }
+.dg.timeline::before { content: ""; position: absolute; left: 20px; top: 20px; bottom: 20px; width: 2px; background: var(--accent); }
+.dg.timeline li { position: relative; margin: 0 0 10px; }
+.dg.timeline li::before { content: ""; position: absolute; left: -14px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+.sec.hit { background: var(--accent-soft); border-radius: 10px; padding-inline: 16px; box-shadow: inset 4px 0 0 var(--accent); }
+.pointers { margin-top: 26px; padding: 12px 16px; border-left: 3px solid var(--line); color: var(--muted); font-size: 15px; }
+.pointers p { margin: 0; }
+
+/* lightbox */
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1500px); max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(10,14,20,.82); }
+.lb-inner { display: grid; gap: 8px; }
+.lb-inner img { max-width: 100%; max-height: 82vh; width: auto; height: auto; margin: 0 auto; display: block; background: #fff; border-radius: 6px; }
+.lb-cap { display: flex; gap: 12px; align-items: start; justify-content: space-between; color: #e8efed; font-size: 14.5px; }
+.lb-cap .src { flex: none; }
+.lb-close { flex: none; font: 600 14px var(--f-body); background: #e8efed; color: #10201c; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.tag.slides { background: var(--slide-soft); color: var(--slide); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="https://claude.ai/artifact/KFMShGsmGKAQ3WMySjdrQb" target="_blank" rel="noopener">← Course page</a>
+    <p class="course">Persónuleikasálfræði · Personality Psychology</p>
+    <h1>Ch 12 recap: Intelligence</h1>
+    <p class="sub">Built around the teacher's slides (Kafli 12, slides 1–32), with book-only material from Larsen &amp; Buss Ch 12, the Intelligence section (pp. 393–398) that could be tested. Icelandic terms from the slides are in <em>blue italics</em>. Click any figure to enlarge it.</p>
+    <ul class="legend">
+      <li><span class="src slide">Slide 12</span> from the teacher's slides</li>
+      <li><span class="src book">Book Ch 12</span> figure from the book</li>
+      <li><span class="src key">Key slide</span> the teacher's own summary</li>
+      <li><span class="tag">Book only</span> not on the slides</li>
+      <li><span class="tag slides">Slides only</span> not in the book</li>
+      <li><span class="warn">Slides ≠ book</span> the two sources disagree</li>
+    </ul>
+  </header>
+
+  <details class="toc" id="toc" open>
+    <summary>Contents</summary>
+    <div class="toc-grid">
+<div class="toc-ch"><p class="toc-h">Ch 12 · Intelligence</p><ol><li><a href="#s12-1"><span class="n">12.1</span>What intelligence is and why it matters</a></li><li><a href="#s12-2"><span class="n">12.2</span>Lay (implicit) and expert (explicit) theories</a></li><li><a href="#s12-3"><span class="n">12.3</span>Intelligence across cultures</a></li><li><a href="#s12-4"><span class="n">12.4</span>The psychometric approach: from Galton to Stanford-Binet</a></li><li><a href="#s12-5"><span class="n">12.5</span>Spearman's g and separate abilities</a></li><li><a href="#s12-6"><span class="n">12.6</span>Wechsler, deviation IQ and standard scores</a></li><li><a href="#s12-7"><span class="n">12.7</span>The Wechsler tests: WAIS III and WAIS IV</a></li><li><a href="#s12-8"><span class="n">12.8</span>Cattell: fluid and crystallized intelligence</a></li><li><a href="#s12-9"><span class="n">12.9</span>Hierarchical theories: Vernon and Carroll</a></li><li><a href="#s12-10"><span class="n">12.10</span>Multiple intelligences and emotional intelligence</a></li><li><a href="#s12-11"><span class="n">12.11</span>The cognitive approach and inspection time</a></li><li><a href="#s12-12"><span class="n">12.12</span>The biological approach and family resemblance</a></li><li><a href="#s12-13"><span class="n">12.13</span>Environment and the Flynn effect</a></li><li><a href="#s12-14"><span class="n">12.14</span>Criticism, limitations and open debates</a></li></ol></div>
+    </div>
+  </details>
+
+<section class="chapter" id="ch12"><header class="ch-head"><p class="eyebrow">Chapter 12</p><h2>Intelligence (<em>Greind</em>)</h2></header>
+<article class="sec has-figs" id="s12-1"><div class="text"><h3><span class="n">12.1</span>What intelligence is and why it matters</h3><p class="meta">slides 2–3, book: Intelligence, pp. 393–394</p>
+<p><strong>In short:</strong> Intelligence (<em>greind</em>) is a fairly stable trait that is linked to personality and predicts important life outcomes. The book adds that it can be seen either as what you have learned (achievement) or as your ability to learn (aptitude).</p>
+<ul>
+<li><span class="tag slides">Slides only</span> Intelligence is a trait (<em>eiginleiki</em>) that is fairly stable over time. <span class="src slide">slide 2</span></li>
+<li><span class="tag slides">Slides only</span> Intelligence scores correlate with personality (Bartels et al., 2012): with <em>Víðsýni</em> (openness) r = 0.32, with <em>samvinnuþýði</em> (agreeableness) r = 0.21, and with <em>taugaveiklun</em> (neuroticism) r = −0.10. <span class="src slide">slide 2</span></li>
+<li><span class="tag slides">Slides only</span> Together, intelligence and personality explain a large part of the psychological differences between people. <span class="src slide">slide 2</span></li>
+<li><span class="tag slides">Slides only</span> Research shows a negative correlation between intelligence and the likelihood of death, which means that higher intelligence goes with a lower likelihood of death. <span class="src slide">slide 3</span></li>
+<li><span class="tag slides">Slides only</span> Intelligence is a better predictor of job success than parents' socioeconomic status (<em>stéttarstaða</em>, SES) or school performance (Strenze, 2007). <span class="src slide">slide 3</span> Compare Goleman's view, reported in the book, in <a href="#s12-10">12.10</a>: that is a different claim, not a direct contradiction.</li>
+<li><span class="tag slides">Slides only</span> Intelligence matters in many areas: <em>Líkamleg heilsa</em> (physical health), <em>Andleg heilsa</em> (mental health) and <em>Menntun</em> (education). <span class="src slide">slide 3</span></li>
+<li><span class="tag">Book only</span> The <strong>achievement view</strong> defines intelligence as how much knowledge a person has acquired compared with others of the same age. <span class="src book">book p. 393</span></li>
+<li><span class="tag">Book only</span> The <strong>aptitude view</strong> defines intelligence as the ability or aptitude to learn, that is, to become educated. <span class="src book">book p. 393</span></li>
+<li><span class="tag">Book only</span> IQ tests have often been used and interpreted as aptitude measures: for much of the past century they predicted school performance and were used to select people for educational opportunities, and they still are. <span class="src book">book p. 393</span></li>
+<li><span class="tag">Book only</span> In one study of college undergraduates, general intelligence predicted 16 percent of the variability in grades, which is a correlation of about .40 between IQ and grades. <span class="src book">book p. 393</span></li>
+<li><span class="tag">Book only</span> Need for achievement explained a further 11 percent of the variability in grades beyond what IQ explained (Lounsbury et al., 2003). <span class="src book">book pp. 393–394</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-02.jpg" data-cap="Introduction: intelligence as a fairly stable trait, its correlations with openness, agreeableness and neuroticism (Bartels et al., 2012), and that together they explain much of the psychological differences between people" data-srcl="Slide 2 · key slide" aria-label="Enlarge: Introduction: intelligence as a fairly stable trait, its correlations with openness, agreeableness and neuroticism (Bartels et al., 2012), and that together they explain much of the psychological differences between people"><img src="fig/slide-02.jpg" alt="Introduction: intelligence as a fairly stable trait, its correlations with openness, agreeableness and neuroticism (Bartels et al., 2012), and that together they explain much of the psychological differences between people" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 2</span> <span class="src key">Key slide</span> Introduction: intelligence as a fairly stable trait, its correlations with openness, agreeableness and neuroticism (Bartels et al., 2012), and that together they explain much of the psychological differences between people</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-2"><div class="text"><h3><span class="n">12.2</span>Lay (implicit) and expert (explicit) theories</h3><p class="meta">slides 4, 5, 7 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> Ordinary people have their own beliefs about what intelligence is, and these beliefs matter: they can change how well students do and how people rate themselves and their children.</p>
+<ul>
+<li><strong>Implicit theories</strong> (<em>Kenningar leikmanna</em>) are judgements based on lay people's beliefs about what intelligence is. <span class="src slide">slide 4</span></li>
+<li><strong>Explicit theories</strong> (<em>Kenningar fræðimanna</em>) are testable theories of intelligence put forward by researchers. <span class="src slide">slide 4</span></li>
+<li>A person's belief about the nature of intelligence can affect their academic performance (Blackwell et al., 2007; Jones et al., 2009; Shih, 2011). <span class="src slide">slide 5</span></li>
+<li><strong>Incremental theory</strong> (<em>Vaxtarkenning</em>) is the lay belief that intelligence is malleable (<em>mótanleg</em>), that is, it can be changed. <span class="src slide">slide 5</span></li>
+<li><strong>Entity theory</strong> (<em>Heildarkenning</em>) is the lay belief that intelligence is fixed and unchangeable. <span class="src slide">slide 5</span></li>
+</ul>
+<p><strong>Rating your own and your children's intelligence</strong> (Furnham and Valgeirsson, 2007) <span class="src slide">slide 7</span>:</p>
+<ul>
+<li>Men rated their own intelligence higher than women did, by 5.1 IQ points.</li>
+<li>Parents rated sons higher in intelligence than daughters, with a mean difference of 3.8 points.</li>
+<li>Yet few parents agreed with a statement that girls and boys differ in intelligence.</li>
+<li>British and Icelandic parents did not differ, except that the British gave higher ratings in general and agreed more often that IQ tests are good measures, that intelligence is inherited and that there are race differences in intelligence.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-04.jpg" data-cap="Definitions: implicit theories (kenningar leikmanna, lay beliefs) vs explicit theories (kenningar fræðimanna, testable), and cultural differences mainly among lay people" data-srcl="Slide 4 · key slide" aria-label="Enlarge: Definitions: implicit theories (kenningar leikmanna, lay beliefs) vs explicit theories (kenningar fræðimanna, testable), and cultural differences mainly among lay people"><img src="fig/slide-04.jpg" alt="Definitions: implicit theories (kenningar leikmanna, lay beliefs) vs explicit theories (kenningar fræðimanna, testable), and cultural differences mainly among lay people" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 4</span> <span class="src key">Key slide</span> Definitions: implicit theories (kenningar leikmanna, lay beliefs) vs explicit theories (kenningar fræðimanna, testable), and cultural differences mainly among lay people</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-3"><div class="text"><h3><span class="n">12.3</span>Intelligence across cultures</h3><p class="meta">slides 4, 6, book: Intelligence, p. 396</p>
+<p><strong>In short:</strong> What counts as intelligent depends on the culture, so intelligence is best seen as the skills a particular culture values.</p>
+<ul>
+<li><span class="tag slides">Slides only</span> Definitions of intelligence differ between cultures, mainly among lay people. <span class="src slide">slide 4</span></li>
+<li><span class="tag slides">Slides only</span> In <em>Vestræn Menning</em> (Western culture), intelligence means ability in problem solving or acquiring knowledge. <span class="src slide">slide 6</span></li>
+<li><span class="tag slides">Slides only</span> In <em>Afrísk Menning</em> (African culture), social competence and maturity count as part of intelligent functioning. <span class="src slide">slide 6</span></li>
+<li><span class="tag slides">Slides only</span> Examples of such research are a study among the Baoule people in Africa (Dasen, 1984) and a study of American and German children's ideas about intelligence (Kurtz-Costes et al., 2005). <span class="src slide">slide 6</span></li>
+<li><span class="tag">Book only</span> On the islands of Micronesia, the ability to navigate the ocean and other maritime skills are seen as superior forms of intelligence. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Among Inuit who hunt along the shores in kayaks, being able to build a cognitive map of the complex Alaskan shoreline is a valued ability. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Many psychologists define culture partly as the shared notions of what counts as efficient problem solving (Wertsch &amp; Kanner, 1992). <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Western cultures emphasize verbal skills (written and oral) and the mathematical and spatial skills a technologically advanced culture needs, while other cultures may develop a sense of direction, knowledge of animal behaviour or a team approach to problem solving. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Because of this, the book says intelligence should always be viewed as made up of the skills valued in a particular culture. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> As Western culture spreads ("globalization"), some worry the world will become a monoculture with one universally valued form of intelligence; for example, many Europeans speak several languages and see monolingual Americans as "linguistically challenged". <span class="src book">book p. 396</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-06.jpg" data-cap="Cultural differences in lay theories: Western culture (problem solving, acquiring knowledge) vs African culture (social competence and maturity), with example studies (Dasen, 1984; Kurtz-Costes et al., 2005)" data-srcl="Slide 6 · key slide" aria-label="Enlarge: Cultural differences in lay theories: Western culture (problem solving, acquiring knowledge) vs African culture (social competence and maturity), with example studies (Dasen, 1984; Kurtz-Costes et al., 2005)"><img src="fig/slide-06.jpg" alt="Cultural differences in lay theories: Western culture (problem solving, acquiring knowledge) vs African culture (social competence and maturity), with example studies (Dasen, 1984; Kurtz-Costes et al., 2005)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 6</span> <span class="src key">Key slide</span> Cultural differences in lay theories: Western culture (problem solving, acquiring knowledge) vs African culture (social competence and maturity), with example studies (Dasen, 1984; Kurtz-Costes et al., 2005)</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-4"><div class="text"><h3><span class="n">12.4</span>The psychometric approach: from Galton to Stanford-Binet</h3><p class="meta">slides 8–10 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> Psychometrics is about measuring people's characteristics, and intelligence testing grew out of it, from Galton's reaction-time measures to Binet's first intelligence test and Stern's IQ.</p>
+<ul>
+<li><strong>Psychometrics</strong> (<em>Próffræði</em>) is the branch of psychology concerned with measuring people's characteristics. <span class="src slide">slide 8</span></li>
+<li><strong>Francis Galton</strong> studied individual differences in perception and reaction time as an operational definition (<em>aðgerðarbindingu</em>) of intelligent functioning. <span class="src slide">slide 8</span></li>
+<li><strong>James McKeen Cattell</strong> was the first to use the term mental test (<em>Sálfræðilegt próf</em>). <span class="src slide">slide 8</span> Do not confuse him with Raymond Cattell (12.8).</li>
+<li><strong>Alfred Binet</strong>, together with Simon, wrote the first intelligence test. <span class="src slide">slide 8</span></li>
+<li>The slide lists three features of the <strong>Stanford-Binet test</strong>: standardized administration, age-related norms, and use of the intelligence quotient. <span class="src slide">slide 9</span></li>
+<li><strong>Wilhelm Stern</strong> introduced the intelligence quotient (<em>Greindarvísitala</em>, IQ), calculated as IQ = MA/CA × 100. <span class="src slide">slide 9</span></li>
+<li>Slide 10 shows sample items from the Army Alpha ("Test for Literates") and Army Beta ("Test for illiterates and foreign language speakers") tests, with a photo of people taking a test. <span class="src slide">slide 10</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-08.jpg" data-cap="The psychometric approach: psychometrics (próffræði), Galton&#x27;s perception and reaction-time measures, James McKeen Cattell&#x27;s mental test and Binet&#x27;s first intelligence test" data-srcl="Slide 8 · key slide" aria-label="Enlarge: The psychometric approach: psychometrics (próffræði), Galton&#x27;s perception and reaction-time measures, James McKeen Cattell&#x27;s mental test and Binet&#x27;s first intelligence test"><img src="fig/slide-08.jpg" alt="The psychometric approach: psychometrics (próffræði), Galton&#x27;s perception and reaction-time measures, James McKeen Cattell&#x27;s mental test and Binet&#x27;s first intelligence test" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 8</span> <span class="src key">Key slide</span> The psychometric approach: psychometrics (próffræði), Galton&#x27;s perception and reaction-time measures, James McKeen Cattell&#x27;s mental test and Binet&#x27;s first intelligence test</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-10.jpg" data-cap="Sample items from the Army Alpha (test for literates) and Army Beta (test for illiterates and foreign language speakers) tests" data-srcl="Slide 10" aria-label="Enlarge: Sample items from the Army Alpha (test for literates) and Army Beta (test for illiterates and foreign language speakers) tests"><img src="fig/slide-10.jpg" alt="Sample items from the Army Alpha (test for literates) and Army Beta (test for illiterates and foreign language speakers) tests" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 10</span> Sample items from the Army Alpha (test for literates) and Army Beta (test for illiterates and foreign language speakers) tests</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-5"><div class="text"><h3><span class="n">12.5</span>Spearman's g and separate abilities</h3><p class="meta">slide 11, book: Intelligence, p. 394</p>
+<p><strong>In short:</strong> Because scores on very different tests correlate, Spearman argued that one general factor, g, lies behind them all. The book adds that later tests also identified separate abilities, as in the SAT and ACT.</p>
+<ul>
+<li><span class="tag slides">Slides only</span> Charles Spearman proposed his theory of a general intelligence factor (general intelligence, g) in 1927. <span class="src slide">slide 11</span></li>
+<li><span class="tag slides">Slides only</span> Scores on many different intelligence tests correlate with each other; this is called the <em>positive manifold</em>. <span class="src slide">slide 11</span></li>
+<li><span class="tag slides">Slides only</span> The underlying explanation for this shared variation must be a general factor g, which Spearman saw as mental energy (<em>greindar orka</em>). <span class="src slide">slide 11</span></li>
+<li><span class="tag slides">Slides only</span> There are also specific abilities (s) used in particular tasks that the general factor cannot explain. <span class="src slide">slide 11</span></li>
+<li>The book agrees that early psychologists saw intelligence as a single broad trait, often called g, and assumed people differ in how much of it they have. <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> As tests were developed, researchers began to identify separate abilities, such as verbal, memory, perceptual and arithmetic ability. <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> The SAT (Scholastic Aptitude Test) and ACT (American College Test) give multiple scores (e.g., English, Math, Reading, Science, Writing, Reasoning), so they are examples of the separate abilities idea. <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> Many believe the SAT and ACT measure aptitude, but their makers say they measure achievement; in use they predict college grade point average (GPA), so they are used as ability tests. <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> SAT and ACT scores correlate with college GPA in the range of .30, and with general intelligence measures from .48 to .82 depending on the IQ measure (Frey &amp; Detterman, 2003). <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> Since the COVID-19 pandemic many colleges have made the ACT/SAT optional; it is unknown whether this change will be permanent. <span class="src book">book p. 394</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-11.jpg" data-cap="Spearman&#x27;s general intelligence factor g (1927): the positive manifold, g as mental energy (greindar orka), plus specific abilities (s)" data-srcl="Slide 11 · key slide" aria-label="Enlarge: Spearman&#x27;s general intelligence factor g (1927): the positive manifold, g as mental energy (greindar orka), plus specific abilities (s)"><img src="fig/slide-11.jpg" alt="Spearman&#x27;s general intelligence factor g (1927): the positive manifold, g as mental energy (greindar orka), plus specific abilities (s)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 11</span> <span class="src key">Key slide</span> Spearman&#x27;s general intelligence factor g (1927): the positive manifold, g as mental energy (greindar orka), plus specific abilities (s)</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-6"><div class="text"><h3><span class="n">12.6</span>Wechsler, deviation IQ and standard scores</h3><p class="meta">slides 12–14 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> With Wechsler's tests came the deviation IQ: a person's raw score is turned into a standard score on a normal curve with mean 100 and standard deviation 15.</p>
+<ul>
+<li><strong>David Wechsler</strong> defined intelligence as "the global capacity of a person to act purposefully, to think rationally, and to deal effectively with his/her environment". <span class="src slide">slide 12</span></li>
+<li>What was new in Wechsler's tests was that the same items were used to test different age groups, with the items ordered by difficulty (<em>þyngdarröð</em>). <span class="src slide">slide 12</span></li>
+<li><strong>Deviation IQ</strong> (<em>Fráviksgreindarvísitala</em>) is based on the normal distribution: raw scores are converted into standard scores with a mean of 100 and a standard deviation (SD) of 15. <span class="src slide">slide 12</span></li>
+<li>This means, for example, that someone who scores two standard deviations above the mean (130) is at about the 98th percentile (<em>prósenturöð</em>). <span class="src slide">slide 12</span></li>
+</ul>
+<p>The <em>Normalkúrva greindar</em> (normal curve of intelligence) shows how IQ scores are spread <span class="src slide">slide 13</span>:</p>
+<ul>
+<li>34% of people score between 85 and 100, and 34% between 100 and 115.</li>
+<li>14% score between 70 and 85, and 14% between 115 and 130.</li>
+<li>2% score below 70, and 2% above 130.</li>
+</ul>
+<p><em>Staðaltölur normalkúrvu</em> (standard scores of the normal curve) put any score on a common scale <span class="src slide">slide 14</span>:</p>
+<div class="tbl"><table><thead><tr><th>Score</th><th>Mean (M)</th><th>SD</th></tr></thead><tbody>
+<tr><td>Z score</td><td>0</td><td>1</td></tr>
+<tr><td>T score</td><td>50</td><td>10</td></tr>
+<tr><td>IQ score</td><td>100</td><td>15</td></tr>
+<tr><td>Stanines</td><td>5</td><td>2</td></tr>
+</tbody></table></div>
+<p><strong>How to calculate</strong> <span class="src slide">slide 14</span>:</p>
+<ol>
+<li>First find the z score: z = (Xi − x̄)/SD, that is, the person's score minus the mean, divided by the SD.</li>
+<li>Then convert it to the standard score you want: standard score = z × SD of that scale + mean of that scale.</li>
+<li>Example: z = +1 gives an IQ of 1 × 15 + 100 = 115, and z = −1 gives −1 × 15 + 100 = 85.</li>
+</ol></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-12.jpg" data-cap="Wechsler&#x27;s definition and test innovation, and the deviation IQ (fráviksgreindarvísitala): mean 100, SD 15, so 130 is at about the 98th percentile" data-srcl="Slide 12 · key slide" aria-label="Enlarge: Wechsler&#x27;s definition and test innovation, and the deviation IQ (fráviksgreindarvísitala): mean 100, SD 15, so 130 is at about the 98th percentile"><img src="fig/slide-12.jpg" alt="Wechsler&#x27;s definition and test innovation, and the deviation IQ (fráviksgreindarvísitala): mean 100, SD 15, so 130 is at about the 98th percentile" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 12</span> <span class="src key">Key slide</span> Wechsler&#x27;s definition and test innovation, and the deviation IQ (fráviksgreindarvísitala): mean 100, SD 15, so 130 is at about the 98th percentile</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-13.jpg" data-cap="Normal curve of intelligence: 34% of scores between 85 and 100 and between 100 and 115, 14% between 70–85 and 115–130, 2% beyond 70 and 130" data-srcl="Slide 13" aria-label="Enlarge: Normal curve of intelligence: 34% of scores between 85 and 100 and between 100 and 115, 14% between 70–85 and 115–130, 2% beyond 70 and 130"><img src="fig/slide-13.jpg" alt="Normal curve of intelligence: 34% of scores between 85 and 100 and between 100 and 115, 14% between 70–85 and 115–130, 2% beyond 70 and 130" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 13</span> Normal curve of intelligence: 34% of scores between 85 and 100 and between 100 and 115, 14% between 70–85 and 115–130, 2% beyond 70 and 130</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-7"><div class="text"><h3><span class="n">12.7</span>The Wechsler tests: WAIS III and WAIS IV</h3><p class="meta">slides 15–19, book: Intelligence, p. 394</p>
+<p><strong>In short:</strong> Wechsler's tests give many subtest scores, which are grouped into broader scores; WAIS III used a verbal–performance split, and WAIS IV groups the subtests into four indexes under a full scale IQ.</p>
+<p><span class="tag slides">Slides only</span> WAIS III has 14 subtests (<em>undirkvarðar</em>) <span class="src slide">slide 15</span>:</p>
+<div class="tbl"><table><thead><tr><th>#</th><th>Icelandic</th><th>English</th></tr></thead><tbody>
+<tr><td>1</td><td><em>Ófullgerðar myndir</em></td><td>Picture completion</td></tr>
+<tr><td>2</td><td><em>Orðskilningur</em></td><td>Vocabulary</td></tr>
+<tr><td>3</td><td><em>Talnatákn-kóðun</em></td><td>Digit symbol-coding</td></tr>
+<tr><td>4</td><td><em>Líkingar</em></td><td>Similarities</td></tr>
+<tr><td>5</td><td><em>Litafletir</em></td><td>Block design</td></tr>
+<tr><td>6</td><td><em>Reikningur</em></td><td>Arithmetic</td></tr>
+<tr><td>7</td><td><em>Myndræn rökleiðsla</em></td><td>Matrix reasoning</td></tr>
+<tr><td>8</td><td><em>Talnaraðir</em></td><td>Digit span</td></tr>
+<tr><td>9</td><td><em>Þekking</em></td><td>Information</td></tr>
+<tr><td>10</td><td><em>Myndaröðun</em></td><td>Picture arrangement</td></tr>
+<tr><td>11</td><td><em>Skilningur</em></td><td>Comprehension</td></tr>
+<tr><td>12</td><td><em>Táknleit</em></td><td>Symbol search</td></tr>
+<tr><td>13</td><td><em>Stafa og talnaröðun</em></td><td>Letter-number sequencing</td></tr>
+<tr><td>14</td><td><em>Hlutaröðun</em></td><td>Object assembly</td></tr>
+</tbody></table></div>
+<p><span class="tag slides">Slides only</span> WAIS III can be scored in two ways <span class="src slide">slide 16</span>:</p>
+<ul>
+<li><strong>Three-way split</strong> (<em>Þrískipting</em>): <em>Mállegur þáttur</em> (verbal scale: vocabulary, similarities, arithmetic, digit span, information, comprehension); <em>Verklegur þáttur</em> (performance scale: picture completion, digit symbol-coding, block design, matrix reasoning, picture arrangement); and <em>Greindarvísitala</em> (full IQ), the combined score of 11 subtests.</li>
+<li><strong>Four-way split</strong> (<em>Fjórskipting</em>, in line with WAIS IV): <em>Munnlegur skilningur</em> (VCI: vocabulary, similarities, information); <em>Skipulagning skynjunar</em> (PCI: picture completion, block design, matrix reasoning); <em>Vinnsluminni</em> (WMI, working memory: arithmetic, digit span, letter-number sequencing); <em>Vinnsluhraði</em> (PSI, processing speed: digit symbol-coding, symbol search).</li>
+</ul>
+<p><span class="tag slides">Slides only</span> WAIS IV has a full scale IQ (FSIQ) at the top, four subscales or indexes below it, and subtests under each <span class="src slide">slide 17</span>:</p>
+<ul>
+<li>Verbal comprehension: vocabulary, similarities, information, comprehension*.</li>
+<li>Perceptual reasoning: block design, matrix reasoning, visual puzzles, figure weights*, picture completion*.</li>
+<li>Working memory: digit span, arithmetic, letter-number sequencing*.</li>
+<li>Processing speed: symbol search, coding, cancellation*.</li>
+<li>Some subtests are marked with * on the slide; the slide does not explain the mark.</li>
+</ul>
+<ul>
+<li><span class="tag slides">Slides only</span> Two new WAIS IV subtests are shown as examples: visual puzzles (<em>sjón púsl</em>), "Which 3 of these pieces together to make this puzzle?", and figure weights (<em>sjón vigtir</em>), "Which one of these goes here to balance the scale?" <span class="src slide">slides 18–19</span></li>
+<li><span class="tag">Book only</span> The Wechsler Intelligence Scale for Children—Revised (revised in 1991, originally published by Wechsler, 1949) gives 11 subtest scores: six depend on verbal ability and five are nonverbal, such as finding missing elements in a picture and assembling a puzzle. <span class="src book">book p. 394</span></li>
+<li><span class="tag">Book only</span> It also gives two broad scores for verbal and performance intelligence, and psychologists use the multiple scores to see a person's strengths and weaknesses and how the person approaches and solves problems. <span class="src book">book p. 394</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-17.jpg" data-cap="WAIS IV structure: full scale IQ (FSIQ), four indexes (verbal comprehension, perceptual reasoning, working memory, processing speed) and their subtests" data-srcl="Slide 17" aria-label="Enlarge: WAIS IV structure: full scale IQ (FSIQ), four indexes (verbal comprehension, perceptual reasoning, working memory, processing speed) and their subtests"><img src="fig/slide-17.jpg" alt="WAIS IV structure: full scale IQ (FSIQ), four indexes (verbal comprehension, perceptual reasoning, working memory, processing speed) and their subtests" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 17</span> WAIS IV structure: full scale IQ (FSIQ), four indexes (verbal comprehension, perceptual reasoning, working memory, processing speed) and their subtests</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-18.jpg" data-cap="New in WAIS IV: visual puzzles (sjón púsl), pick the 3 pieces that make the puzzle" data-srcl="Slide 18" aria-label="Enlarge: New in WAIS IV: visual puzzles (sjón púsl), pick the 3 pieces that make the puzzle"><img src="fig/slide-18.jpg" alt="New in WAIS IV: visual puzzles (sjón púsl), pick the 3 pieces that make the puzzle" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 18</span> New in WAIS IV: visual puzzles (sjón púsl), pick the 3 pieces that make the puzzle</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-19.jpg" data-cap="New in WAIS IV: figure weights (sjón vigtir), pick the item that balances the scale" data-srcl="Slide 19" aria-label="Enlarge: New in WAIS IV: figure weights (sjón vigtir), pick the item that balances the scale"><img src="fig/slide-19.jpg" alt="New in WAIS IV: figure weights (sjón vigtir), pick the item that balances the scale" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 19</span> New in WAIS IV: figure weights (sjón vigtir), pick the item that balances the scale</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-8"><div class="text"><h3><span class="n">12.8</span>Cattell: fluid and crystallized intelligence</h3><p class="meta">slides 20–21 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> Raymond Cattell split intelligence into two kinds: what you know (crystallized) and how well you reason and learn new things (fluid).</p>
+<ul>
+<li><strong>Raymond Cattell</strong> (1963) proposed a two-factor theory of intelligence. <span class="src slide">slide 20</span></li>
+<li><strong>Crystallized intelligence</strong> (<em>Reynslugreind</em>) is knowledge acquired in school and through experience. <span class="src slide">slide 20</span></li>
+<li><strong>Fluid intelligence</strong> (<em>Eðlisgreind</em>) is the ability to see relations between ideas or things, and the ability to learn new things. <span class="src slide">slide 20</span></li>
+</ul>
+<p>Slide 21 graphs mean T-scores by age (25 to 81) for two abilities, verbal ability and inductive reasoning <span class="src slide">slide 21</span>. The slide prints no values for the points, so only the shape is described here:</p>
+<ul>
+<li>Verbal ability starts lower, rises into middle age and then stays roughly level, dipping only slightly at the oldest ages.</li>
+<li>Inductive reasoning starts higher than verbal ability, declines through adulthood and falls steeply at the oldest ages.</li>
+<li>The two lines meet at about age 60; after that, inductive reasoning is below verbal ability.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-20.jpg" data-cap="Raymond Cattell&#x27;s (1963) two-factor theory: crystallized intelligence (reynslugreind) vs fluid intelligence (eðlisgreind)" data-srcl="Slide 20 · key slide" aria-label="Enlarge: Raymond Cattell&#x27;s (1963) two-factor theory: crystallized intelligence (reynslugreind) vs fluid intelligence (eðlisgreind)"><img src="fig/slide-20.jpg" alt="Raymond Cattell&#x27;s (1963) two-factor theory: crystallized intelligence (reynslugreind) vs fluid intelligence (eðlisgreind)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 20</span> <span class="src key">Key slide</span> Raymond Cattell&#x27;s (1963) two-factor theory: crystallized intelligence (reynslugreind) vs fluid intelligence (eðlisgreind)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-21.jpg" data-cap="Mean T-scores by age: verbal ability stays roughly level after midlife, while inductive reasoning declines, steeply at the oldest ages" data-srcl="Slide 21" aria-label="Enlarge: Mean T-scores by age: verbal ability stays roughly level after midlife, while inductive reasoning declines, steeply at the oldest ages"><img src="fig/slide-21.jpg" alt="Mean T-scores by age: verbal ability stays roughly level after midlife, while inductive reasoning declines, steeply at the oldest ages" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 21</span> Mean T-scores by age: verbal ability stays roughly level after midlife, while inductive reasoning declines, steeply at the oldest ages</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-9"><div class="text"><h3><span class="n">12.9</span>Hierarchical theories: Vernon and Carroll</h3><p class="meta">slides 22–24 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> Hierarchical theories arrange abilities in layers, with g at the top, broad abilities in the middle and many specific abilities at the bottom.</p>
+<ul>
+<li><strong>Hierarchical theories</strong> (<em>Stigveldiskenningar</em>) focus on how the units within a theory are organized. <span class="src slide">slide 22</span></li>
+<li><strong>Philip E. Vernon's</strong> hierarchical theory (1950) puts g at the top; below it come the major group factors labelled v:ed and k:m (plus a branch marked (i)); and below those come more specific abilities, such as creative abilities, reading, spelling, linguistic and clerical abilities, mathematical abilities, spatial abilities, mechanical information, and psychomotor and physical abilities. <span class="src slide">slide 22</span></li>
+<li><strong>John Carroll</strong> (1992) proposed a model of three strata (<em>lög (stratum)</em>) of intelligence. <span class="src slide">slide 23</span></li>
+<li>The <strong>Cattell-Horn-Carroll model</strong> is an integration of three models. <span class="src slide">slide 23</span></li>
+</ul>
+<p>Slides 23 and 24 describe the strata differently, so both are shown here <span class="src slide">slides 23–24</span>:</p>
+<div class="tbl"><table><thead><tr><th>Stratum</th><th>Slide 23 (text)</th><th>Slide 24 (pyramid)</th></tr></thead><tbody>
+<tr><td>I</td><td><em>Lag I</em>: up to 70 narrow abilities (<em>sértæka hæfnisþætti</em>)</td><td>Stratum I: 69 different abilities</td></tr>
+<tr><td>II</td><td><em>Lag II</em>: up to 10 broad abilities (<em>almenna hæfnisþætti</em>)</td><td>Stratum II: 8 broad factors</td></tr>
+<tr><td>g</td><td>"<em>Lag II</em> er almennur greindarþáttur (g)", that is, Lag II is the general intelligence factor</td><td>Stratum III: single factor, g</td></tr>
+</tbody></table></div>
+<ul>
+<li>Slide 23 puts both the broad abilities and g at <em>Lag II</em>, although its own first bullet speaks of three strata; slide 24 puts g at Stratum III. If asked, say which slide you are citing. <span class="src slide">slides 23–24</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-22.jpg" data-cap="Vernon&#x27;s (1950) hierarchy: g at the top, the group factors v:ed and k:m (and a branch marked (i)) below it, then specific abilities" data-srcl="Slide 22" aria-label="Enlarge: Vernon&#x27;s (1950) hierarchy: g at the top, the group factors v:ed and k:m (and a branch marked (i)) below it, then specific abilities"><img src="fig/slide-22.jpg" alt="Vernon&#x27;s (1950) hierarchy: g at the top, the group factors v:ed and k:m (and a branch marked (i)) below it, then specific abilities" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 22</span> Vernon&#x27;s (1950) hierarchy: g at the top, the group factors v:ed and k:m (and a branch marked (i)) below it, then specific abilities</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-23.jpg" data-cap="Carroll&#x27;s (1992) three strata and the Cattell-Horn-Carroll model in the slide&#x27;s wording: Lag I up to 70 narrow abilities, Lag II up to 10 broad abilities, and g also placed at Lag II (compare slide 24)" data-srcl="Slide 23 · key slide" aria-label="Enlarge: Carroll&#x27;s (1992) three strata and the Cattell-Horn-Carroll model in the slide&#x27;s wording: Lag I up to 70 narrow abilities, Lag II up to 10 broad abilities, and g also placed at Lag II (compare slide 24)"><img src="fig/slide-23.jpg" alt="Carroll&#x27;s (1992) three strata and the Cattell-Horn-Carroll model in the slide&#x27;s wording: Lag I up to 70 narrow abilities, Lag II up to 10 broad abilities, and g also placed at Lag II (compare slide 24)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 23</span> <span class="src key">Key slide</span> Carroll&#x27;s (1992) three strata and the Cattell-Horn-Carroll model in the slide&#x27;s wording: Lag I up to 70 narrow abilities, Lag II up to 10 broad abilities, and g also placed at Lag II (compare slide 24)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-24.jpg" data-cap="Carroll&#x27;s three strata: Stratum III a single factor g, Stratum II 8 broad factors, Stratum I 69 different abilities" data-srcl="Slide 24" aria-label="Enlarge: Carroll&#x27;s three strata: Stratum III a single factor g, Stratum II 8 broad factors, Stratum I 69 different abilities"><img src="fig/slide-24.jpg" alt="Carroll&#x27;s three strata: Stratum III a single factor g, Stratum II 8 broad factors, Stratum I 69 different abilities" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 24</span> Carroll&#x27;s three strata: Stratum III a single factor g, Stratum II 8 broad factors, Stratum I 69 different abilities</figcaption></figure></div></article>
+
+<article class="sec" id="s12-10"><div class="text"><h3><span class="n">12.10</span>Multiple intelligences and emotional intelligence</h3><p class="meta">book: Intelligence, pp. 394–396 · <span class="tag">Book only</span></p>
+<p><strong>In short:</strong> Gardner defined intelligence broadly, which leads to many kinds of intelligence, including emotional intelligence; the idea is controversial because the abilities may simply reflect g.</p>
+<ul>
+<li>Gardner (1983) gave a widely accepted definition: intelligence is the application of cognitive skill and knowledge to solve problems, learn and achieve goals that are valued by the individual and the culture. <span class="src book">book p. 394</span></li>
+<li>With such a broad definition there are many kinds of intelligence, beyond the traditional verbal, mathematical and performance distinctions. <span class="src book">book p. 394</span></li>
+<li>Howard Gardner's theory of <strong>multiple intelligences</strong> includes seven forms, for example interpersonal intelligence (social skills, the ability to communicate and get along with others), intrapersonal intelligence (insight into oneself, one's emotions and motives), kinesthetic intelligence (the abilities of athletes, dancers and acrobats) and musical intelligence (Gardner, 1999). <span class="src book">book p. 394</span></li>
+<li><strong>Emotional intelligence</strong> was proposed by Peter Salovey and Jack Mayer (1990) and popularized by journalist Dan Goleman (1995). <span class="src book">book p. 394</span></li>
+<li>It was proposed to explain why some people with a lot of academic intelligence seem to lack practical intelligence, people skills or "street smarts". <span class="src book">book p. 395</span></li>
+<li>Goleman concluded that traditional intelligence measures predict school performance fairly well but do a rather poor job of predicting later life outcomes, such as occupational attainment, salary, professional status and quality of marriage (e.g., Vaillant, 1977); emotional intelligence, he argues, predicts these more strongly. <span class="src book">book p. 395</span> This is Goleman's view as the book reports it; compare <a href="#s12-1">slide 3</a>, which says intelligence predicts job success better than parental SES or school performance (Strenze, 2007). The two are different claims (IQ against SES and grades on the slide; IQ against emotional intelligence for Goleman), so this is not a direct slides-vs-book contradiction.</li>
+</ul>
+<p><strong>The five abilities of emotional intelligence</strong> <span class="src book">book p. 395</span>:</p>
+<ol>
+<li>Awareness of one's own feelings and bodily signals, and the ability to identify and distinguish one's emotions (such as the fear behind anger).</li>
+<li>Managing and regulating emotions, especially negative ones, and managing stress.</li>
+<li>Controlling one's impulses: directing attention and effort, delaying gratification and staying on task.</li>
+<li>Decoding others' social and emotional cues, listening and taking their perspective (empathy).</li>
+<li>Leadership: influencing and guiding others without making them angry or resentful, getting cooperation, negotiating and resolving conflict.</li>
+</ol>
+<ul>
+<li>Gardner's idea is controversial: some researchers think the separate abilities correlate enough (they tend to occur in the same people) to justify a general factor g (e.g., Herrnstein &amp; Murray, 1994; Petrill, 2002; Rammsayer &amp; Brandler, 2002). <span class="src book">book p. 395</span></li>
+<li>Other experts accept a few broad distinctions, such as verbal and mathematical intelligence. <span class="src book">book p. 395</span></li>
+<li>Educators are acting on the idea: some universities consider "noncognitive" measures such as persistence, initiative and conscientiousness alongside SAT scores in admissions (Hoover, 2013), and some schools teach emotional intelligence, offer classes for those high on nonverbal intelligence, or foster character education, a form of civic intelligence. <span class="src book">book pp. 395–396</span></li>
+</ul></div></article>
+
+<article class="sec has-figs" id="s12-11"><div class="text"><h3><span class="n">12.11</span>The cognitive approach and inspection time</h3><p class="meta">slides 25–28, book: Intelligence, p. 397</p>
+<p><strong>In short:</strong> The cognitive approach studies the mental processes behind intelligence in experiments, often by measuring how fast people process information; faster processing goes with higher IQ.</p>
+<ul>
+<li><span class="tag slides">Slides only</span> The <strong>cognitive approach</strong> (<em>Hugræn nálgun í greindarrannsóknum</em>) studies intelligent functioning with experiments that examine cognitive processes. <span class="src slide">slide 25</span></li>
+<li><span class="tag slides">Slides only</span> It is based on reductionism (<em>smættarhyggju</em>). <span class="src slide">slide 25</span></li>
+<li><span class="tag slides">Slides only</span> It focuses on cognitive processes as the basis of intelligent functioning, instead of trying to describe the structure (<em>samsetningu</em>) or organization of intelligence. <span class="src slide">slide 25</span></li>
+</ul>
+<p><span class="tag slides">Slides only</span> Three cognitive views of what intelligence is <span class="src slide">slide 26</span>:</p>
+<ul>
+<li>the speed of neural impulses (<em>hraði taugaboða</em>) (Eysenck, 1986; Vernon, 1987);</li>
+<li>specific neural activity related to intelligent functioning (Hunt, 1976; 1985);</li>
+<li>the ability to keep mental representations active, especially when you are distracted (Engle et al., 1999).</li>
+</ul>
+<p><span class="tag slides">Slides only</span> Reaction time measures (<em>Viðbragðstímamælingar</em>) used in this research <span class="src slide">slide 27</span>:</p>
+<ul>
+<li>simple reaction times (<em>Einfaldir viðbragðstímar</em>);</li>
+<li>choice reaction times (<em>Val-viðbragðstímar</em>);</li>
+<li>lexical identification tasks (<em>Tákndómar</em>);</li>
+<li>inspection times (<em>Skoðunartími</em>).</li>
+</ul>
+<ul>
+<li><strong>Inspection time</strong> is the time a person needs to make a simple discrimination between two displayed objects, for example deciding which of two lines on a screen is longer; it is measured in milliseconds. <span class="src book">book p. 397</span></li>
+<li>Slide 28 shows an inspection-time trial: a fixation cross (cue), then the stimulus (two lines of different length), then a mask, with 30–250 msec between stimulus and mask. <span class="src slide">slide 28</span></li>
+<li><span class="tag">Book only</span> Inspection time is highly related to standard measures of general intelligence (Osmon &amp; Jackson, 2002). <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> It correlates with other measures of perceptual speed and decision reaction time (Jensen, 2011), and these mental speed abilities appear to contribute to higher IQ scores (Johnson &amp; Deary, 2011). <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> Inspection time is also a sensitive leading indicator of the normal cognitive decline that comes with old age (Gregory et al., 2008). <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> A similar measure, discriminating auditory intervals that differ by only a few milliseconds, is also related to general intelligence (Rammsayer &amp; Brandler, 2002). <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> A review of 172 studies (Sheppard &amp; Vernon, 2008) concluded that intelligence correlates with mental speed, with smarter people generally faster on many mental tasks, which suggests that the brain's information processing is more efficient in people high on general intelligence. <span class="src book">book p. 397</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-26.jpg" data-cap="Three cognitive views of intelligence: speed of neural impulses (Eysenck, 1986; Vernon, 1987), specific neural activity (Hunt, 1976; 1985), keeping mental representations active under distraction (Engle et al., 1999)" data-srcl="Slide 26 · key slide" aria-label="Enlarge: Three cognitive views of intelligence: speed of neural impulses (Eysenck, 1986; Vernon, 1987), specific neural activity (Hunt, 1976; 1985), keeping mental representations active under distraction (Engle et al., 1999)"><img src="fig/slide-26.jpg" alt="Three cognitive views of intelligence: speed of neural impulses (Eysenck, 1986; Vernon, 1987), specific neural activity (Hunt, 1976; 1985), keeping mental representations active under distraction (Engle et al., 1999)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 26</span> <span class="src key">Key slide</span> Three cognitive views of intelligence: speed of neural impulses (Eysenck, 1986; Vernon, 1987), specific neural activity (Hunt, 1976; 1985), keeping mental representations active under distraction (Engle et al., 1999)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-28.jpg" data-cap="Inspection-time trial: fixation cross, stimulus (two lines of different length), then a mask after 30–250 msec" data-srcl="Slide 28" aria-label="Enlarge: Inspection-time trial: fixation cross, stimulus (two lines of different length), then a mask after 30–250 msec"><img src="fig/slide-28.jpg" alt="Inspection-time trial: fixation cross, stimulus (two lines of different length), then a mask after 30–250 msec" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 28</span> Inspection-time trial: fixation cross, stimulus (two lines of different length), then a mask after 30–250 msec</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-12"><div class="text"><h3><span class="n">12.12</span>The biological approach and family resemblance</h3><p class="meta">slides 29–30 · <span class="tag slides">Slides only</span></p>
+<p><strong>In short:</strong> Biological research links intelligence to brain activity, efficiency and size, and family data show that resemblance is generally higher for closer genetic relatives, highest of all for identical twins.</p>
+<ul>
+<li>Studies in the <strong>biological approach</strong> (<em>Líffræðileg nálgun á greind</em>) have examined links between brain activity and intelligence using PET, fMRI, EEG and brain weight/thickness. <span class="src slide">slide 29</span></li>
+<li>They have looked at activity in particular brain areas during different cognitive tasks. <span class="src slide">slide 29</span></li>
+<li>Greater efficiency in neural signalling is linked to higher intelligence. <span class="src slide">slide 29</span></li>
+<li>Greater thickness of certain brain areas is linked to higher intelligence. <span class="src slide">slide 29</span></li>
+<li>Intelligence and brain size correlate at r = 0.33. <span class="src slide">slide 29</span></li>
+</ul>
+<p><em>Fylgni eftir skyldleika</em> (correlation by relatedness) graphs the degree of resemblance in intelligence for different relatives <span class="src slide">slide 30</span>:</p>
+<ul>
+<li>The slide prints the number of pairs and the genetic relatedness for each group, but not the bar values, so only the order of the bars is described here.</li>
+<li>Raised in the same household, the bars rise in this order: parents and their adopted children (relatedness 0.0, lowest of all), adopted siblings (0.0), parents and their biological offspring (0.5), biological non-twin siblings (0.5), dizygotic twins (0.5), and monozygotic (identical) twins (1.0, highest of all).</li>
+<li>Raised apart, parents and their biological offspring and biological siblings (both 0.5) have low bars of about the same height, while monozygotic twins raised apart (1.0) have a high bar, higher than dizygotic twins raised together.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-29.jpg" data-cap="The biological approach: brain activity studied with PET, fMRI, EEG and brain weight/thickness; signalling efficiency and thickness of certain areas linked to higher intelligence; r = 0.33 with brain size" data-srcl="Slide 29 · key slide" aria-label="Enlarge: The biological approach: brain activity studied with PET, fMRI, EEG and brain weight/thickness; signalling efficiency and thickness of certain areas linked to higher intelligence; r = 0.33 with brain size"><img src="fig/slide-29.jpg" alt="The biological approach: brain activity studied with PET, fMRI, EEG and brain weight/thickness; signalling efficiency and thickness of certain areas linked to higher intelligence; r = 0.33 with brain size" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 29</span> <span class="src key">Key slide</span> The biological approach: brain activity studied with PET, fMRI, EEG and brain weight/thickness; signalling efficiency and thickness of certain areas linked to higher intelligence; r = 0.33 with brain size</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-30.jpg" data-cap="Degree of resemblance in intelligence by relationship, for relatives raised together and raised apart, with number of pairs and genetic relatedness" data-srcl="Slide 30" aria-label="Enlarge: Degree of resemblance in intelligence by relationship, for relatives raised together and raised apart, with number of pairs and genetic relatedness"><img src="fig/slide-30.jpg" alt="Degree of resemblance in intelligence by relationship, for relatives raised together and raised apart, with number of pairs and genetic relatedness" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 30</span> Degree of resemblance in intelligence by relationship, for relatives raised together and raised apart, with number of pairs and genetic relatedness</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-13"><div class="text"><h3><span class="n">12.13</span>Environment and the Flynn effect</h3><p class="meta">slide 31, book: Intelligence, pp. 396–397</p>
+<p><strong>In short:</strong> Environment may affect intelligence, and average IQ rose for decades (the Flynn effect); the book adds that it has been falling since around 1998 (the reverse Flynn effect).</p>
+<ul>
+<li><span class="tag slides">Slides only</span> Environmental factors (<em>Áhrif umhverfis</em>) such as socioeconomic status (<em>stéttarstaða</em>), within-family factors and breastfeeding (<em>brjóstagjöf</em>) may affect intelligence, but this is unclear. <span class="src slide">slide 31</span></li>
+<li>The <strong>Flynn effect</strong> is the rise in IQ from one generation to the next. <span class="src slide">slide 31</span> <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Average IQ scores around the world rose steadily for several decades, "at the rate of approximately one IQ point every four of five years within populations" (Flynn, 2007, 2012). "Four of five" is printed that way in the book and is probably a typo for "four or five". <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> The effect is named after Flynn, who first documented it (Flynn, 1984), and many others have confirmed it (Shakeel &amp; Peterson, 2022). <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Suggested explanations include better nutrition; Flynn's own explanation is better access to, and quality of, education. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Since around 1998, population IQ has declined, both in specific countries (Teasdale &amp; Owen, 2008) and worldwide (Lynn &amp; Harvey, 2008; Dutton, van der Linden, &amp; Flynn, 2016); this is called the <strong>reverse</strong> or <strong>negative Flynn effect</strong>. <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> The decline worries researchers because a country's average IQ correlates with national well-being: gross domestic product (Gelade, 2008; Hunt &amp; Wittmann, 2008), educational attainment and technological advancement (Rindermann, 2008). <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Lower population IQ has also been linked to juvenile delinquency, adult crime, single parenthood and poverty (Gordon, 1997), and each IQ point lost goes with about $425 less income per year (Zagorsky, 2007). <span class="src book">book p. 396</span></li>
+<li><span class="tag">Book only</span> Lynn and Harvey (2008) attribute the decline to increasing fertility rates, because IQ and fertility are negatively correlated: people with lower IQ scores tend to have more children (Shatz, 2008; Vining, 1982). <span class="src book">book pp. 396–397</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-31.jpg" data-cap="Environmental effects (SES, within-family factors, breastfeeding; unclear) and the Flynn effect, the rise in IQ from one generation to the next" data-srcl="Slide 31 · key slide" aria-label="Enlarge: Environmental effects (SES, within-family factors, breastfeeding; unclear) and the Flynn effect, the rise in IQ from one generation to the next"><img src="fig/slide-31.jpg" alt="Environmental effects (SES, within-family factors, breastfeeding; unclear) and the Flynn effect, the rise in IQ from one generation to the next" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 31</span> <span class="src key">Key slide</span> Environmental effects (SES, within-family factors, breastfeeding; unclear) and the Flynn effect, the rise in IQ from one generation to the next</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s12-14"><div class="text"><h3><span class="n">12.14</span>Criticism, limitations and open debates</h3><p class="meta">slide 32, book: Intelligence and Summary, pp. 397–398</p>
+<p><strong>In short:</strong> IQ tests are criticized for labelling children, for measuring only academic thinking, and for not explaining how thinking works; the book adds that measurement, bias, heritability and group differences are still heated debates.</p>
+<p><span class="tag slides">Slides only</span> <em>Gagnrýni og takmarkanir</em> (criticism and limitations) of intelligence testing <span class="src slide">slide 32</span>:</p>
+<ul>
+<li>Classifying children can create stereotypes and affect their learning opportunities.</li>
+<li>Prediction is limited, because intelligence is not unchangeable.</li>
+<li>Intelligence tests measure only analytical, logical, academic thinking.</li>
+<li>Intelligence tests do not explain cognitive functioning (<em>vitsmunastarf</em>).</li>
+</ul>
+<p><span class="tag">Book only</span> Current debates <span class="src book">book p. 397</span>:</p>
+<ul>
+<li>whether intelligence can be measured accurately;</li>
+<li>whether intelligence measures are biased in favour of the dominant majority group in a culture;</li>
+<li>how heritable intelligence is, and what that implies;</li>
+<li>whether racial groups differ in intelligence, and whether such differences should be read as social class or economic differences.</li>
+</ul>
+<ul>
+<li><span class="tag">Book only</span> These issues are politicized and affect social and government policy, so they generate heated debate; personality psychologists help by doing the research for a scientific approach. <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> Herrnstein and Murray's controversial <i>The Bell Curve</i> (1994) drew direct responses (Fraser, 1995; Jacoby &amp; Glauberman, 1995; Lynn, 2008); alternatives to their position include works by Sternberg (1985), Gardner (1983) and Simonton (1991). <span class="src book">book p. 397</span></li>
+<li><span class="tag">Book only</span> The chapter summary sums up the views covered: intelligence as academic achievement versus an aptitude for learning; a history that began with intelligence as a single general trait and moves today toward a multiple intelligences view; and culture shaping which skills and achievements count as intelligence. <span class="src book">book p. 398</span></li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-32.jpg" data-cap="Criticism and limitations: classifying children (stereotypes, learning opportunities), limited prediction, tests measure only analytical, logical, academic thinking, and they don&#x27;t explain cognitive functioning" data-srcl="Slide 32 · key slide" aria-label="Enlarge: Criticism and limitations: classifying children (stereotypes, learning opportunities), limited prediction, tests measure only analytical, logical, academic thinking, and they don&#x27;t explain cognitive functioning"><img src="fig/slide-32.jpg" alt="Criticism and limitations: classifying children (stereotypes, learning opportunities), limited prediction, tests measure only analytical, logical, academic thinking, and they don&#x27;t explain cognitive functioning" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 32</span> <span class="src key">Key slide</span> Criticism and limitations: classifying children (stereotypes, learning opportunities), limited prediction, tests measure only analytical, logical, academic thinking, and they don&#x27;t explain cognitive functioning</figcaption></figure></div></article>
+<aside class="pointers"><p><strong>Pointers to other chapters</strong> (not studied now): need for achievement, which added to IQ in predicting grades (book pp. 393–394), is covered in Chapter 11. The rest of Ch 12 (field independence, sensory reducing/augmenting, personal constructs, locus of control, learned helplessness, attributional style, goals and cognitive social learning theory) belongs to the other Ch 12 sections. The Big Five traits that correlate with intelligence (slide 2) and the heritability of intelligence (slide 30, book p. 397) belong to the trait and genetics topics of the course.</p></aside>
+</section>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Enlarged figure">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-cap"><div><span class="src" id="lb-src"></span> <span id="lb-text"></span></div><button class="lb-close" id="lb-close" type="button">Close</button></div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'),
+      src = document.getElementById('lb-src'), txt = document.getElementById('lb-text');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.zoom');
+    if (b) {
+      img.src = b.dataset.src; img.alt = b.dataset.cap;
+      src.textContent = b.dataset.srcl; txt.textContent = b.dataset.cap;
+      src.className = 'src ' + (b.closest('.fig').classList.contains('book') ? 'book' : 'slide');
+      if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      return;
+    }
+    if (e.target === lb || e.target.id === 'lb-close') lb.close();
+  });
+  try { if (window.matchMedia('(max-width: 700px)').matches) document.getElementById('toc').open = false; } catch (e) {}
+  // Deep links from grading summaries: #s1-5 opens and highlights section 1.5
+  function go() {
+    var id = (location.hash || '').slice(1), el = id && document.getElementById(id);
+    if (!el) return;
+    document.querySelectorAll('.sec.hit').forEach(function (s) { s.classList.remove('hit'); });
+    el.classList.add('hit');
+    el.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', go);
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  setTimeout(go, 60);
+})();
+</script>
+
+</body></html>

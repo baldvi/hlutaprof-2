@@ -1,0 +1,564 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Persónuleikasálfræði Ch 13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: study notes — each recap section sets text beside the slides and book figures it explains; figures stack under text on phones. */
+:root {
+  /* Theme: same palette and fonts as the course page (templates/course.html). scripts/theme.py copies this block
+     and the font link above into older recap pages. */
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --slide: #4A5A9A;
+  --slide-soft: #E9ECF5;
+  --book: #6B5A80;
+  --book-soft: #EFEBF4;
+  --warn: #855700;
+  --warn-soft: #FAEFD6;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+    --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+  --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 22px; border-bottom: 1px solid var(--line); }
+.top .back { display: inline-block; margin: 0 0 10px; font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+.top .back:hover, .top .back:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top .course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; margin: 0; text-wrap: balance; }
+.top .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 14px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 8px; align-items: center; }
+
+/* chips */
+.tag, .warn, .src { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; white-space: nowrap; font-style: normal; vertical-align: 1px; }
+.tag { background: var(--book-soft); color: var(--book); }
+.warn { background: var(--warn-soft); color: var(--warn); }
+.src.slide { background: var(--slide-soft); color: var(--slide); }
+.src.book { background: var(--book-soft); color: var(--book); }
+.src.key { background: var(--warn-soft); color: var(--warn); }
+.src.drawn { background: var(--line); color: var(--fg); }
+em { color: var(--accent); font-style: italic; }
+
+/* toc */
+details.toc { margin-block: 22px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style-position: inside; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 28px; padding: 0 16px 14px; }
+.toc-h { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-ch ol { list-style: none; margin: 0; padding: 0; }
+.toc-ch a { display: flex; gap: 10px; text-decoration: none; color: var(--fg); padding: 3px 0; font-size: 15.5px; }
+.toc-ch a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .78em; color: var(--muted); min-width: 2.6em; padding-top: .2em; font-variant-numeric: tabular-nums; }
+
+/* chapters */
+.chapter { margin-top: 40px; }
+.ch-head { border-top: 3px solid var(--accent); padding-top: 14px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.ch-head h2 { font-family: var(--f-display); font-weight: 650; font-size: clamp(24px, 3vw, 32px); margin: 4px 0 0; text-wrap: balance; }
+
+.sec { display: grid; gap: 22px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+@media (min-width: 980px) {
+  .sec.has-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); gap: 36px; align-items: start; }
+}
+.text { min-width: 0; max-width: 72ch; }
+.text h3 { font-family: var(--f-display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; display: flex; gap: 6px; text-wrap: balance; }
+.text h3 em { color: inherit; }
+.text .meta { margin: 4px 0 10px; font-size: 14px; color: var(--muted); }
+.text p { margin: .55em 0; }
+.text ul, .text ol { padding-left: 1.25em; margin: .5em 0; }
+.text li { margin: .3em 0; }
+.text li::marker { color: var(--muted); }
+.text strong { font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+
+/* figures */
+.figs { display: grid; gap: 16px; min-width: 0; }
+.fig { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.fig.book .zoom { background: #fffef4; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.zoom img { display: block; width: 100%; height: auto; max-width: 100%; }
+.fig.book .zoom img { max-height: 420px; object-fit: contain; }
+figcaption { padding: 9px 12px 11px; font-size: 14px; line-height: 1.45; color: var(--muted); border-top: 1px solid var(--line); }
+figcaption .src { margin-right: 6px; white-space: normal; }
+
+/* drawn by prof: simple diagrams built from cited points (compare, flow, tree, timeline) */
+.dg { padding: 16px; font-size: 14.5px; line-height: 1.35; }
+.dg-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.dg-box strong { display: block; font-weight: 700; }
+.dg-box.main { background: var(--accent-soft); border-color: var(--accent); }
+.dg.flow { display: grid; gap: 4px; justify-items: stretch; }
+.dg-arrow { text-align: center; color: var(--muted); font-size: 13px; }
+.dg-arrow::before { content: "↓"; display: block; font-size: 18px; line-height: 1.1; color: var(--accent); }
+.dg.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.dg.compare .dg-box { text-align: left; }
+.dg.compare ul { margin: 6px 0 0; padding-left: 1.1em; }
+.dg.tree { display: grid; gap: 10px; }
+.dg.tree .dg-box.main { justify-self: center; min-width: 50%; }
+.dg-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 8px; border-top: 2px solid var(--accent); padding-top: 10px; }
+.dg.timeline { list-style: none; margin: 0; padding: 16px 16px 16px 30px; position: relative; }
+.dg.timeline::before { content: ""; position: absolute; left: 20px; top: 20px; bottom: 20px; width: 2px; background: var(--accent); }
+.dg.timeline li { position: relative; margin: 0 0 10px; }
+.dg.timeline li::before { content: ""; position: absolute; left: -14px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+.sec.hit { background: var(--accent-soft); border-radius: 10px; padding-inline: 16px; box-shadow: inset 4px 0 0 var(--accent); }
+.pointers { margin-top: 26px; padding: 12px 16px; border-left: 3px solid var(--line); color: var(--muted); font-size: 15px; }
+.pointers p { margin: 0; }
+
+/* lightbox */
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1500px); max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(10,14,20,.82); }
+.lb-inner { display: grid; gap: 8px; }
+.lb-inner img { max-width: 100%; max-height: 82vh; width: auto; height: auto; margin: 0 auto; display: block; background: #fff; border-radius: 6px; }
+.lb-cap { display: flex; gap: 12px; align-items: start; justify-content: space-between; color: #e8efed; font-size: 14.5px; }
+.lb-cap .src { flex: none; }
+.lb-close { flex: none; font: 600 14px var(--f-body); background: #e8efed; color: #10201c; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.tag.slides { background: var(--slide-soft); color: var(--slide); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="https://claude.ai/artifact/KFMShGsmGKAQ3WMySjdrQb" target="_blank" rel="noopener">← Course page</a>
+    <p class="course">Persónuleikasálfræði · Personality Psychology</p>
+    <h1>Ch 13 recap: Emotion and personality</h1>
+    <p class="sub">Built around the teacher's slides (slides 1–29), with book-only material from Larsen &amp; Buss, Ch 13 (book pp. 400–435) that could be tested. Icelandic terms from the slides are in <em>blue italics</em>. Names are spelled as in the book; the slides have a few typos for the same names (Lyubormirsky = Lyubomirsky, Augistine = Augustine, lymbic system = limbic system). Click any figure to enlarge it.</p>
+    <ul class="legend">
+      <li><span class="src slide">Slide 12</span> from the teacher's slides</li>
+      <li><span class="src book">Book Ch 13</span> figure from the book</li>
+      <li><span class="src key">Key slide</span> the teacher's own summary</li>
+      <li><span class="tag">Book only</span> not on the slides</li>
+      <li><span class="tag slides">Slides only</span> not in the book</li>
+      <li><span class="warn">Slides ≠ book</span> the two sources disagree</li>
+    </ul>
+  </header>
+
+  <details class="toc" id="toc" open>
+    <summary>Contents</summary>
+    <div class="toc-grid">
+<div class="toc-ch"><p class="toc-h">Ch 13 · Emotion and personality</p><ol><li><a href="#s13-1"><span class="n">13.1</span>What emotions are: components, states and traits</a></li><li><a href="#s13-2"><span class="n">13.2</span>Categorical versus dimensional approach</a></li><li><a href="#s13-3"><span class="n">13.3</span>Content versus style of emotional life</a></li><li><a href="#s13-4"><span class="n">13.4</span>Happiness: definition and measurement</a></li><li><a href="#s13-5"><span class="n">13.5</span>Does happiness lead to success?</a></li><li><a href="#s13-6"><span class="n">13.6</span>Who is happy? Gender, age, ethnicity and nations</a></li><li><a href="#s13-7"><span class="n">13.7</span>Does money make people happy?</a></li><li><a href="#s13-8"><span class="n">13.8</span>Negative emotions: neuroticism and its biology</a></li><li><a href="#s13-9"><span class="n">13.9</span>Neuroticism: cognitive theories, health and attention</a></li><li><a href="#s13-10"><span class="n">13.10</span>Depression</a></li><li><a href="#s13-11"><span class="n">13.11</span>Anger proneness and hostility</a></li><li><a href="#s13-12"><span class="n">13.12</span>Emotional style: affect intensity</a></li><li><a href="#s13-13"><span class="n">13.13</span>How content and style combine</a></li><li><a href="#s13-14"><span class="n">13.14</span>Personality and well-being</a></li></ol></div>
+    </div>
+  </details>
+
+<section class="chapter" id="ch13"><header class="ch-head"><p class="eyebrow">Chapter 13</p><h2>Emotion and personality (<em>Geðhrif og persónuleiki</em>)</h2></header>
+<article class="sec has-figs" id="s13-1"><div class="text"><h3><span class="n">13.1</span>What emotions are: components, states and traits</h3><p class="meta">slides 2–3, book pp. 401–403</p>
+<p><strong>In short:</strong> An emotion (<em>geðhrif</em>) is a package of feelings, bodily changes and urges to act, and the slides add thoughts as a fourth part. Emotions can be studied as passing states or as stable traits, and personality psychology is mostly interested in the trait side.</p>
+<p><strong>The components of an emotion</strong> <span class="warn" title="Slides and book disagree">Slides ≠ book</span></p>
+<p>The slides say emotions have four main parts (<em>Geðhrif felast í fjórum meginþáttum</em>) <span class="src slide">slide 2</span>:</p>
+<ol>
+<li>Individual experiences of feelings or affect (<em>líðan</em>).</li>
+<li>Changes in bodily activity, for example facial reactions, breathing, muscle tension and the nervous system.</li>
+<li>Thoughts and the interpretation of the situation.</li>
+<li>An increased tendency to behave in certain ways (<em>tilhneiging til hegðunar</em>), called action tendencies.</li>
+</ol>
+<ul>
+<li>The book defines emotions by three components only: subjective feelings (affects), bodily changes (mostly in the nervous system), and action tendencies, meaning increases in the probability of certain behaviours. The book's list has no separate "thoughts/interpretation" component <span class="src book">book p. 402</span>.</li>
+<li><span class="tag">Book only</span> The book's example is fear: it brings feelings of anxiety and panic, a faster heart rate, less blood to the digestive system and more blood to the large muscles of the arms and legs. These changes prepare the body for the action tendency of fear, which is to flee or to fight <span class="src book">book pp. 401–402</span>.</li>
+</ul>
+<p><strong>Why personality psychologists care</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>People differ in their emotional reactions even to the same event, for example losing a wallet, so emotions help to tell people apart <span class="src book">book p. 402</span>.</li>
+<li>Some theories stress what emotions are for. Darwin's 1872 book <i>The Expression of the Emotions in Man and Animals</i> gave a <strong>functional analysis</strong>: emotional expressions quickly tell others what is likely to happen, as when a dog bares its teeth before attacking <span class="src book">book p. 402</span>.</li>
+</ul>
+<p><strong>State versus trait</strong> (<em>ástand</em> vs <em>eiginleiki</em>)</p>
+<ul>
+<li>An emotional state is a reaction to outside circumstances, while an emotional trait is a consistent way of reacting across different situations <span class="src slide">slide 3</span>.</li>
+<li>The book adds that emotional states are transitory, have a specific cause and depend more on the situation than on the person, because most people would be angry if treated unfairly <span class="src book">book p. 403</span>.</li>
+<li>An emotional trait is a pattern of emotional reactions that a person shows consistently across a variety of life situations, for example "Mary is cheerful and enthusiastic". Like all traits, it is at least somewhat consistent across situations and at least somewhat stable over time <span class="src book">book p. 403</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-02.jpg" data-cap="The slides&#x27; four main parts of an emotion: feelings or affect, bodily changes, thoughts and interpretation of the situation, and action tendencies (the book lists three, with no separate thoughts part)" data-srcl="Slide 2 · key slide" aria-label="Enlarge: The slides&#x27; four main parts of an emotion: feelings or affect, bodily changes, thoughts and interpretation of the situation, and action tendencies (the book lists three, with no separate thoughts part)"><img src="fig/slide-02.jpg" alt="The slides&#x27; four main parts of an emotion: feelings or affect, bodily changes, thoughts and interpretation of the situation, and action tendencies (the book lists three, with no separate thoughts part)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 2</span> <span class="src key">Key slide</span> The slides' four main parts of an emotion: feelings or affect, bodily changes, thoughts and interpretation of the situation, and action tendencies (the book lists three, with no separate thoughts part)</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-2"><div class="text"><h3><span class="n">13.2</span>Categorical versus dimensional approach</h3><p class="meta">slides 3–8, book pp. 403–406 (Table 13.1, Figure 13.1)</p>
+<p><strong>In short:</strong> One camp looks for a small set of built-in primary emotions, but they disagree on which ones because they use different criteria. The other camp uses factor analysis of people's ratings and consistently finds two dimensions: pleasantness and activation.</p>
+<p><strong>Two ways to think about emotions</strong> (<em>flokkar</em> vs <em>vídd</em>)</p>
+<ul>
+<li>The categorical approach sees emotions as a few distinct basic emotions such as anger, joy and fear; the dimensional approach places emotions along dimensions of how pleasant and how strong they are <span class="src slide">slide 3</span> <span class="src book">book p. 403</span>.</li>
+</ul>
+<p><strong>The categorical approach</strong> (<em>Flokkunarnálgun</em>)</p>
+<ul>
+<li>It tries to identify the main distinct emotions of humans, which are assumed to be built into us <span class="src slide">slide 4</span>.</li>
+<li>There is no shared conclusion about which primary emotions (<em>grunngeðhrif</em>) exist <span class="src slide">slide 4</span> <span class="src book">book p. 403</span>.</li>
+<li>The problem lies in the different criteria that researchers use to define a primary emotion <span class="src slide">slide 4</span> <span class="src book">book p. 403</span>.</li>
+<li><span class="tag">Book only</span> Averill (1975) collected 550 terms for feeling states; categorical researchers try to reduce this variety to a few primary emotions, much as trait research reduced thousands of adjectives to five factors <span class="src book">book p. 403</span>.</li>
+<li><strong>Ekman's</strong> criterion is a distinct facial expression that is recognised across cultures. People blind from birth still frown when sad and smile when happy, which suggests the expressions are not learned. Ekman's list is disgust, sadness, joy, surprise, anger and fear <span class="src book">book p. 403</span>. The same six are in the slide 5 table, and slide 6 shows the six faces <span class="src slide">slides 5–6</span>.</li>
+<li><strong>Izard</strong> (1977) instead defines primary emotions by their motivational properties: fear motivates us to avoid danger, interest motivates us to learn. His criteria give 10 primary emotions <span class="src slide">slide 5</span> <span class="src book">book p. 404</span>.</li>
+</ul>
+<div class="tbl"><table><thead><tr><th>Theorist</th><th>Basic emotions</th><th>Criterion</th></tr></thead><tbody>
+<tr><td>Ekman, Friesen &amp; Ellsworth (1972)</td><td>anger, disgust, fear, joy, sadness, surprise</td><td>universal facial expression</td></tr>
+<tr><td>Frijda (1986)</td><td>desire, happiness, interest, surprise, wonder, sorrow</td><td>motivation to take specific actions</td></tr>
+<tr><td>Gray (1982)</td><td>rage, terror, anxiety, joy</td><td>brain circuits</td></tr>
+<tr><td>Izard (1977)</td><td>anger, contempt, disgust, distress, fear, guilt, interest, joy, shame, surprise</td><td>motivation to take specific actions</td></tr>
+<tr><td>James (1884)</td><td>fear, grief, love, rage</td><td>bodily involvement</td></tr>
+<tr><td>Mower (1960)</td><td>pain, pleasure</td><td>unlearned emotional states</td></tr>
+<tr><td>Oatley &amp; Johnson-Laird (1987)</td><td>anger, disgust, anxiety, happiness, sadness</td><td>little cognitive involvement</td></tr>
+<tr><td>Plutchik (1980)</td><td>anger, acceptance, joy, anticipation, fear, disgust, sadness, surprise</td><td>evolved biological processes</td></tr>
+<tr><td>Tomkins (2008)</td><td>anger, interest, contempt, disgust, fear, joy, shame, surprise</td><td>density of neural firing</td></tr>
+</tbody></table></div>
+<p class="meta"><span class="src slide">slide 5</span> labelled "Table 14.1" from an older edition; <span class="src book">book Table 13.1, p. 405</span> same content; adapted from Ortony and Turner (1990)</p>
+<p><strong>The dimensional approach</strong> (<em>Víddarnálgun</em>)</p>
+<ul>
+<li>It is based on empirical research rather than theoretical criteria <span class="src slide">slide 7</span> <span class="src book">book p. 404</span>.</li>
+<li>People fill in questionnaires rating how much they experience many different feelings, and factor analysis (<em>Þáttagreiningu</em>) is used to find the dimensions underneath <span class="src slide">slide 7</span> <span class="src book">book p. 404</span>.</li>
+<li>There is remarkable consensus on the result: two main dimensions (<em>Tveir meginþættir geðhrifa</em>), namely pleasant versus unpleasant and high versus low activation (arousal) <span class="src slide">slide 8</span> <span class="src book">book p. 404</span>.</li>
+<li>When the two dimensions are drawn as axes, the emotion words fall in a circle around them, which is sometimes called the <strong>circumplex model</strong> of emotion <span class="src slide">slide 8</span> <span class="src book">book p. 405, Figure 13.1</span>.</li>
+<li>So every feeling is a mix of pleasantness and arousal. Unpleasant high-arousal feelings include distressed, anxious, annoyed and hostile (the "negative affect" corner); pleasant high-arousal feelings include elated, excited, lively and enthusiastic (the "positive affect" corner); low-arousal feelings are bored and sluggish (unpleasant) or relaxed and calm (pleasant) <span class="src slide">slide 8</span> <span class="src book">book p. 405, Figure 13.1</span>.</li>
+<li><span class="tag">Book only</span> Some researchers still prefer categories, because anger and anxiety are both high-arousal unpleasant emotions yet have different facial expressions, feelings and action tendencies <span class="src book">book p. 406</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-08.jpg" data-cap="The two dimensions of emotion: pleasant–unpleasant and high–low activation, with emotion words arranged in a circle (circumplex)" data-srcl="Slide 8" aria-label="Enlarge: The two dimensions of emotion: pleasant–unpleasant and high–low activation, with emotion words arranged in a circle (circumplex)"><img src="fig/slide-08.jpg" alt="The two dimensions of emotion: pleasant–unpleasant and high–low activation, with emotion words arranged in a circle (circumplex)" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 8</span> The two dimensions of emotion: pleasant–unpleasant and high–low activation, with emotion words arranged in a circle (circumplex)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-06.jpg" data-cap="Ekman's basic emotions (Ekman et al., 1972): six facial expressions recognised across cultures" data-srcl="Slide 6" aria-label="Enlarge: Ekman's basic emotions (Ekman et al., 1972): six facial expressions recognised across cultures"><img src="fig/slide-06.jpg" alt="Ekman's basic emotions (Ekman et al., 1972): six facial expressions recognised across cultures" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 6</span> Ekman's basic emotions (Ekman et al., 1972): six facial expressions recognised across cultures</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-3"><div class="text"><h3><span class="n">13.3</span>Content versus style of emotional life</h3><p class="meta">slide 9, book pp. 406, 429</p>
+<p><strong>In short:</strong> Content is <i>what</i> emotions a person tends to have; style is <i>how</i> they experience them. Both behave like traits.</p>
+<ul>
+<li><strong>Content</strong> (<em>innihald</em>) refers to which emotions a person experiences <span class="src slide">slide 9</span> <span class="src book">book p. 406</span>. Calling someone cheerful describes content <span class="src book">book p. 406</span>.</li>
+<li><strong>Style</strong> (<em>stíll</em>) refers to how a person experiences emotions <span class="src slide">slide 9</span> <span class="src book">book p. 406</span>. Calling someone high on mood variability describes style, because it says their emotions change often <span class="src book">book p. 406</span>.</li>
+<li>Both content and style can be defined as traits of emotional experience, because each shows a tendency to be stable over time and stable across situations <span class="src slide">slide 9</span> <span class="src book">book p. 406</span>.</li>
+<li>The book sums it up: content is the <i>what</i> of emotional life and style is the <i>how</i> <span class="src book">book p. 429</span>.</li>
+<li>The chapter's emotional content covers four emotional traits: happiness, anxiety, depression and anger <span class="src book">book p. 429</span>. The main stylistic trait is affect intensity (see 13.12).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-09.jpg" data-cap="Content (which emotions a person experiences) versus style (how they experience them); both are traits, stable over time and across situations" data-srcl="Slide 9 · key slide" aria-label="Enlarge: Content (which emotions a person experiences) versus style (how they experience them); both are traits, stable over time and across situations"><img src="fig/slide-09.jpg" alt="Content (which emotions a person experiences) versus style (how they experience them); both are traits, stable over time and across situations" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 9</span> <span class="src key">Key slide</span> Content (which emotions a person experiences) versus style (how they experience them); both are traits, stable over time and across situations</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-4"><div class="text"><h3><span class="n">13.4</span>Happiness: definition and measurement</h3><p class="meta">slides 10–11, book pp. 406–409 (Table 13.2)</p>
+<p><strong>In short:</strong> Happiness, the main pleasant emotional trait, is defined in two ways: judging one's life as satisfying, and having more positive than negative emotions. Self-reports of happiness look valid, because they agree with other kinds of evidence.</p>
+<p><strong>Two definitions</strong> (<em>Jákvæð geðhrif: Hamingja og lífsánægja</em>)</p>
+<p>Researchers have defined happiness in two ways <span class="src slide">slide 10</span> <span class="src book">book pp. 407–408</span>:</p>
+<ol>
+<li>People's judgement that life is satisfying. The book calls this the cognitive <strong>life-satisfaction component</strong>: judging that one's life has purpose and meaning.</li>
+<li>Experiencing more positive than negative emotions. The book calls this the affective <strong>hedonic component</strong>: the balance of positive to negative emotions over time.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> The two components are highly correlated, so most psychologists simply speak of happiness <span class="src book">book p. 408</span>.</li>
+<li><span class="tag">Book only</span> In lists of primary emotions, happiness or joy is usually the only pleasant emotion <span class="src book">book p. 406</span>.</li>
+</ul>
+<p><strong>Ideas about where happiness comes from</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Aristotle: happiness is the supreme good and comes from living a virtuous life; modern researchers who stress <strong>eudaimonia</strong>, a life of meaning and purpose, follow him <span class="src book">book p. 407</span>.</li>
+<li>Rousseau: happiness comes from satisfying one's desires and pursuing pleasure <span class="src book">book p. 407</span>.</li>
+<li>William James: happiness is the ratio of accomplishments to aspirations, so you can raise it by accomplishing more or by lowering your aspirations <span class="src book">book p. 407</span>.</li>
+<li>Psychologists began the serious study of happiness, also called <strong>subjective well-being</strong>, in the mid-1970s <span class="src book">book p. 407</span>.</li>
+</ul>
+<p><strong>Measuring happiness</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Because happiness is subjective, it is measured mostly by self-report questionnaires <span class="src book">book p. 407</span>.</li>
+<li>Fordyce (1978) asks what percent of the time over the past six months you were happy, neutral and unhappy. College students average about 65% happy, 15% neutral and 20% unhappy (Larsen &amp; Diener, 1985) <span class="src book">book p. 407</span>.</li>
+<li>The Satisfaction with Life Scale (Diener et al., 1985) has five statements, such as "I am satisfied with my life", rated from 1 (strong disagreement) to 6 (strong agreement) <span class="src book">book p. 409, Table 13.2</span>.</li>
+</ul>
+<p><strong>Are happy people fooling themselves?</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Happiness scores do correlate with social desirability, and social desirability also correlates with peer reports of happiness. This suggests that part of being happy is having <strong>positive illusions</strong>, a somewhat inflated positive view of oneself (Taylor) <span class="src book">book p. 408</span>.</li>
+<li>Some positive illusions help, but too much self-deception has negative effects (Schutz &amp; Baumeister, 2017) <span class="src book">book p. 408</span>.</li>
+<li>Self-reports still look valid: friends and family agree with them, happy people's diaries contain more pleasant experiences, clinicians agree on who is happy, and in Seidlitz and Diener's (1993) study happy people recalled more pleasant and fewer unpleasant events <span class="src book">book p. 408</span>.</li>
+</ul>
+<p><strong>What happy people are like</strong> (<em>Hamingja og vellíðan</em>)</p>
+<ul>
+<li>Survey results on happiness and well-being (<em>vellíðan</em>) relate to other parts of life in the way we would expect <span class="src slide">slide 11</span> <span class="src book">book p. 408</span>.</li>
+<li>Compared with unhappy people, happy people are less likely to be rude or hostile, and they report fewer health complaints <span class="src slide">slide 11</span> <span class="src book">book p. 408</span>.</li>
+<li>They are more helpful, more energetic and more creative, and they find social interaction easier <span class="src slide">slide 11</span> <span class="src book">book p. 408</span>.</li>
+<li><span class="tag">Book only</span> The book also lists that happy people are less self-focused and more cooperative, forgiving and trusting <span class="src book">book p. 408</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-10.jpg" data-cap="The two definitions of happiness: judging that life is satisfying, and experiencing more positive than negative emotions" data-srcl="Slide 10 · key slide" aria-label="Enlarge: The two definitions of happiness: judging that life is satisfying, and experiencing more positive than negative emotions"><img src="fig/slide-10.jpg" alt="The two definitions of happiness: judging that life is satisfying, and experiencing more positive than negative emotions" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 10</span> <span class="src key">Key slide</span> The two definitions of happiness: judging that life is satisfying, and experiencing more positive than negative emotions</figcaption></figure></div></article>
+
+<article class="sec" id="s13-5"><div class="text"><h3><span class="n">13.5</span>Does happiness lead to success?</h3><p class="meta">slide 12, book pp. 408–410</p>
+<p><strong>In short:</strong> Happiness goes with many good outcomes. A large meta-analysis suggests that happiness often comes <i>before</i> success, not just after it, and some links run both ways.</p>
+<ul>
+<li><span class="tag">Book only</span> Happiness correlates with good outcomes such as marriage quality, longevity, self-esteem and job satisfaction, and researchers usually assumed success causes happiness <span class="src book">book pp. 408–409</span>.</li>
+<li>The question of causal direction (<em>orsakasamhengið</em>): does success lead to happiness, or does happiness lead to success? <span class="src slide">slide 12</span> <span class="src book">book p. 409</span></li>
+<li>A meta-analysis (<em>Safn-rannsókn</em>) by Lyubomirsky and colleagues (2005) suggests that happiness comes before success <span class="src slide">slide 12</span> <span class="src book">book p. 409</span>.</li>
+<li><span class="tag slides">Slides only</span> The slide gives the number of studies as 225; the book only calls it "an extremely large meta-analysis" <span class="src slide">slide 12</span>.</li>
+</ul>
+<p><span class="tag">Book only</span> Two kinds of study can show the direction <span class="src book">book p. 409</span>:</p>
+<ol>
+<li>Longitudinal studies measure people at least twice. If happiness comes first and success later, causality may run from happiness to success.</li>
+<li>Experiments put half the sample in a good mood and compare an outcome with a control group.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> Longitudinal studies showed happiness comes before fulfilling work, satisfying relationships, better mental and physical health and longevity. Experiments showed happiness leads to more helping, wanting to be with others, higher self-esteem and liking of others, better immune function and better conflict resolution <span class="src book">book p. 409</span>.</li>
+<li><span class="tag">Book only</span> <strong>Reciprocal causality</strong> means causality flows both ways: happy people help more, and helping also makes people happier <span class="src book">book pp. 409–410</span>.</li>
+</ul></div></article>
+
+<article class="sec has-figs" id="s13-6"><div class="text"><h3><span class="n">13.6</span>Who is happy? Gender, age, ethnicity and nations</h3><p class="meta">slides 13–14, book pp. 410–412 (Table 13.3)</p>
+<p><strong>In short:</strong> Men and women, young and old, and different ethnic groups are about equally happy, though the reasons can differ by age. Nations do differ: richer countries are happier.</p>
+<ul>
+<li>There is no gender difference in happiness or life satisfaction <span class="src slide">slide 13</span> <span class="src book">book p. 410</span>.</li>
+<li><span class="tag">Book only</span> Haring, Stock and Okun (1984) analysed 146 studies and found gender explained less than 1% of the variation; Michalos (1991) found the same in 18,032 students from 39 countries <span class="src book">book p. 410</span>.</li>
+<li>There is no difference in happiness between life stages, but the reasons for happiness may differ <span class="src slide">slide 13</span> <span class="src book">book pp. 410–411</span>:
+<ul>
+<li>Young people: success at school and work <span class="src slide">slide 13</span>. The book also names satisfying intimate relationships <span class="src book">book p. 410</span>.</li>
+<li>Older people: finances and health <span class="src slide">slide 13</span> <span class="src book">book p. 410</span>.</li>
+</ul></li>
+<li><span class="tag">Book only</span> The age finding comes from Inglehart (1990), who studied 169,776 people in 16 nations <span class="src book">book p. 410</span>. Healthy older people report less negative emotion than younger people, perhaps because of better emotion management (Carstensen et al., 2011) <span class="src book">book p. 411</span>.</li>
+<li><span class="tag">Book only</span> Ethnic group membership is unrelated to subjective well-being (Myers &amp; Diener). Crocker and Major (1989) suggest disadvantaged groups keep their happiness by valuing what they are good at and comparing themselves with their own group <span class="src book">book p. 411</span>.</li>
+<li>Nations do differ <span class="src book">book p. 411</span>. <span class="tag slides">Slides only</span> Slide 14 shows two rankings that are not in the 8th-edition book: an older table of country scores of average subjective well-being (Diener, Diener &amp; Diener, 1995; labelled "Table 14.3" from an older edition), with Iceland at the top (1.11), and the World Happiness Report 2024 ranking by life evaluations in 2021–2023, with Finland, Denmark and Iceland as the top three <span class="src slide">slide 14</span>.</li>
+<li>The book's own Table 13.3 is a different table: UN data on the 20 happiest and 20 least happy countries. The constant finding is that countries with a higher standard of living and more wealth are happier <span class="src book">book pp. 411–412</span>. The book is inconsistent about its date: the text calls it the UN's 2022 report <span class="src book">book p. 411</span>, while the table caption says "based on 2019–21" and the source line says "World Happiness Report, 2019" <span class="src book">book p. 412</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-14.jpg" data-cap="Country rankings of average well-being: Diener, Diener &amp; Diener (1995), labelled Table 14.3 from an older edition, on the left; World Happiness Report 2024 (2021–2023) on the right. Not the book's Table 13.3" data-srcl="Slide 14" aria-label="Enlarge: Country rankings of average well-being"><img src="fig/slide-14.jpg" alt="Country rankings of average well-being: Diener, Diener and Diener (1995) and World Happiness Report 2024" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 14</span> Country rankings of average well-being: Diener, Diener &amp; Diener (1995), labelled "Table 14.3" from an older edition, on the left; World Happiness Report 2024 (2021–2023) on the right. Not the book's Table 13.3.</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-7"><div class="text"><h3><span class="n">13.7</span>Does money make people happy?</h3><p class="meta">slides 15–16, book pp. 411, 413–415 (A Closer Look, Figure 13.2)</p>
+<p><strong>In short:</strong> Rich countries are happier than poor ones, but that may be due to third variables. Within a country, more money matters mainly when people are poor, and rising national income has not made people happier over time.</p>
+<p><strong>Between nations</strong></p>
+<ul>
+<li>Life satisfaction (<em>lífsánægja</em>) is higher in rich than in poor countries <span class="src slide">slide 15</span> <span class="src book">book p. 413</span>.</li>
+<li>The correlation between life-satisfaction scores and gross national income (<em>verga þjóðartekna</em>) was 0.67 <span class="src slide">slide 15</span>. The book gives +.67 for a nation's well-being score and its gross national product adjusted for population size (Myers &amp; Diener, 1995) <span class="src book">book p. 413</span>.</li>
+<li>Third-variable effects (<em>Þriðju breytu áhrif</em>): national wealth goes together with other things that raise well-being, so wealth itself may not be the cause. The slide asks about the health system, education and human rights <span class="src slide">slide 15</span>. The book lists health care services, civil rights, women's rights, care for the elderly and education <span class="src book">book p. 413</span>.</li>
+</ul>
+<p><strong>Within countries</strong> <span class="warn" title="Slides and book disagree">Slides ≠ book</span></p>
+<ul>
+<li>The slide says the correlation between happiness and finances is present only in poor countries <span class="src slide">slide 15</span>.</li>
+<li>The book says that in very poor countries, such as Bangladesh and India, financial status is a moderately good predictor of well-being (Diener &amp; Diener, 1995), while in countries with a higher standard of living income has a "surprisingly weak (virtually negligible) effect" (Inglehart, 1990) <span class="src book">book p. 413</span>.</li>
+<li>The book still reports small correlations that are "not zero": personal income and happiness +.12 in the United States (Diener and colleagues, 2010) and .20 in a German sample (Lucas &amp; Schimmack, 2009), .19 between median hourly wage and happiness in U.S. data from 1972 to 2004 (Fischer, 2008), and .11 between income and happiness in the 2022 UN report <span class="src book">book pp. 413–414</span>.</li>
+<li>Both agree that money matters most when people are poor. <span class="tag">Book only</span> The book explains this with a threshold of income: below it a person is very unlikely to be happy, but above it more money adds little <span class="src book">book p. 413</span>.</li>
+</ul>
+<p><strong>Over time: the Easterlin paradox</strong></p>
+<ul>
+<li>Slide 16 is the book's Figure 13.2: U.S. per-person after-tax income (in 1990 dollars) and the percentage describing themselves as "very happy", by year <span class="src slide">slide 16</span> <span class="src book">book p. 414, Figure 13.2</span>. The book's text says what it shows: a large increase in personal income, while the share who call themselves very happy stayed fairly constant <span class="src book">book p. 413</span>.</li>
+<li><span class="tag">Book only</span> From 1957 to the late 1990s, average after-tax income more than doubled (from $8,000 to $20,000 in 1990 dollars), yet the share of "very happy" Americans stayed around 30 percent <span class="src book">book p. 413</span>.</li>
+<li><span class="tag">Book only</span> The <strong>Easterlin paradox</strong> (Easterlin, 1974): at any one time, happiness varies with income across nations, but over time within a country, happiness does not rise as income rises <span class="src book">book p. 413</span>.</li>
+</ul>
+<p><strong>Other money findings</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Lottery winners were no happier than controls within six months of winning (Brickman, Coates &amp; Janoff-Bulman, 1978), which shows that external circumstances have a surprisingly small effect on happiness <span class="src book">book p. 414</span>.</li>
+<li>Spending money on others raises happiness more than spending the same amount on oneself (Dunn, Aknin &amp; Norton, 2008). Using data from 136 countries, Aknin et al. (2013) and Kushlev, Radosic and Diener (2021) showed that this <strong>pro-social spending</strong> may be universally rewarding <span class="src book">book pp. 414–415</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-15.jpg" data-cap="Money and happiness: life satisfaction is higher in rich countries (correlation 0.67 with gross national income), possible third variables, and the slide&#x27;s claim that happiness and finances are linked only in poor countries" data-srcl="Slide 15 · key slide" aria-label="Enlarge: Money and happiness: life satisfaction is higher in rich countries (correlation 0.67 with gross national income), possible third variables, and the slide&#x27;s claim that happiness and finances are linked only in poor countries"><img src="fig/slide-15.jpg" alt="Money and happiness: life satisfaction is higher in rich countries (correlation 0.67 with gross national income), possible third variables, and the slide&#x27;s claim that happiness and finances are linked only in poor countries" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 15</span> <span class="src key">Key slide</span> Money and happiness: life satisfaction is higher in rich countries (correlation 0.67 with gross national income), possible third variables, and the slide's claim that happiness and finances are linked only in poor countries</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-16.jpg" data-cap="U.S. per-person after-tax income (1990 dollars) and the percentage describing themselves as very happy, by year. The book: income rose a lot while the share very happy stayed fairly constant (book p. 413)" data-srcl="Slide 16" aria-label="Enlarge: U.S. per-person income and the percentage very happy, by year"><img src="fig/slide-16.jpg" alt="Line chart of U.S. per-person after-tax income and the percentage describing themselves as very happy, by year" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 16</span> U.S. per-person after-tax income (1990 dollars) and the percentage describing themselves as very happy, by year (book Figure 13.2). The book: income rose a lot while the share very happy stayed fairly constant (book p. 413).</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-8"><div class="text"><h3><span class="n">13.8</span>Negative emotions: neuroticism and its biology</h3><p class="meta">slides 17–18, book pp. 419–421</p>
+<p><strong>In short:</strong> Frequent negative emotion is tied to the trait of neuroticism. Eysenck traced it to an easily activated limbic system and argued for a biological basis because neuroticism is stable, universal and heritable.</p>
+<ul>
+<li><span class="tag">Book only</span> Unpleasant emotions come in several distinct kinds; the book covers three with dispositional qualities: anxiety, depression and anger <span class="src book">book p. 419</span>.</li>
+<li>Experiencing negative emotions is linked to the personality trait neuroticism/negative affect (<em>Taugaveiklun/neikvæðar tilfinningar</em>) <span class="src slide">slide 17</span> <span class="src book">book p. 419</span>.</li>
+<li><span class="tag">Book only</span> Other names for it are emotional instability, anxiety-proneness and negative affectivity <span class="src book">book p. 420</span>.</li>
+<li>A person high on neuroticism is moody, touchy, irritable, anxious, pessimistic and complaining <span class="src slide">slide 17</span> <span class="src book">book p. 420</span>.</li>
+<li><span class="tag">Book only</span> Eysenck said high scorers overreact to unpleasant events and take longer to return to normal after being upset; they also worry a lot and get irritated often <span class="src book">book p. 420</span>.</li>
+</ul>
+<p><strong>Eysenck's biological theory</strong></p>
+<ul>
+<li>According to Eysenck (1967; 1990), the basis of neuroticism lies in the limbic system (<em>Randkerfinu</em>) <span class="src slide">slide 17</span> <span class="src book">book p. 420</span>.</li>
+<li><span class="tag">Book only</span> The limbic system handles emotion and the fight-or-flight reaction. If it is easily activated, the person often feels flight emotions (anxiety, fear, worry) or fight emotions (anger, irritation, annoyance) <span class="src book">book p. 420</span>.</li>
+</ul>
+<p>Three arguments support a biological basis <span class="src slide">slide 18</span> <span class="src book">book p. 420</span>:</p>
+<ol>
+<li>Neuroticism is stable over time. The slide cites Soldz and Vaillant (1999); the book cites Conley, who found a high test-retest correlation after 45 years.</li>
+<li>Neuroticism is one of the major dimensions of personality, found across data sources and cultures.</li>
+<li>Heredity explains part of how people vary on neuroticism.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> Trait negative affect is fairly heritable, while trait positive affect shows a significant shared-environment component; what is inherited is probably differences in neurotransmitter function <span class="src book">book p. 420</span>.</li>
+</ul>
+<p><strong>Brain findings</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Emotion is linked to increased activity in the anterior cingulate cortex <span class="src book">book p. 421</span>.</li>
+<li>Neuroticism correlates with the volume of brain regions involved in threat and punishment, and with larger and thicker prefrontal regions that regulate negative emotion <span class="src book">book p. 421</span>.</li>
+<li>When asked to dampen their reactions to unpleasant images, high-neuroticism people showed more prefrontal activity, as if working harder to regulate (Harenski, Kim &amp; Hamann, 2009) <span class="src book">book p. 421</span>.</li>
+<li>High-neuroticism people show slower recovery of amygdala activity after unpleasant images, so their negative emotions last longer (Schuyler et al., 2014) <span class="src book">book p. 421</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-17.jpg" data-cap="Negative emotion and neuroticism: what high scorers are like, and Eysenck&#x27;s theory that neuroticism is rooted in the limbic system" data-srcl="Slide 17 · key slide" aria-label="Enlarge: Negative emotion and neuroticism: what high scorers are like, and Eysenck&#x27;s theory that neuroticism is rooted in the limbic system"><img src="fig/slide-17.jpg" alt="Negative emotion and neuroticism: what high scorers are like, and Eysenck&#x27;s theory that neuroticism is rooted in the limbic system" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 17</span> <span class="src key">Key slide</span> Negative emotion and neuroticism: what high scorers are like, and Eysenck's theory that neuroticism is rooted in the limbic system</figcaption></figure></div></article>
+
+<article class="sec" id="s13-9"><div class="text"><h3><span class="n">13.9</span>Neuroticism: cognitive theories, health and attention</h3><p class="meta">slides 19–20, book pp. 421–424</p>
+<p><strong>In short:</strong> Cognitive theories say high-neuroticism people process negative information about themselves preferentially. They report and remember more symptoms, but they are not more often seriously ill, although their immune response may be weaker.</p>
+<p><strong>Cognitive theories</strong> (<em>Hugrænar kenningar</em>)</p>
+<ul>
+<li>Neuroticism comes from specialised processing of negative information in attention, thinking and memory (Lishman, 1972; Martin, Ward &amp; Clark, 1983) <span class="src slide">slide 19</span> <span class="src book">book p. 421</span>.</li>
+<li><span class="tag">Book only</span> Lishman found high-N people recalled more unpleasant information but not less pleasant information. Martin, Ward and Clark found high-N people recalled more negative information about themselves but not about others <span class="src book">book p. 421</span>.</li>
+<li>Related to this, high-N people may have larger memory networks linked to negative emotions, so negative things are easier for them to recall <span class="src slide">slide 19</span> <span class="src book">book pp. 421–422</span>. The book links this to the spreading activation idea.</li>
+</ul>
+<p><strong>Neuroticism and health</strong></p>
+<ul>
+<li>High-N people tick more symptoms and remember more symptoms of illness when asked (Smith et al., 1989; Larsen, 1992) <span class="src slide">slide 20</span> <span class="src book">book p. 422</span>.</li>
+<li><span class="tag">Book only</span> In Smith et al. (1989), neuroticism correlated about r = .4 to .5 with self-reported symptoms. In Larsen (1992), people reported symptoms daily for two months; high-N people reported more daily symptoms and, even with that controlled, recalled more symptoms afterwards <span class="src book">book p. 422</span>.</li>
+<li>There is little or no link between neuroticism and major diseases <span class="src slide">slide 20</span> <span class="src book">book p. 422</span>. <span class="tag">Book only</span> Costa and McCrae (1985): "neuroticism influences perceptions of health, but not health itself" <span class="src book">book p. 422</span>.</li>
+<li>But some studies point to weaker immune responses (<em>slakari ónæmisviðbrögð</em>) (Marsland et al., 2001; Augustine et al., 2008) <span class="src slide">slide 20</span> <span class="src book">book pp. 422–423</span>.</li>
+<li><span class="tag">Book only</span> Marsland et al. (2001): after a hepatitis B vaccination, low-neuroticism people mounted the strongest antibody response. Augustine et al. (2008): people one standard deviation above the mean on neuroticism got lung cancer on average 4.33 years earlier than people one standard deviation below it, even with smoking history and amount controlled <span class="src book">book pp. 422–423</span>.</li>
+</ul>
+<p><strong>Attentional bias to threat</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>High-N people are thought to have a stronger behavioural inhibition system and to scan their surroundings for threat; this is an <strong>attentional bias to threatening information</strong> <span class="src book">book p. 423</span>.</li>
+<li>It is tested with the <strong>emotional Stroop task</strong>: people name the ink colour of threat words (e.g. disease, failure) and neutral words. Slower colour naming for threat words means the words grab attention <span class="src book">book p. 423</span>.</li>
+<li>Williams, Mathews and MacLeod (1996) reviewed more than 50 such experiments; high-N or anxious people were often slower on threat words <span class="src book">book p. 423</span>.</li>
+</ul></div></article>
+
+<article class="sec has-figs" id="s13-10"><div class="text"><h3><span class="n">13.10</span>Depression</h3><p class="meta"><span class="tag">Book only</span> book pp. 424–427 (Table 13.4, Figures 13.5–13.6). Not on the slides.</p>
+<p><strong>In short:</strong> Depression needs both a vulnerability and a stressful event. Beck's theory puts the vulnerability in a negative way of thinking about the self, the world and the future; the biological theory points to neurotransmitters.</p>
+<ul>
+<li>Depression is a traitlike dimension and a disorder estimated to strike 20 percent of people in the United States at some point <span class="src book">book p. 424</span>.</li>
+<li>Diagnosis requires five or more symptoms in the same two-week period, such as depressed mood, loss of interest, weight change, sleep change, fatigue, worthlessness or guilt, poor concentration and thoughts of death <span class="src book">book p. 424, Table 13.4</span>.</li>
+<li><strong>Diathesis-stress model</strong>: a pre-existing vulnerability (diathesis) plus a stressful life event are both needed; neither alone causes depression <span class="src book">book p. 424</span>.</li>
+</ul>
+<p><strong>Beck's cognitive theory</strong></p>
+<ul>
+<li>The vulnerability is a <strong>cognitive schema</strong>, a way of processing and interpreting daily events, that distorts information in a negative direction <span class="src book">book pp. 424–425</span>.</li>
+<li>The distortions apply to the <strong>cognitive triad</strong>: the self, the world and the future <span class="src book">book p. 425</span>.</li>
+<li>Four distortions <span class="src book">book p. 425, Figure 13.5</span>:
+<ul>
+<li>Overgeneralizing: one failure becomes "I am a total failure".</li>
+<li>Arbitrary inference: jumping to a negative conclusion without evidence.</li>
+<li>Personalizing: assuming everything is your fault.</li>
+<li>Catastrophizing: thinking the worst will always happen.</li>
+</ul></li>
+<li>The distortions run quickly and outside awareness, producing automatic negative thoughts. Acting like a failure can create a <strong>self-fulfilling prophecy</strong>, and bad feelings create more distortions in a self-perpetuating cycle; Beck's therapy challenges the distortions <span class="src book">book p. 426</span>.</li>
+</ul>
+<p><strong>Biology of depression</strong></p>
+<ul>
+<li>The <strong>neurotransmitter theory</strong> says depression involves too little neurotransmitter at the synapses, mainly norepinephrine (noradrenaline), serotonin and, to a lesser degree, dopamine <span class="src book">book pp. 426–427</span>.</li>
+<li>Drugs such as Prozac, Zoloft and Paxil block serotonin reuptake; not everyone responds, which suggests different kinds of depression <span class="src book">book p. 427</span>.</li>
+<li>Exercise also helps; a 2016 meta-analysis found effects of similar size to antidepressants <span class="src book">book p. 427</span>.</li>
+</ul></div><div class="figs"><figure class="fig book"><button class="zoom" type="button" data-src="fig/book-p425.jpg" data-cap="Beck&#x27;s cognitive model of depression, showing how distortions are applied to processing information about the … (the rest of the book&#x27;s caption is lost at a page break). Rows: overgeneralizing, arbitrary inferences, personalizing, catastrophizing; columns: the self, the world, one&#x27;s future" data-srcl="Book Fig 13.5 · p. 425" aria-label="Enlarge: Beck&#x27;s cognitive model of depression, showing how distortions are applied to processing information about the … (the rest of the book&#x27;s caption is lost at a page break). Rows: overgeneralizing, arbitrary inferences, personalizing, catastrophizing; columns: the self, the world, one&#x27;s future"><img src="fig/book-p425.jpg" alt="Beck&#x27;s cognitive model of depression, showing how distortions are applied to processing information about the … (the rest of the book&#x27;s caption is lost at a page break). Rows: overgeneralizing, arbitrary inferences, personalizing, catastrophizing; columns: the self, the world, one&#x27;s future" width="756" height="788" loading="lazy"></button><figcaption><span class="src book">Book Fig 13.5 · p. 425</span> Beck's cognitive model of depression, showing how distortions are applied to processing information about the … (the rest of the book's caption is lost at a page break). Rows: overgeneralizing, arbitrary inferences, personalizing, catastrophizing; columns: the self, the world, one's future</figcaption></figure>
+<figure class="fig book"><button class="zoom" type="button" data-src="fig/book-fig-13-6.jpg" data-cap="Diagram of a synapse between two neurons: neurotransmitters are released, cross the synapse and bond with receptors on the postsynaptic neuron" data-srcl="Book Fig 13.6 · p. 426" aria-label="Enlarge: Diagram of a synapse between two neurons: neurotransmitters are released, cross the synapse and bond with receptors on the postsynaptic neuron"><img src="fig/book-fig-13-6.jpg" alt="Diagram of a synapse between two neurons: neurotransmitters are released, cross the synapse and bond with receptors on the postsynaptic neuron" width="692" height="684" loading="lazy"></button><figcaption><span class="src book">Book Fig 13.6 · p. 426</span> Diagram of a synapse between two neurons: neurotransmitters are released, cross the synapse and bond with receptors on the postsynaptic neuron</figcaption></figure></div></article>
+
+<article class="sec" id="s13-11"><div class="text"><h3><span class="n">13.11</span>Anger proneness and hostility</h3><p class="meta"><span class="tag">Book only</span> book pp. 427–429. Not on the slides.</p>
+<p><strong>In short:</strong> Hostility is a trait of reacting to everyday frustration with anger. It is linked to heart disease, and extreme violence is linked to damage in the brain's self-control areas.</p>
+<ul>
+<li>Personality psychologists study why some people are more hostile than others in the same situation <span class="src book">book p. 427</span>.</li>
+<li><strong>Hostility</strong>: a tendency to respond to everyday frustrations with anger and aggression, to become irritated easily, to feel frequent resentment and to act rudely and uncooperatively (Dembrowski &amp; Costa, 1987) <span class="src book">book p. 427</span>.</li>
+<li>Chronic hostility is the part of the Type A behaviour pattern that contributes most to heart disease <span class="src book">book p. 427</span>.</li>
+<li>Raine, Meloy and Bihrle (1998) found reduced prefrontal activity in especially violent murderers <span class="src book">book p. 428</span>.</li>
+<li>Pincus (2001) found that in virtually all the serial killers he described there was some brain damage, and practically all came from severely abusive families; his data (Pincus, 1999) show that brain damage in violent criminals is most often in the prefrontal areas <span class="src book">book p. 428</span>.</li>
+<li>Brain abnormalities are much more common in violent than in non-violent people. In an Austrian study, 66 percent of high-violence offenders had brain abnormalities, against 17 percent of low-violence offenders (Aigner et al., 2000) <span class="src book">book p. 428</span>.</li>
+<li>The damage is mostly in the frontal lobe and to a lesser extent the temporal lobe, areas that regulate aggressive impulses; it reduces the ability to inhibit aggression <span class="src book">book p. 429</span>.</li>
+</ul></div></article>
+
+<article class="sec has-figs" id="s13-12"><div class="text"><h3><span class="n">13.12</span>Emotional style: affect intensity</h3><p class="meta">slides 21–23, book pp. 429–433 (Figure 13.7, Table 13.5)</p>
+<p><strong>In short:</strong> Affect intensity (<em>Styrkur tilfinninga</em>) is how strongly a person typically feels emotions. High scorers feel strong, changeable emotions in both directions; low scorers feel mild, steady ones.</p>
+<ul>
+<li>Affect intensity can be defined as an emotional style (<em>geðhrifarstíl</em>) (Larsen, 2009) <span class="src slide">slide 21</span> <span class="src book">book p. 429</span>.</li>
+<li>People high in affect intensity experience strong and changeable emotions and react strongly to stimuli <span class="src slide">slide 21</span> <span class="src book">book p. 429</span>.</li>
+<li>People low in affect intensity show little variation in their emotions, react little to stimuli and experience mild emotions <span class="src slide">slide 21</span> <span class="src book">book p. 429</span>.</li>
+<li><span class="tag">Book only</span> These descriptions say "typically", because rare events such as a pet's death can make almost anyone feel strongly; affect intensity is about reactions to ordinary everyday events <span class="src book">book p. 430</span>.</li>
+<li>Slide 22 shows the book's Figure 13.7: two people's daily mood diaries, panels (a) and (b) <span class="src slide">slide 22</span> <span class="src book">book p. 431, Figure 13.7</span>.</li>
+<li><span class="tag">Book only</span> The book explains them: Subject A (panel a) stayed fairly stable near his baseline mood over the three months, apart from a bad week at the start of the semester; Subject B (panel b) had much more intense moods and swung often and rapidly between strong positive and strong negative moods <span class="src book">book pp. 430–431</span>.</li>
+<li><span class="tag">Book only</span> The data come from Larsen and Diener (1985), with moods recorded for 84 consecutive days <span class="src book">book p. 430</span>.</li>
+</ul>
+<p><strong>Measuring it</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>Early studies used daily experience sampling, which is valid but takes weeks, so the questionnaire <strong>Affect Intensity Measure (AIM)</strong> was developed (Larsen &amp; Diener, 1987) <span class="src book">book pp. 430, 432, Table 13.5</span>.</li>
+</ul>
+<p><strong>Neither end is simply better</strong> <span class="tag">Book only</span></p>
+<ul>
+<li>High scorers get a lot of zest and joy, but also strong negative reactions, and they report more physical symptoms such as muscle tension and headaches, because even strong positive emotions activate the sympathetic nervous system. They are not bothered by this and do not want to change <span class="src book">book pp. 430, 432</span>.</li>
+<li>Low scorers are stable and avoid the troughs, but they miss the peaks of enthusiasm and joy <span class="src book">book p. 432</span>.</li>
+</ul>
+<p><strong>Research findings</strong></p>
+<ul>
+<li>People high in affect intensity have bigger swings in mood and emotion and tend to see everyday events as more important than low scorers do (Larsen et al., 1986) <span class="src slide">slide 23</span> <span class="src book">book pp. 432–433</span>.</li>
+<li><span class="tag">Book only</span> In that study (Larsen, Diener &amp; Emmons, 1986), 62 people recorded their best and worst daily events for 56 days. Events that outside raters called "moderately good" or "moderately bad" were rated "very good" or "very bad" by high scorers <span class="src book">book p. 432</span>.</li>
+<li><span class="tag">Book only</span> Larsen (1987) found that high scorers' mood changes are both more frequent and larger <span class="src book">book p. 433</span>.</li>
+<li><span class="tag slides">Slides only</span> Affect intensity is linked to personality traits such as sociability and a high activity level, and high scorers are classed as high on extraversion and neuroticism <span class="src slide">slide 23</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-21.jpg" data-cap="Affect intensity as an emotional style (Larsen, 2009): high scorers feel strong, changeable emotions and react strongly; low scorers feel mild, steady emotions" data-srcl="Slide 21 · key slide" aria-label="Enlarge: Affect intensity as an emotional style (Larsen, 2009): high scorers feel strong, changeable emotions and react strongly; low scorers feel mild, steady emotions"><img src="fig/slide-21.jpg" alt="Affect intensity as an emotional style (Larsen, 2009): high scorers feel strong, changeable emotions and react strongly; low scorers feel mild, steady emotions" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 21</span> <span class="src key">Key slide</span> Affect intensity as an emotional style (Larsen, 2009): high scorers feel strong, changeable emotions and react strongly; low scorers feel mild, steady emotions</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-22.jpg" data-cap="Daily mood diaries over three months: Subject A (panel a) stays near baseline, Subject B (panel b) has much more intense moods and larger day-to-day swings (as the book describes them, pp. 430–431)" data-srcl="Slide 22" aria-label="Enlarge: Daily mood of Subject A and Subject B"><img src="fig/slide-22.jpg" alt="Daily mood of two people over about three months: Subject A stays near baseline, Subject B swings widely" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 22</span> Daily mood diaries over three months: Subject A (panel a) stays near baseline, Subject B (panel b) has much more intense moods and larger day-to-day swings, as the book describes them (book Figure 13.7, pp. 430–431)</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-13"><div class="text"><h3><span class="n">13.13</span>How content and style combine</h3><p class="meta">slide 24, book pp. 433–434 (Figure 13.8)</p>
+<p><strong>In short:</strong> Hedonic balance (content) and affect intensity (style) are unrelated, so combining them gives four distinct kinds of emotional life.</p>
+<ul>
+<li><span class="tag">Book only</span> Content is captured by <strong>hedonic balance</strong>, the ratio of pleasant to unpleasant emotions over time. The average college student had a positive balance on 7 out of 10 days, but individuals ranged from 20 percent to 95 percent positive days (Larsen, 2000b) <span class="src book">book p. 433</span>.</li>
+<li><span class="tag">Book only</span> Hedonic balance and affect intensity are unrelated to each other (Larsen &amp; Diener, 1985), so all four combinations exist <span class="src book">book p. 433</span>.</li>
+<li>The combination of content and style (<em>Samvirkni innihalds og stíls</em>) gives four kinds of emotional life <span class="src slide">slide 24</span> <span class="src book">book p. 434, Figure 13.8</span>:</li>
+</ul>
+<div class="tbl"><table><thead><tr><th></th><th>Low affect intensity</th><th>High affect intensity</th></tr></thead><tbody>
+<tr><td><strong>Frequent positive affect</strong></td><td>contentment, easygoing composure, serenity, tranquil calmness</td><td>exuberance, animated joyfulness, zestful enthusiasm</td></tr>
+<tr><td><strong>Frequent negative affect</strong></td><td>chronic melancholia, mild but persistent unhappiness, dejection, discontentment</td><td>acute and agitated negative affect, distress, aggravation, depression, episodes of strong anxiety</td></tr>
+</tbody></table></div>
+<ul>
+<li><span class="tag">Book only</span> Low intensity makes emotional life even and enduring; high intensity makes it abrupt, changeable and volatile <span class="src book">book pp. 433–434</span>.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-24.jpg" data-cap="Four kinds of emotional life from crossing content (frequent positive or negative affect) with style (low or high affect intensity)" data-srcl="Slide 24" aria-label="Enlarge: Four kinds of emotional life from content and style"><img src="fig/slide-24.jpg" alt="Four kinds of emotional life from crossing content with style" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 24</span> Four kinds of emotional life from crossing content (frequent positive or negative affect) with style (low or high affect intensity) (book Figure 13.8)</figcaption></figure></div></article>
+
+<article class="sec has-figs" id="s13-14"><div class="text"><h3><span class="n">13.14</span>Personality and well-being</h3><p class="meta">slides 25–29, book pp. 411, 414–419 (Figures 13.3–13.4)</p>
+<p><strong>In short:</strong> Demographic facts explain little of who is happy, while extraversion and neuroticism explain much more. Mood-induction experiments suggest personality acts directly, by amplifying people's reactions to the same events.</p>
+<ul>
+<li>Demographic variables (<em>Lýðfræðilegar breytur</em>) such as gender, age, ethnicity and income explain only about 10 to 15% of the variation in well-being (Costa &amp; McCrae, 1980; Myers &amp; Diener, 1995) <span class="src slide">slide 25</span> <span class="src book">book p. 415</span>.</li>
+<li><span class="tag">Book only</span> Happiness is stable: in a study of 5,000 adults, people who were happy in 1973 were also happy 10 years later (Costa, McCrae &amp; Zonderman, 1987) <span class="src book">book p. 411</span>.</li>
+<li>High extraversion (<em>úthverfa</em>) and low neuroticism (<em>taugaveiklun</em>) explained more of the variation in well-being than gender, ethnicity, age and other demographic variables did (Costa &amp; McCrae, 1980; 1991) <span class="src slide">slide 25</span> <span class="src book">book p. 415</span>. <span class="tag">Book only</span> The book says up to three times as much <span class="src book">book p. 415</span>.</li>
+</ul>
+<p><strong>Costa and McCrae's model (1980)</strong></p>
+<ul>
+<li>Extraversion leads to more positive affect, neuroticism leads to more negative affect, and both feed into subjective well-being <span class="src slide">slide 26</span> <span class="src book">book pp. 415–416, Figure 13.3</span>.</li>
+<li><span class="tag">Book only</span> Dozens of studies have replicated this, but all were correlational, so they cannot show the causal path <span class="src book">book p. 415</span>.</li>
+</ul>
+<p><strong>Direct versus indirect model</strong> <span class="src slide">slide 27</span> <span class="src book">book pp. 416–417, Figure 13.4</span></p>
+<div class="tbl"><table><thead><tr><th></th><th>Direct model (panel a)</th><th>Indirect model (panel b)</th></tr></thead><tbody>
+<tr><td><strong>How personality works</strong></td><td>Makes people react to the <i>same</i> situations with more positive (extraverts) or negative (high N) emotion</td><td>Leads people to build a lifestyle that fosters more positive or negative outcomes, and the lifestyle causes the emotion</td></tr>
+<tr><td><strong>Example</strong></td><td>A high-N person feels worse even in an identical situation</td><td>A complaining high-N person drives others away and becomes lonely (Hotard et al., 1989)</td></tr>
+</tbody></table></div>
+<p><strong>Mood-induction evidence</strong> (<em>tilfinningamyndun</em>)</p>
+<ul>
+<li>Research by Larsen and colleagues (1999; 2000) on mood induction supports a direct link between personality and well-being <span class="src slide">slide 28</span> <span class="src book">book p. 416</span>.</li>
+<li><span class="tag">Book only</span> Participants listened to guided imagery (a walk on the beach, a friend dying) or looked at pleasant or unpleasant pictures, with mood measured before and after <span class="src book">book p. 416</span>.</li>
+<li>Extraversion was the best predictor of reactions to a positive mood induction <span class="src slide">slide 28</span> <span class="src book">book p. 416</span>.</li>
+<li>Neuroticism was the best predictor of reactions to a negative mood induction <span class="src slide">slide 28</span> <span class="src book">book p. 416</span>.</li>
+<li>So how you react to positive or negative emotional stimuli depends on personality: it is easy to put extraverts in a good mood and easy to put high-neuroticism people in a bad mood <span class="src slide">slide 29</span> <span class="src book">book p. 416</span>.</li>
+<li>This suggests personality has a direct effect on people's emotions or well-being <span class="src slide">slide 29</span> <span class="src book">book p. 418</span>. <span class="tag">Book only</span> The book describes personality as an amplifier of life events <span class="src book">book pp. 416–418</span>.</li>
+<li><span class="tag">Book only</span> Not every lab finds the extraversion effect: Lucas and Baird (2004), using stand-up comedy clips, did not find that extraversion predicted a larger positive response, "at least not in two out of four studies", while the fourth study did find the effect. Smillie et al. (2012) showed across five experiments that extraverts react more strongly to rewards and desired outcomes (money, success, tasty food), not to things that are merely pleasant <span class="src book">book p. 418</span>.</li>
+</ul>
+<p><strong>A program to increase happiness</strong> <span class="tag">Book only</span></p>
+<p>Psychologists believe happiness must be worked at; the book summarises advice from Buss, Fordyce and Larsen in eight points <span class="src book">book pp. 418–419</span>:</p>
+<ol>
+<li>Spend time with other people.</li>
+<li>Seek challenge and meaning in work.</li>
+<li>Look for ways to help others.</li>
+<li>Take time for yourself and enjoyable activities.</li>
+<li>Stay in shape.</li>
+<li>Have a plan, but be open to new experiences.</li>
+<li>Be optimistic.</li>
+<li>Don't let things get blown out of proportion.</li>
+</ol></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-26.jpg" data-cap="Costa and McCrae (1980): extraversion leads to positive affect, neuroticism to negative affect, and both feed subjective well-being" data-srcl="Slide 26" aria-label="Enlarge: Costa and McCrae's model of well-being"><img src="fig/slide-26.jpg" alt="Costa and McCrae (1980): extraversion leads to positive affect, neuroticism to negative affect, both feed subjective well-being" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 26</span> Costa and McCrae (1980): extraversion leads to positive affect, neuroticism to negative affect, and both feed subjective well-being (book Figure 13.3)</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="fig/slide-27.jpg" data-cap="Direct model (a): situations act through the traits, which amplify affect. Indirect model (b): traits create a lifestyle that fosters positive or negative outcomes" data-srcl="Slide 27" aria-label="Enlarge: Direct and indirect models of personality and well-being"><img src="fig/slide-27.jpg" alt="Direct and indirect models of personality and well-being" width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Slide 27</span> Direct model (a): situations act through the traits, which amplify affect. Indirect model (b): traits create a lifestyle that fosters positive or negative outcomes (book Figure 13.4)</figcaption></figure></div></article>
+<aside class="pointers"><p><strong>Pointers to other chapters</strong> (not studied now): traits as stable patterns and Eysenck's theory of neuroticism, Chapter 3 (book pp. 403, 420); construct validity and the third-variable problem, Chapter 2, and social desirability, Chapter 4 (book pp. 407–408, 413); evolution and fitness behind Darwin's functional analysis, Chapter 8 (book p. 402); spreading activation in memory, Chapter 10 (book p. 421); motives as states and Maslow's hierarchy of needs, Chapter 11 (book pp. 403, 414); neurotransmitters, Chapter 7, and Phineas Gage and the prefrontal cortex, Chapter 6 (book pp. 426, 428); Type A behaviour, hostility, health and the immune system, Chapter 18 (book pp. 422, 427).</p></aside>
+</section>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Enlarged figure">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-cap"><div><span class="src" id="lb-src"></span> <span id="lb-text"></span></div><button class="lb-close" id="lb-close" type="button">Close</button></div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'),
+      src = document.getElementById('lb-src'), txt = document.getElementById('lb-text');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.zoom');
+    if (b) {
+      img.src = b.dataset.src; img.alt = b.dataset.cap;
+      src.textContent = b.dataset.srcl; txt.textContent = b.dataset.cap;
+      src.className = 'src ' + (b.closest('.fig').classList.contains('book') ? 'book' : 'slide');
+      if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      return;
+    }
+    if (e.target === lb || e.target.id === 'lb-close') lb.close();
+  });
+  try { if (window.matchMedia('(max-width: 700px)').matches) document.getElementById('toc').open = false; } catch (e) {}
+  // Deep links from grading summaries: #s1-5 opens and highlights section 1.5
+  function go() {
+    var id = (location.hash || '').slice(1), el = id && document.getElementById(id);
+    if (!el) return;
+    document.querySelectorAll('.sec.hit').forEach(function (s) { s.classList.remove('hit'); });
+    el.classList.add('hit');
+    el.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', go);
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  setTimeout(go, 60);
+})();
+</script>
+
+</body></html>

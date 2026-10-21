@@ -1,0 +1,737 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Persónuleikasálfræði Ch 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: study notes — each recap section sets text beside the slides and book figures it explains; figures stack under text on phones. */
+:root {
+  /* Theme: same palette and fonts as the course page (templates/course.html). scripts/theme.py copies this block
+     and the font link above into older recap pages. */
+  --bg: #F1F3F7;
+  --surface: #FFFFFF;
+  --fg: #17202C;
+  --muted: #586477;
+  --line: #D7DDE6;
+  --accent: #3045C2;
+  --accent-soft: #E6E9FA;
+  --slide: #4A5A9A;
+  --slide-soft: #E9ECF5;
+  --book: #6B5A80;
+  --book-soft: #EFEBF4;
+  --warn: #855700;
+  --warn-soft: #FAEFD6;
+  --shadow: 0 1px 2px rgba(23,32,44,.06), 0 4px 14px rgba(23,32,44,.06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+    --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+    --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141A; --surface: #19202A; --fg: #E5E9F0; --muted: #98A3B4; --line: #2B3441;
+  --accent: #8F9DFF; --accent-soft: #232A4A; --slide: #A9B4E0; --slide-soft: #262C40; --book: #BFB2D3; --book-soft: #2B2634;
+  --warn: #F0C46C; --warn-soft: #33270F; --shadow: none; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 28px 64px; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* header */
+.top { display: grid; gap: 14px; padding-block: 8px 22px; border-bottom: 1px solid var(--line); }
+.top .back { display: inline-block; margin: 0 0 10px; font-family: var(--f-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+.top .back:hover, .top .back:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.top .course { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.top h1 { font-family: var(--f-display); font-weight: 650; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.12; margin: 0; text-wrap: balance; }
+.top .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 14px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+.legend li { display: flex; gap: 8px; align-items: center; }
+
+/* chips */
+.tag, .warn, .src { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; white-space: nowrap; font-style: normal; vertical-align: 1px; }
+.tag { background: var(--book-soft); color: var(--book); }
+.warn { background: var(--warn-soft); color: var(--warn); }
+.src.slide { background: var(--slide-soft); color: var(--slide); }
+.src.book { background: var(--book-soft); color: var(--book); }
+.src.key { background: var(--warn-soft); color: var(--warn); }
+.src.drawn { background: var(--line); color: var(--fg); }
+em { color: var(--accent); font-style: italic; }
+
+/* toc */
+details.toc { margin-block: 22px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.toc summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style-position: inside; }
+.toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 4px 28px; padding: 0 16px 14px; }
+.toc-h { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-ch ol { list-style: none; margin: 0; padding: 0; }
+.toc-ch a { display: flex; gap: 10px; text-decoration: none; color: var(--fg); padding: 3px 0; font-size: 15.5px; }
+.toc-ch a:hover { color: var(--accent); }
+.n { font-family: var(--f-mono); font-size: .78em; color: var(--muted); min-width: 2.6em; padding-top: .2em; font-variant-numeric: tabular-nums; }
+
+/* chapters */
+.chapter { margin-top: 40px; }
+.ch-head { border-top: 3px solid var(--accent); padding-top: 14px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.ch-head h2 { font-family: var(--f-display); font-weight: 650; font-size: clamp(24px, 3vw, 32px); margin: 4px 0 0; text-wrap: balance; }
+
+.sec { display: grid; gap: 22px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+@media (min-width: 980px) {
+  .sec.has-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr); gap: 36px; align-items: start; }
+}
+.text { min-width: 0; max-width: 72ch; }
+.text h3 { font-family: var(--f-display); font-weight: 500; font-size: 22px; line-height: 1.25; margin: 0; display: flex; gap: 6px; text-wrap: balance; }
+.text h3 em { color: inherit; }
+.text .meta { margin: 4px 0 10px; font-size: 14px; color: var(--muted); }
+.text p { margin: .55em 0; }
+.text ul, .text ol { padding-left: 1.25em; margin: .5em 0; }
+.text li { margin: .3em 0; }
+.text li::marker { color: var(--muted); }
+.text strong { font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+
+/* figures */
+.figs { display: grid; gap: 16px; min-width: 0; }
+.fig { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.fig.book .zoom { background: #fffef4; }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: #fff; cursor: zoom-in; }
+.zoom img { display: block; width: 100%; height: auto; max-width: 100%; }
+.fig.book .zoom img { max-height: 420px; object-fit: contain; }
+figcaption { padding: 9px 12px 11px; font-size: 14px; line-height: 1.45; color: var(--muted); border-top: 1px solid var(--line); }
+figcaption .src { margin-right: 6px; white-space: normal; }
+
+.sec.hit { background: var(--accent-soft); border-radius: 10px; padding-inline: 16px; box-shadow: inset 4px 0 0 var(--accent); }
+.pointers { margin-top: 26px; padding: 12px 16px; border-left: 3px solid var(--line); color: var(--muted); font-size: 15px; }
+.pointers p { margin: 0; }
+
+/* drawn by prof: simple diagrams built from cited points (compare, flow, tree, timeline) */
+.dg { padding: 16px; font-size: 14.5px; line-height: 1.35; }
+.dg-box { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; text-align: center; }
+.dg-box strong { display: block; font-weight: 700; }
+.dg-box.main { background: var(--accent-soft); border-color: var(--accent); }
+.dg.flow { display: grid; gap: 4px; justify-items: stretch; }
+.dg-arrow { text-align: center; color: var(--muted); font-size: 13px; }
+.dg-arrow::before { content: "↓"; display: block; font-size: 18px; line-height: 1.1; color: var(--accent); }
+.dg.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.dg.compare .dg-box { text-align: left; }
+.dg.compare ul { margin: 6px 0 0; padding-left: 1.1em; }
+.dg.tree { display: grid; gap: 10px; }
+.dg.tree .dg-box.main { justify-self: center; min-width: 50%; }
+.dg-kids { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 8px; border-top: 2px solid var(--accent); padding-top: 10px; }
+.dg.timeline { list-style: none; margin: 0; padding: 16px 16px 16px 30px; position: relative; }
+.dg.timeline::before { content: ""; position: absolute; left: 20px; top: 20px; bottom: 20px; width: 2px; background: var(--accent); }
+.dg.timeline li { position: relative; margin: 0 0 10px; }
+.dg.timeline li::before { content: ""; position: absolute; left: -14px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* lightbox */
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1500px); max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(10,14,20,.82); }
+.lb-inner { display: grid; gap: 8px; }
+.lb-inner img { max-width: 100%; max-height: 82vh; width: auto; height: auto; margin: 0 auto; display: block; background: #fff; border-radius: 6px; }
+.lb-cap { display: flex; gap: 12px; align-items: start; justify-content: space-between; color: #e8efed; font-size: 14.5px; }
+.lb-cap .src { flex: none; }
+.lb-close { flex: none; font: 600 14px var(--f-body); background: #e8efed; color: #10201c; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+.tag.slides { background: var(--slide-soft); color: var(--slide); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="https://claude.ai/artifact/KFMShGsmGKAQ3WMySjdrQb" target="_blank" rel="noopener">← Course page</a>
+    <p class="course">Persónuleikasálfræði · Personality Psychology</p>
+    <h1>Ch 11 recap: Cognition and personality</h1>
+    <p class="sub">Built around the teacher's slides (part 1, slides 1–21 and part 2, slides 1–22), with book-only material from Book Ch 12 (pp. 368–393 and 397–399, without its Intelligence section) that could be tested. Icelandic terms from the slides are in <em>blue italics</em>. Click any figure to enlarge it.</p>
+    <ul class="legend">
+      <li><span class="src slide">Part 1 · Slide 12</span> from the teacher's slides</li>
+      <li><span class="src book">Book Ch 12</span> figure from the book</li>
+      <li><span class="src key">Key slide</span> the teacher's own summary</li>
+      <li><span class="tag">Book only</span> not on the slides</li>
+      <li><span class="tag slides">Slides only</span> not in the book</li>
+      <li><span class="warn">Slides ≠ book</span> the two sources disagree</li>
+    </ul>
+  </header>
+
+  <details class="toc" id="toc" open>
+    <summary>Contents</summary>
+    <div class="toc-grid">
+<div class="toc-ch"><p class="toc-h">Ch 11 · Hugarstarf og persónuleiki (Cognition and personality)</p><ol><li><a href="#s11-1"><span class="n">11.1</span>Cognition and the cognitive approach</a></li><li><a href="#s11-2"><span class="n">11.2</span>Field dependence and independence: what it is and how it is measured</a></li><li><a href="#s11-3"><span class="n">11.3</span>Field dependence and independence: research and life outcomes</a></li><li><a href="#s11-4"><span class="n">11.4</span>Pain tolerance and reducing/augmenting</a></li><li><a href="#s11-5"><span class="n">11.5</span>Kelly: people as scientists and personal constructs</a></li><li><a href="#s11-6"><span class="n">11.6</span>Kelly: the fundamental postulate and the corollaries</a></li><li><a href="#s11-7"><span class="n">11.7</span>Locus of control and Rotter's expectancy model</a></li><li><a href="#s11-8"><span class="n">11.8</span>Locus of control: research and specific expectancies</a></li><li><a href="#s11-9"><span class="n">11.9</span>Learned helplessness</a></li><li><a href="#s11-10"><span class="n">11.10</span>Explanatory (attributional) style</a></li><li><a href="#s11-11"><span class="n">11.11</span>Goals and personal projects</a></li><li><a href="#s11-12"><span class="n">11.12</span>Social understanding, cognitive social learning and self-efficacy</a></li><li><a href="#s11-13"><span class="n">11.13</span>Dweck: the theory of mastery orientation</a></li><li><a href="#s11-14"><span class="n">11.14</span>Higgins: regulatory focus</a></li><li><a href="#s11-15"><span class="n">11.15</span>Mischel's cognitive-affective personality system (CAPS)</a></li></ol></div>
+    </div>
+  </details>
+
+<section class="chapter" id="ch11"><header class="ch-head"><p class="eyebrow">Chapter 11</p><h2>Hugarstarf og persónuleiki (Cognition and personality)</h2></header>
+<article class="sec has-figs" id="s11-1"><div class="text"><h3><span class="n">11.1</span>Cognition and the cognitive approach</h3><p class="meta">part 1, slides 1–4 · book pp. 369–372</p>
+<p><strong>In short:</strong> Cognition (<em>Hugarstarf</em>) is the umbrella term for thinking and the mental acts that go with it. The cognitive approach in personality psychology asks how people differ in the way they process information.</p>
+<ul>
+<li>Cognition (<em>Hugarstarf</em>) refers generally to awareness and thinking, and also to more specific mental acts such as perception, interpretation, memory, believing (<em>trú/álit</em>) and anticipating events (<em>forspá</em>) (part 1, slide 2; book p. 371).</li>
+<li><span class="tag">Book only</span> The book's list of mental acts also includes attending to, judging and deciding (book p. 371).</li>
+<li><span class="tag">Book only</span> Together these mental acts make up information processing: turning sensory input into mental representations and then working with those representations (book p. 371).</li>
+<li>The cognitive approach (<em>Hugfræðileg nálgun</em>) in personality psychology studies individual differences in information processing (<em>úrvinnslu upplýsinga</em>) (part 1, slide 2; book p. 370).</li>
+</ul>
+<p><strong>The three topics that have interested personality psychologists most</strong> (part 1, slide 4; book pp. 371–372):</p>
+<ol>
+<li>Perception (<em>Skynjun</em>): how the information arriving through the senses is processed. The book defines perception as imposing order on the information the sense organs take in.</li>
+<li>Interpretation (<em>Túlkun</em>): how we understand and explain events. The book calls this making sense of events, which gives them meaning.</li>
+<li>Goals (<em>Markmið</em>): the standards and goals behind how we evaluate ourselves and others. The book calls these conscious goals.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> The book adds a fourth topic, intelligence (book p. 372). In this course intelligence is a separate section (course ch 12), so it is not covered here.</li>
+<li>The Necker cube (<em>Neckar tengingur</em>) shows that people can perceive the same drawing differently: some see the cube extending up and to the right, others see it extending down and to the left (part 1, slide 3; book p. 371, Figure 12.1). The slide spells the name "Neckar"; the book spells it "Necker".</li>
+<li><span class="tag">Book only</span> This is also the reasoning behind projective tests such as the Rorschach inkblots: what people see may reflect their personality (book p. 371).</li>
+<li><span class="tag">Book only</span> Personalizing vs objectifying cognition: in a thought-sampling study, people said what they thought about while looking at emotion-provoking images (Larsen, Diener, &amp; Cropanzano, 1987) (book p. 370). Personalizing cognition means the scene makes you recall a similar event from your own life. Objectifying cognition means the scene makes you recall objective facts, for example about blood vessels in the head (book p. 371).</li>
+<li><span class="tag">Book only</span> The chapter opens with the Amadou Diallo case, in which police officers "saw" a gun that was actually a wallet. It shows how errors in perception and cognition lead to actions (book pp. 369–370).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-03.jpg" data-cap="The Necker cube (Neckar tengingur): the same flat drawing can be seen as two different cubes." data-srcl="Part 1 · Slide 3" aria-label="Enlarge: The Necker cube (Neckar tengingur): the same flat drawing can be seen as two different cubes."><img src="img/p1-slide-03.jpg" alt="The Necker cube (Neckar tengingur): the same flat drawing can be seen as two different cubes." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 3</span> The Necker cube (Neckar tengingur): the same flat drawing can be seen as two different cubes.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-04.jpg" data-cap="The three topics that have interested personality psychologists most: perception (Skynjun), interpretation (Túlkun) and goals (Markmið)." data-srcl="Part 1 · Slide 4 · key slide" aria-label="Enlarge: The three topics that have interested personality psychologists most: perception (Skynjun), interpretation (Túlkun) and goals (Markmið)."><img src="img/p1-slide-04.jpg" alt="The three topics that have interested personality psychologists most: perception (Skynjun), interpretation (Túlkun) and goals (Markmið)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 4</span> <span class="src key">Key slide</span> The three topics that have interested personality psychologists most: perception (Skynjun), interpretation (Túlkun) and goals (Markmið).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-2"><div class="text"><h3><span class="n">11.2</span>Field dependence and independence: what it is and how it is measured</h3><p class="meta">part 1, slides 5–9 · book pp. 372–374, 377</p>
+<p><strong>In short:</strong> Some people judge what they see by leaning on the surrounding context (field dependent, <em>Heildsýnn</em>). Others can pick out the details whatever the background looks like (field independent, <em>Hlutsýnn</em>).</p>
+<ul>
+<li>Field independent people (<em>Hlutsýnir</em>) can focus on details or key points even when the context is unclear or the background information is chaotic (part 1, slides 5 and 7; book p. 373).</li>
+<li>Field dependent people (<em>Heildsýnir</em>) depend more on the context of the information (part 1, slides 5 and 7; book p. 373).</li>
+<li><span class="tag">Book only</span> The psychologist Herman Witkin (1916–1979) studied this perceptual style for almost 30 years. His first book was titled <i>Personality Through Perception</i> (Witkin et al., 1954), which captures the idea that personality shows in how people perceive their surroundings (book p. 372).</li>
+<li><span class="tag">Book only</span> It is a continuum, not two separate categories of people (book p. 377).</li>
+<li>Field dependence/independence (<em>Heild/hlutsýni</em>) is measured with the Rod and Frame Test (RFT) or the Embedded Figures Test (EFT) (part 1, slides 5 and 7; book p. 373).</li>
+</ul>
+<p><strong>How the rod and frame test works</strong> (part 1, slide 6 shows the apparatus; steps from book p. 373):</p>
+<ol>
+<li>The participant sits in a darkened room and watches a glowing rod inside a glowing square frame.</li>
+<li>The experimenter can tilt the rod, the frame and the participant's chair.</li>
+<li>The participant turns a dial until the rod is perfectly upright.</li>
+<li>A participant who leaves the rod leaning toward the tilted frame relies on the visual field, so is field dependent. A participant who ignores the frame and uses cues from their own body is field independent.</li>
+</ol>
+<ul>
+<li>The embedded figures test asks you to find simple figures hidden inside a more complex figure (part 1, slides 8 and 9; book p. 373). Slide 8 is a hidden-pictures puzzle (the book's Figure 12.2, p. 374). Slide 9 is a geometric example in which a simple form labelled "X" is hidden in a more complex figure.</li>
+<li><span class="tag">Book only</span> People who struggle to find the hidden figures are field dependent, because they are caught up in the "forest" and cannot see the "trees". People who find them quickly are field independent (book p. 373).</li>
+<li><span class="tag">Book only</span> Witkin developed the EFT because the RFT is difficult and time-consuming. Performance on the two tests correlates strongly (Witkin, 1973) (book p. 373).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-06.jpg" data-cap="Rod and frame test: the participant adjusts a glowing rod to upright inside a tilted frame." data-srcl="Part 1 · Slide 6" aria-label="Enlarge: Rod and frame test: the participant adjusts a glowing rod to upright inside a tilted frame."><img src="img/p1-slide-06.jpg" alt="Rod and frame test: the participant adjusts a glowing rod to upright inside a tilted frame." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 6</span> Rod and frame test: the participant adjusts a glowing rod to upright inside a tilted frame.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-08.jpg" data-cap="Embedded figures: a hidden-pictures puzzle (the same picture as the book&#x27;s Figure 12.2)." data-srcl="Part 1 · Slide 8" aria-label="Enlarge: Embedded figures: a hidden-pictures puzzle (the same picture as the book&#x27;s Figure 12.2)."><img src="img/p1-slide-08.jpg" alt="Embedded figures: a hidden-pictures puzzle (the same picture as the book&#x27;s Figure 12.2)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 8</span> Embedded figures: a hidden-pictures puzzle (the same picture as the book&#x27;s Figure 12.2).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-09.jpg" data-cap="Another embedded figures example: find the simple form X hidden in the more complex figure." data-srcl="Part 1 · Slide 9" aria-label="Enlarge: Another embedded figures example: find the simple form X hidden in the more complex figure."><img src="img/p1-slide-09.jpg" alt="Another embedded figures example: find the simple form X hidden in the more complex figure." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 9</span> Another embedded figures example: find the simple form X hidden in the more complex figure.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-3"><div class="text"><h3><span class="n">11.3</span>Field dependence and independence: research and life outcomes</h3><p class="meta">part 1, slide 10 · book pp. 373, 375–378</p>
+<p><strong>In short:</strong> Field independent people do better in stimulus-rich settings where they must block out distractions. Field dependent people are more socially oriented. Neither style is simply better.</p>
+<ul>
+<li>Police officers: field independent officers did better than field dependent officers on a shooting task in an environment with many distractors, and described the course of events more clearly (Vrij et al., 1995) (part 1, slide 10). The book describes this as a study of 100 police officers in simulated high-stimulation shooting situations (Vrij, van der Steen, &amp; Koppelaar, 1995). The field independent officers performed better under high stimulation, presumably because they could focus on the target without being distracted by the noise and activity around them (book p. 375).</li>
+<li>Students: field independent students found it easier than field dependent students to take in information in a multimedia environment (Weller et al., 1995) (part 1, slide 10). In the book these were eighth-graders in a hypermedia-based environment; the field independent students got the points embedded in the media faster and switched between media faster (book p. 375).</li>
+<li><span class="tag">Book only</span> Learning styles: field independent people are good at selective attention in stimulus-rich environments, which means processing specific information while blocking out distractions. Field dependent people tend to process information in chunks and are good at seeing connections among categories of information (book p. 375).</li>
+<li><span class="tag">Book only</span> Other high-stimulation tasks: field independence goes with a preference for stimulus-rich web-based instruction, and field independent people do better in Air Traffic Control simulations and with complex three-dimensional navigational displays (book p. 375).</li>
+<li><span class="tag">Book only</span> College major: a study followed 1,548 students from entering college until several years after graduation. Field independent students tended to favour the natural sciences, math and engineering, while field dependent students tended to favour the social sciences and education (Witkin, 1977; Witkin et al., 1977). The style is also related to career choice (Guisande, Páramo &amp; Soares, 2007) (book p. 373).</li>
+<li><span class="tag">Book only</span> Social relations: field dependent people rely on social information, often ask others for their opinions, prefer to be physically close to others and get along well with others. Field independent people are more autonomous and impersonal, and keep their distance (Witkin &amp; Goodenough, 1977) (book p. 373).</li>
+<li><span class="tag">Book only</span> Eye movements: field dependent subjects showed more disorganized eye movements when scanning visual scenes (Nisiforou &amp; Laghos, 2016) (book p. 375; Table 12.1, p. 376). Watch out: one sentence on book p. 378 says the opposite ("field independent people display more disorganized eye movements"). The book contradicts itself here; the study description and Table 12.1 both say field dependent.</li>
+<li><span class="tag">Book only</span> Facial expressions: subjects judged the emotion in 72 faces, some showing only the eyes or only the mouth. Field independent subjects were significantly better, but only when the task was difficult (Bastone &amp; Wood, 1997) (book p. 376).</li>
+<li><span class="tag">Book only</span> Pros and cons: field independent people are good at analysing complex situations and tend to be more creative (Miller, 2007), but are somewhat low on social skills. Field dependent people have strong social skills and attend more to the social context (Tamir &amp; Nadler, 2007). Each style is adaptive in particular situations, so neither can be called more valuable (book pp. 377–378).</li>
+</ul>
+<p><strong>Summary of the research</strong> <span class="tag">Book only</span> (Table 12.1, book p. 376, shortened):</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th></th>
+<th>Field dependent</th>
+<th>Field independent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rod and frame test</td>
+<td>Influenced by the frame</td>
+<td>Disregards the frame, influenced by body position</td>
+</tr>
+<tr>
+<td>Embedded figures test</td>
+<td>Slow to locate hidden figures; focused on the whole</td>
+<td>Quickly locates hidden figures; focused on the parts</td>
+</tr>
+<tr>
+<td>College majors</td>
+<td>Social sciences, education, humanities</td>
+<td>Natural sciences, engineering, math (STEM)</td>
+</tr>
+<tr>
+<td>Social relations</td>
+<td>Oriented toward others; strong social interests and skills</td>
+<td>More impersonal and detached; lower social interests and skills</td>
+</tr>
+<tr>
+<td>Simulated shooting</td>
+<td>Attentive to social context but overloaded in stimulus-rich situations</td>
+<td>Can ignore distractions and focus on details</td>
+</tr>
+<tr>
+<td>Learning</td>
+<td>Learns better when information comes in chunks or a single medium</td>
+<td>Learns better in multimedia environments</td>
+</tr>
+</tbody>
+</table></div></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-10.jpg" data-cap="Research on field dependence and independence (Rannsóknir á Heild/hlutsýni): the police shooting study (Vrij et al., 1995) and the multimedia learning study (Weller et al., 1995)." data-srcl="Part 1 · Slide 10 · key slide" aria-label="Enlarge: Research on field dependence and independence (Rannsóknir á Heild/hlutsýni): the police shooting study (Vrij et al., 1995) and the multimedia learning study (Weller et al., 1995)."><img src="img/p1-slide-10.jpg" alt="Research on field dependence and independence (Rannsóknir á Heild/hlutsýni): the police shooting study (Vrij et al., 1995) and the multimedia learning study (Weller et al., 1995)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 10</span> <span class="src key">Key slide</span> Research on field dependence and independence (Rannsóknir á Heild/hlutsýni): the police shooting study (Vrij et al., 1995) and the multimedia learning study (Weller et al., 1995).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-4"><div class="text"><h3><span class="n">11.4</span>Pain tolerance and reducing/augmenting</h3><p class="meta">part 1, slides 11–13 · book pp. 378–380, 398</p>
+<p><strong>In short:</strong> People react differently to the same physical stimulus. Petrie's theory says that some nervous systems turn sensations up (augmenters) and others turn them down (reducers), so reducers go looking for extra stimulation.</p>
+<ul>
+<li>Pain tolerance (<em>Sársaukaþol</em>) is the individual difference in how strongly people react to physical stimuli (part 1, slide 11; book p. 378).</li>
+<li><span class="tag slides">Slides only</span> Extraverts (<em>Úthverfir</em>) have higher pain tolerance than introverts (<em>innhverfir</em>) (Ferracuti &amp; De Carolis, 2005) (part 1, slide 11).</li>
+<li><span class="tag slides">Slides only</span> Extraversion also seems to be negatively related to the experience of chronic pain (Ramirez-Maestre et al., 2004) (part 1, slide 11). The slide asks you to explain this with Eysenck's "arousability" theory, which belongs to another chapter (pointer only).</li>
+<li><span class="tag slides">Slides only</span> There is a positive relationship between neuroticism (<em>taugaveiklun</em>) and the intensity of pain (part 1, slide 11).</li>
+</ul>
+<p><strong>Petrie's reducer/augmenter theory</strong> (<em>smættun eða mögnun</em>), Aneseth Petrie (1967) (part 1, slide 12; book p. 378):</p>
+<ul>
+<li>People with low pain tolerance, called augmenters (<em>magnarar</em>), have a nervous system that amplifies the experience of pain.</li>
+<li>People who tolerate pain well, called reducers (<em>smættarar</em>), have a nervous system that dampens or reduces the experience of pain.</li>
+<li><span class="tag">Book only</span> Petrie studied hospital patients undergoing painful operations, and normal subjects in whom she induced pain with heat or with weights on a finger joint. Her book was <i>Individuality in Pain and Suffering</i> (book p. 378).</li>
+<li><span class="tag">Book only</span> Today the dimension refers more generally to sensitivity to sensory stimulation, with augmenters more sensitive than reducers (book p. 398).</li>
+</ul>
+<p><strong>Why reducers seek stimulation:</strong></p>
+<ul>
+<li>Because reducers dampen stimulation, they should seek more stimulation from their surroundings than augmenters (part 1, slide 13; book p. 379).</li>
+<li>Research shows reducers are more likely than augmenters to use stimulants such as coffee and nicotine to raise their level of arousal (part 1, slide 13). The book says reducers drink more coffee, smoke more and have a lower threshold for boredom (Clapper, 1990, 1992; Larsen &amp; Zarate, 1991), use psychoactive drugs more often and listen to louder music (Schwerdtfeger, 2007) (book p. 379).</li>
+<li><span class="tag">Book only</span> Brain evidence: reducers show smaller brain responses to flashes of light (Spilker &amp; Callaway, 1969) and to bursts of noise (Schwerdtfeger &amp; Baltissen, 1999), and they rated identical noise as less loud. Augmenters' brain evoked responses rise more steeply as stimulus intensity rises (Schwerdtfeger &amp; Baltissen, 2002). The measure has high test-retest reliability (Beauducel et al., 2000) (book pp. 378–379).</li>
+<li><span class="tag">Book only</span> The difference is also found in cats and rats; rats bred to be sensation seeking show reducing, and rats bred to be sensation avoiding show augmenting (Siegel &amp; Driscoll, 1996). In humans it appears in infancy (book p. 379).</li>
+<li><span class="tag">Book only</span> Questionnaire: the Revised Reducer Augmenter Scale (RRAS), developed by Vando (1974) and modified by Clapper (1992), offers choices between a stimulating and a non-stimulating experience (for example hard-rock music vs soft pop music). People who prefer many of the stimulating options are assumed to be reducers (book p. 379).</li>
+<li>The slide asks which other personality traits reducing/augmenting resembles (part 1, slide 13). The book says many researchers see a strong similarity with sensation seeking and with Eysenck's theory of extraversion, both covered in other chapters (book p. 380).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-12.jpg" data-cap="Petrie&#x27;s reducer/augmenter theory (smættun eða mögnun): augmenters (magnarar) have low pain tolerance, reducers (smættarar) tolerate pain well." data-srcl="Part 1 · Slide 12 · key slide" aria-label="Enlarge: Petrie&#x27;s reducer/augmenter theory (smættun eða mögnun): augmenters (magnarar) have low pain tolerance, reducers (smættarar) tolerate pain well."><img src="img/p1-slide-12.jpg" alt="Petrie&#x27;s reducer/augmenter theory (smættun eða mögnun): augmenters (magnarar) have low pain tolerance, reducers (smættarar) tolerate pain well." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 12</span> <span class="src key">Key slide</span> Petrie's reducer/augmenter theory (smættun eða mögnun): augmenters (magnarar) have low pain tolerance, reducers (smættarar) tolerate pain well.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-5"><div class="text"><h3><span class="n">11.5</span>Kelly: people as scientists and personal constructs</h3><p class="meta">part 1, slides 14–17 · part 2, slide 2 · book pp. 368, 380–381</p>
+<p><strong>In short:</strong> George Kelly saw everyone as a kind of scientist who tries to understand, predict and control events. Each person does this through their own set of personal constructs, which act like a lens on the world.</p>
+<ul>
+<li>Personality and interpretation (<em>Persónuleiki og túlkun</em>) covers three topics: Kelly's theory of personal constructs, locus of control (<em>Stjórnrót</em>), and explanatory style (<em>Skýringarstíll</em>) with learned helplessness (<em>Lært hjálparleysi</em>) (part 2, slide 2; part 1, slide 14 lists the same topics without explanatory style; the book's chapter outline lists Kelly's personal construct theory, locus of control and learned helplessness, book p. 368).</li>
+<li><span class="tag">Book only</span> George Kelly (1905–1967), who spent most of his career at Ohio State University, played an important role in starting the cognitive tradition in personality psychology (book p. 380).</li>
+<li>Kelly's view of human nature (<em>Mannlegir eiginleikar</em>): people behave like scientists, because they try to understand, predict and control events (part 1, slides 15–16; book p. 380).</li>
+<li><span class="tag">Book only</span> When people do not know why something happened (for example why a girlfriend broke up with them), they feel more distress than when they have an explanation. Kelly thought the content of an explanation mattered less than whether people believed it and could use it (book p. 380).</li>
+<li>Personal constructs (<em>Persónulegar hugsmíðar</em>) are the constructs people use to interpret and predict events (part 1, slides 15–16; book p. 381).</li>
+<li><span class="tag">Book only</span> A construct is a word that summarizes a set of observations and conveys their meaning; gravity is an example, since we only see its effects (book p. 381).</li>
+<li><span class="tag">Book only</span> No two people have the same personal construct system. For Kelly, personality consisted in these differences in how people construe the world, especially the social world. One person may first notice how athletic someone is, another how intelligent (book p. 381).</li>
+<li><span class="tag">Book only</span> For Kelly all constructs are bipolar: a characteristic is understood against its opposite, as in smart–not smart or cooperative–uncooperative (book p. 381).</li>
+<li>The diagram on part 1, slide 17 shows two people looking at the same world of people, things and events. Each looks through their own personal construction (agenda, needs, wants, fears, expectations, values, beliefs, experience, world view and so on), which shapes what they anticipate, so each ends up with a different "reality".</li>
+<li><span class="tag">Book only</span> Postmodernism is the position that reality is constructed, that every person and culture has its own version of it, and that no version is more privileged than another (Gergen, 1992). Kelly's focus on how constructs create each person's reality puts him in the postmodern camp (Raskin, 2001) (book p. 381).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-15.jpg" data-cap="Kelly&#x27;s theory: people behave like scientists (Mannlegir eiginleikar), and personal constructs (Persónulegar hugsmíðar) are used to interpret and predict events." data-srcl="Part 1 · Slide 15 · key slide" aria-label="Enlarge: Kelly&#x27;s theory: people behave like scientists (Mannlegir eiginleikar), and personal constructs (Persónulegar hugsmíðar) are used to interpret and predict events."><img src="img/p1-slide-15.jpg" alt="Kelly&#x27;s theory: people behave like scientists (Mannlegir eiginleikar), and personal constructs (Persónulegar hugsmíðar) are used to interpret and predict events." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 15</span> <span class="src key">Key slide</span> Kelly's theory: people behave like scientists (Mannlegir eiginleikar), and personal constructs (Persónulegar hugsmíðar) are used to interpret and predict events.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-17.jpg" data-cap="Personal construction: two people look at the same world through different constructs, so each anticipates a different reality." data-srcl="Part 1 · Slide 17" aria-label="Enlarge: Personal construction: two people look at the same world through different constructs, so each anticipates a different reality."><img src="img/p1-slide-17.jpg" alt="Personal construction: two people look at the same world through different constructs, so each anticipates a different reality." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 17</span> Personal construction: two people look at the same world through different constructs, so each anticipates a different reality.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-6"><div class="text"><h3><span class="n">11.6</span>Kelly: the fundamental postulate and the corollaries</h3><p class="meta">part 1, slides 18–21 · book pp. 381–382</p>
+<p><strong>In short:</strong> Kelly's theory rests on one basic statement, that how we anticipate events steers our psychological processes. A set of corollaries then spells out how construct systems work.</p>
+<ul>
+<li>The fundamental postulate (<em>Grundvallar forsendan</em>): "a person's processes are psychologically channelized by the ways in which he anticipates events" (part 1, slides 18–19; book p. 381, quoting Kelly, 1955, p. 46).</li>
+<li>Kelly added a number of corollaries (<em>Fylgireglur</em>) to the postulate (part 1, slides 18–19; book p. 381). Part 1, slide 21 lists all eleven (Kelly, 1955): construction, experience, dichotomy, organization, range, modulation, choice, individuality, commonality, sociality and fragmentation.</li>
+</ul>
+<p><strong>The corollaries the course explains:</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Corollary</th>
+<th>What it means</th>
+<th>Kelly's wording (part 1, slide 21)</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construction corollary (<em>Byggingar-regla</em>)</td>
+<td>We use what we know about our own past to form expectations about the future.</td>
+<td>"a person anticipates events by construing their replications"</td>
+<td><span class="tag slides">Slides only</span> part 1, slides 18–19, 21</td>
+</tr>
+<tr>
+<td>Range corollary (<em>Spannar regla</em>)</td>
+<td>Each construct can be used only for a limited number of events.</td>
+<td>"a construct is convenient for the anticipation of a finite range of events only"</td>
+<td><span class="tag slides">Slides only</span> part 1, slides 20–21</td>
+</tr>
+<tr>
+<td>Modulation corollary (<em>Mótunar regla</em>)</td>
+<td>Using constructs that span more events makes it easier to cope with new situations.</td>
+<td>"the variation in a person's construction system is limited by the permeability of the constructs within whose range of convenience the variants lie"</td>
+<td><span class="tag slides">Slides only</span> part 1, slides 20–21</td>
+</tr>
+<tr>
+<td>Commonality corollary</td>
+<td>People with similar construct systems are psychologically similar, so a couple with similar construct systems is likely to get along because they interpret the world similarly.</td>
+<td>"to the extent that one person employs a construction of experience which is similar to that employed by another, his psychological processes are similar to those of the other person"</td>
+<td>part 1, slide 21; book p. 381</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><span class="tag">Book only</span> Kelly on anxiety: anxiety is the result of our personal constructs failing to make sense of our circumstances, so we feel anxious when we cannot understand or predict what is happening (book pp. 381–382).</li>
+<li><span class="tag">Book only</span> Constructs can fail in two ways (book p. 382). They can be too rigid and impermeable to new experience, like the husband whose idea of a good marriage cannot make sense of his wife wanting to work. Or they can be too permeable, applied too liberally, like the person who sorts everyone into smart or not smart and never changes her mind.</li>
+<li><span class="tag">Book only</span> You know your construct system is in trouble when you have experiences you cannot understand or anticipate. Several self-report methods exist to assess a person's construct system (Caputi, 2012; Hardison &amp; Neimeyer, 2012) (book p. 382).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-18.jpg" data-cap="The fundamental postulate (Grundvallar forsendan) and the construction corollary (Byggingar-regla)." data-srcl="Part 1 · Slide 18 · key slide" aria-label="Enlarge: The fundamental postulate (Grundvallar forsendan) and the construction corollary (Byggingar-regla)."><img src="img/p1-slide-18.jpg" alt="The fundamental postulate (Grundvallar forsendan) and the construction corollary (Byggingar-regla)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 18</span> <span class="src key">Key slide</span> The fundamental postulate (Grundvallar forsendan) and the construction corollary (Byggingar-regla).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p1-slide-21.jpg" data-cap="The fundamental postulate and eleven corollaries of personal construct theory (Kelly 1955)." data-srcl="Part 1 · Slide 21" aria-label="Enlarge: The fundamental postulate and eleven corollaries of personal construct theory (Kelly 1955)."><img src="img/p1-slide-21.jpg" alt="The fundamental postulate and eleven corollaries of personal construct theory (Kelly 1955)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 1 · Slide 21</span> The fundamental postulate and eleven corollaries of personal construct theory (Kelly 1955).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-7"><div class="text"><h3><span class="n">11.7</span>Locus of control and Rotter's expectancy model</h3><p class="meta">part 2, slides 3–8 · book pp. 382–383</p>
+<p><strong>In short:</strong> Locus of control is where you place responsibility for what happens in your life: in yourself (internal) or in fate, luck and chance (external). It grew out of Julian Rotter's idea that what we learn depends on what we expect.</p>
+<ul>
+<li>Locus of control (<em>Stjórnrót</em>) describes our perception of where responsibility for the events in our life lies (part 2, slide 3; book p. 382).</li>
+<li>Internal explanations (<em>Innri skýringar</em>) point to things like effort and ability (part 2, slide 3).</li>
+<li>External explanations (<em>Ytri skýringar</em>) point to fate, luck and chance (part 2, slide 3; book p. 382).</li>
+<li>Part 2, slide 4 contrasts typical thoughts. External: "There's nothing I can do about my future", "Why is it always me?", "Things happen to me", "I mean, why bother?". Internal: "I determine my future", "I'm going to give this a go", "Why not?", "I make things happen".</li>
+</ul>
+<p><strong>Rotter's expectancy model of learning</strong> (<em>Væntingarlíkan</em>) (part 2, slide 5; book pp. 382–383):</p>
+<ul>
+<li><span class="tag">Book only</span> Julian Rotter started locus of control research in the mid-1950s while developing his social learning theory. Traditional learning theory says people learn because of reinforcement; Rotter added that learning also depends on how far a person expects reinforcement, that is, believes getting the reward is under their control (book p. 382).</li>
+<li><span class="tag slides">Slides only</span> Learning depends partly on how people value a reinforcer, its reinforcement value (<em>virði styrkingar</em>) (part 2, slide 5).</li>
+<li>People differ in their expectations for reinforcement (<em>væntingum um styrkingu</em>) (part 2, slide 5; book p. 382). In the book's example, one person expects that being assertive will get her a raise, so she acts assertively; another expects it will backfire, so he waits for the boss to decide (book pp. 382–383).</li>
+<li><span class="tag slides">Slides only</span> Behaviour potential (<em>Möguleiki hegðunar</em>) is a function of expectancy and reinforcement value: BP = f(E &amp; RV) (part 2, slide 5).</li>
+</ul>
+<p><strong>Worked example of the formula</strong> <span class="tag slides">Slides only</span> (part 2, slide 6; the slide multiplies E by RV):</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Expectancy (E)</th>
+<th>Reinforcement value (RV)</th>
+<th>BP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Go back into the pool, but you don't want to very much</td>
+<td>1.00</td>
+<td>0.6</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>Get a drink, and you are thirsty</td>
+<td>0.8</td>
+<td>0.9</td>
+<td>0.72</td>
+</tr>
+<tr>
+<td>Go inside (not very cold inside), but everyone is outside</td>
+<td>0.3</td>
+<td>0.1</td>
+<td>0.03</td>
+</tr>
+</tbody>
+</table></div>
+<p>So getting a drink has the highest behaviour potential, even though going back into the pool is the more certain outcome.</p>
+<p><strong>Generalized expectancies</strong> (<em>Almennar væntingar</em>): general expectations about reinforcement across many kinds of situations (part 2, slide 7; book p. 383, Rotter 1971, 1990).</p>
+<ul>
+<li>External locus of control (<em>Ytri stjórnrót</em>): the generalized expectancy that you have no control over events (part 2, slide 7; book p. 383).</li>
+<li>Internal locus of control (<em>Innri stjórnrót</em>): the generalized expectancy that you control events and are responsible for what happens in your life (part 2, slide 7; book p. 383).</li>
+<li><span class="tag">Book only</span> Locus of control is a trait dimension: everyone falls somewhere between the internal and the external end (book p. 383).</li>
+<li><span class="tag">Book only</span> In a new situation, people fall back on their generalized expectancies. A young man who generally believes he can do little to influence events may assume his college grades will come down to luck (book p. 383).</li>
+</ul>
+<p><strong>Measuring it:</strong></p>
+<ul>
+<li><span class="tag">Book only</span> Rotter published a questionnaire measure of internal vs external locus of control in 1966 (book p. 383).</li>
+<li>Sample items on part 2, slide 8. Internal: "When I make plans, I am almost certain I can make them work", "In the long run, people get the respect they deserve in this world", "My life is determined by my own actions". External: "Many of the unhappy things in people's lives are partly due to bad luck", "Getting what I want has little to do with my own efforts; it's mostly a matter of luck", "It's not always wise for me to plan too far ahead, because many things turn out to be a matter of good or bad fortune".</li>
+<li><span class="tag">Book only</span> The book's Table 12.2 has different yes/no items adapted from Rotter (1982), for example "Are some people just born lucky?" and "Do you believe that wishing can make good things happen?" (book p. 383).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-04.jpg" data-cap="Locus of control thoughts (Stjórnrót- hugsanir): typical external vs internal thoughts." data-srcl="Part 2 · Slide 4" aria-label="Enlarge: Locus of control thoughts (Stjórnrót- hugsanir): typical external vs internal thoughts."><img src="img/p2-slide-04.jpg" alt="Locus of control thoughts (Stjórnrót- hugsanir): typical external vs internal thoughts." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 4</span> Locus of control thoughts (Stjórnrót- hugsanir): typical external vs internal thoughts.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-05.jpg" data-cap="Rotter&#x27;s expectancy model (Væntingarlíkan): reinforcement value, expectations for reinforcement and behaviour potential, BP = f(E &amp; RV)." data-srcl="Part 2 · Slide 5 · key slide" aria-label="Enlarge: Rotter&#x27;s expectancy model (Væntingarlíkan): reinforcement value, expectations for reinforcement and behaviour potential, BP = f(E &amp; RV)."><img src="img/p2-slide-05.jpg" alt="Rotter&#x27;s expectancy model (Væntingarlíkan): reinforcement value, expectations for reinforcement and behaviour potential, BP = f(E &amp; RV)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 5</span> <span class="src key">Key slide</span> Rotter's expectancy model (Væntingarlíkan): reinforcement value, expectations for reinforcement and behaviour potential, BP = f(E &amp; RV).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-8"><div class="text"><h3><span class="n">11.8</span>Locus of control: research and specific expectancies</h3><p class="meta">part 2, slide 9 · book pp. 383–385, 387, 398</p>
+<p><strong>In short:</strong> An internal locus of control usually goes with better outcomes, though not in every situation. Besides the general trait, there are many narrower scales for specific areas of life.</p>
+<p><strong>Research findings</strong> (part 2, slide 9):</p>
+<ul>
+<li>Locus of control is related to health behaviour (Gale et al., 2008). In the book, people with an internal locus of control at age 10 had a reduced risk of obesity at age 30 (Gale, Batty, &amp; Deary, 2008) (book p. 383).</li>
+<li>It is related to study time (Hall et al., 2008). In the book, college students with an internal locus of control completed their degrees in a more timely manner (Hall, Smith, &amp; Chia, 2008) (book pp. 383–384).</li>
+<li>It is related to depression, anxiety and coping (<em>depurð, kvíða, bjargráð</em>) (part 2, slide 9).</li>
+<li><span class="tag">Book only</span> An internal locus of control is in general conducive to well-being (Heidemeier &amp; Göritz, 2013) (book p. 383). Adults with a more internal locus of control had higher credit ratings (Perry, 2008), and actors with a more external locus of control suffered more stage fright (Goodman &amp; Kaufman, 2014) (book p. 384).</li>
+<li><span class="tag">Book only</span> COVID-19: students with an internal locus of control coped better and had less academic stress (Ganjoo et al., 2021); internal people reported less mental distress (Krampe and colleagues, 2021); in a study of 341 students, the rise in depressive symptoms was smallest for those with an internal locus of control (Origlio &amp; Odar Stough, 2022); and internal people followed mitigation guidelines more (Deveraux, Miller, &amp; Kirshenbaum, 2021) (book p. 385).</li>
+<li>The slide asks which personality trait is likely to be related to locus of control and might explain part of its link with health (part 2, slide 9). Neither source answers this in the listed material.</li>
+</ul>
+<p><strong>Specific expectancies</strong> <span class="tag slides">Slides only</span> (<em>Sérhæfðar væntingar</em>) (part 2, slide 9):</p>
+<ul>
+<li>There are at least 42 specialised locus of control scales.</li>
+<li>Examples are the Health Locus of Control scale (Wallston et al., 1978) and a Work Locus of Control scale (the slide says "Spencer ath").</li>
+</ul>
+<p><strong>When an internal locus of control is a disadvantage</strong> <span class="tag">Book only</span> (book pp. 384–385):</p>
+<ul>
+<li>Some situations really are beyond our control, such as a loved one dying of an incurable disease. Here an internal locus of control can make people blame themselves, which hinders coping.</li>
+<li>In "survivor syndrome", survivors of a tragedy feel that "if only" they had acted differently they could have saved others, even though the event was outside their control.</li>
+<li>People with an internal locus of control were more unwilling to try autonomous vehicles than people with an external locus of control (Choi &amp; Ji, 2015). As machines do more for us, being able to give up control may be adaptive, so neither end of the dimension is entirely good or bad.</li>
+</ul>
+<p><strong>Locus of control vs attributional style</strong> <span class="tag">Book only</span> (book pp. 384, 387, 398):</p>
+<ul>
+<li>Locus of control grew out of learning theory and was originally about expectancies for control over positive outcomes (rewards). It has since been broadened to feelings of control in general.</li>
+<li>Learned helplessness and attributional style (sections 11.9 and 11.10) are instead about where people place the blame for bad events and negative outcomes.</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-09.jpg" data-cap="Locus of control research findings, and specific expectancies (Sérhæfðar væntingar) with at least 42 specialised scales." data-srcl="Part 2 · Slide 9 · key slide" aria-label="Enlarge: Locus of control research findings, and specific expectancies (Sérhæfðar væntingar) with at least 42 specialised scales."><img src="img/p2-slide-09.jpg" alt="Locus of control research findings, and specific expectancies (Sérhæfðar væntingar) with at least 42 specialised scales." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 9</span> <span class="src key">Key slide</span> Locus of control research findings, and specific expectancies (Sérhæfðar væntingar) with at least 42 specialised scales.</figcaption></figure></div></article>
+<article class="sec" id="s11-9"><div class="text"><h3><span class="n">11.9</span>Learned helplessness</h3><p class="meta">part 2, slide 10 · book pp. 385–387</p>
+<p><strong>In short:</strong> Learned helplessness is giving up because you have come to believe nothing you do can change a bad situation, and it can carry over to new situations where escape is actually possible.</p>
+<ul>
+<li>Learned helplessness (<em>Lært hjálparleysi</em>) is a state in which a person believes they can do nothing to solve a problem or escape a bad situation (part 2, slide 10; book p. 385).</li>
+</ul>
+<p><strong>The original dog experiments</strong> <span class="tag">Book only</span> (book pp. 385–386):</p>
+<ol>
+<li>Dogs received intermittent foot shocks they could not escape. At first they struggled, then they gave up and passively accepted the shocks.</li>
+<li>The dogs were moved to a cage where they could escape the shocks by jumping over a small barrier. The dogs that had received inescapable shocks did not even try, while dogs that had not been shocked before quickly learned to jump.</li>
+<li>When the researchers lifted the helpless dogs over the barrier to show them the way, the dogs quickly learned to escape. Without this coaching they simply accepted the shocks.</li>
+</ol>
+<p><strong>The human version</strong> <span class="tag">Book only</span> (book p. 386):</p>
+<ol>
+<li>Participants are told they can turn off blasts of unpleasant noise by solving problems, but the learned helplessness group gets problems with no solution (Hiroto &amp; Seligman, 1975; Garber &amp; Seligman, 1980).</li>
+<li>They then get a new set of problems in a new situation without any noise.</li>
+<li>Participants from the helplessness condition usually do much worse on the new problems, which means the helplessness generalizes to new situations.</li>
+</ol>
+<ul>
+<li><span class="tag">Book only</span> In real life, learned helplessness can arise whenever someone is stuck in an unpleasant situation that seems outside their control, such as a woman whose attempts to stop her husband's abuse never last. Like the coached dogs, such people need an outside perspective; when a problem looks inescapable, that is the time to ask others for help (Seligman &amp; Csikszentmihalyi, 2000) (book p. 386).</li>
+<li><span class="tag">Book only</span> Because humans think about the causes of bad events, the theory was reformulated to include these cognitions (Peterson, Maier, &amp; Seligman, 1993). The result is attributional style, covered next (book pp. 386–387).</li>
+</ul></div></article>
+<article class="sec has-figs" id="s11-10"><div class="text"><h3><span class="n">11.10</span>Explanatory (attributional) style</h3><p class="meta">part 2, slides 10–15 · book pp. 387–389, 398</p>
+<p><strong>In short:</strong> Explanatory style is the habitual way a person explains why things happen. Explaining bad events as internal, stable and global (the pessimistic style) goes with learned helplessness and poor adjustment.</p>
+<ul>
+<li>Explanatory style (<em>Skýringarstíll</em>) is people's tendency to attribute good or bad outcomes of events to certain kinds of explanation rather than others (part 2, slide 10).</li>
+<li><span class="tag">Book only</span> A causal attribution is a person's explanation of the cause of an event. Attributional style is the tendency some people have to use certain explanations for unpleasant events frequently (book p. 388).</li>
+</ul>
+<p><strong>The three dimensions of explanations</strong> (part 2, slide 11; book p. 388):</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Question to ask (part 2, slide 11)</th>
+<th>Book example: a low grade on a paper (book p. 388)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Internal or external (<em>Ytri eða innri skýring</em>)</td>
+<td>Is it because of me, or because of outside factors I cannot control?</td>
+<td>Internal: my lack of skill. External: the professor graded too harshly.</td>
+</tr>
+<tr>
+<td>Stable or unstable (<em>Stöðug eða óstöðug skýring</em>)</td>
+<td>Did it just happen today, or will it always be like this?</td>
+<td>Unstable: my dog ate the original paper, a one-off event. Stable: I lack writing skill.</td>
+</tr>
+<tr>
+<td>Global or specific (<em>Almenn eða sértæk skýring</em>)</td>
+<td>Does it apply to this task, ability or area only, or to all of them?</td>
+<td>Global: "I am just unable to write", which affects every task that involves writing. Specific: it affects only this particular situation.</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Some people are more consistent than others in the explanatory style they use (part 2, slide 11; book p. 388).</li>
+<li>Pessimistic explanatory style (<em>Svartsýnn skýringarstíll</em>): an emphasis on internal, stable and global explanations for poor performance or negative events (part 2, slide 12; book p. 388).</li>
+<li>The pessimistic style is linked to learned helplessness and poor adjustment (part 2, slide 12; book p. 388).</li>
+<li>The optimistic style is the opposite: external, unstable (temporary) and specific explanations (part 2, slide 13; book p. 388).</li>
+<li>Explanatory style is measured with the Attributional Style Questionnaire (Peterson, 1991) (part 2, slide 12; book p. 388). <span class="tag">Book only</span> One of its scenarios is a date that goes badly; blaming a bad movie, poor service and a car stuck in mud scores as more optimistic than "I just have trouble relating to people" (book p. 388).</li>
+<li>Part 2, slide 13 (<em>Svartsýnn/bjartsýnn skýringarstíll</em>) is the book's Figure 12.3 (book p. 389): explanations for "My girlfriend broke up with me", in an optimistic version (external, unstable, specific) and a pessimistic version (internal, stable, global) for each dimension.</li>
+</ul>
+<p><strong>Good events vs bad events</strong> <span class="tag slides">Slides only</span> <span class="warn" title="Slides and book disagree">Slides ≠ book</span> (part 2, slides 14–15):</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th></th>
+<th>Positive style (<em>Jákvæður skýringarstíll</em>)</th>
+<th>Negative style (<em>Neikvæður skýringarstíll</em>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Good events (<em>Góðir atburðir</em>)</td>
+<td>Internal, stable, global (<em>innri, stöðug, almenn</em>): "because of my influence, in the long term, in many areas"</td>
+<td>External, unstable, specific (<em>ytri, óstöðug, sértæk</em>): "I have no control, only in the short term, only in this area"</td>
+</tr>
+<tr>
+<td>Bad events (<em>Slæmir atburðir</em>)</td>
+<td>External, unstable, specific</td>
+<td>Internal, stable, global</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>The slides apply explanatory style to both good and bad events, and for good events the positive style is the internal, stable, global one (part 2, slides 14–15).</li>
+<li>The book only describes attributional style for negative events (book pp. 387–388), and its summary simply calls the optimistic style "external, temporary, and specific" (book p. 398). That description matches the slides only for bad events.</li>
+<li><span class="tag">Book only</span> Attributional style is fairly stable: in people with an average age of 72, attributional style on a questionnaire correlated .54 with attributional style in diaries and letters they had written about 52 years earlier (Burns &amp; Seligman, 1989) (book p. 389).</li>
+<li><span class="tag">Book only</span> An optimistic style is linked to better college grades, to more use of academic resources, to better peer relationships and well-being in children, to less burnout at work, and to better responses to trauma. Survivors of the 2004 Sri Lanka tsunami with a pessimistic style had more symptoms of post-traumatic stress disorder (Levy, Slade, &amp; Ranasinghe, 2009). Training programs can teach an optimistic style (Gerson &amp; Fernandez, 2013), and team or organisational optimism goes with better outcomes (book p. 389).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-13.jpg" data-cap="Optimistic vs pessimistic explanations on each dimension (the same table as the book&#x27;s Figure 12.3)." data-srcl="Part 2 · Slide 13" aria-label="Enlarge: Optimistic vs pessimistic explanations on each dimension (the same table as the book&#x27;s Figure 12.3)."><img src="img/p2-slide-13.jpg" alt="Optimistic vs pessimistic explanations on each dimension (the same table as the book&#x27;s Figure 12.3)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 13</span> Optimistic vs pessimistic explanations on each dimension (the same table as the book&#x27;s Figure 12.3).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-14.jpg" data-cap="Good vs bad events: which style uses internal, stable, global explanations and which uses external, unstable, specific ones." data-srcl="Part 2 · Slide 14" aria-label="Enlarge: Good vs bad events: which style uses internal, stable, global explanations and which uses external, unstable, specific ones."><img src="img/p2-slide-14.jpg" alt="Good vs bad events: which style uses internal, stable, global explanations and which uses external, unstable, specific ones." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 14</span> Good vs bad events: which style uses internal, stable, global explanations and which uses external, unstable, specific ones.</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-15.jpg" data-cap="The same diagram with example wording for each style." data-srcl="Part 2 · Slide 15" aria-label="Enlarge: The same diagram with example wording for each style."><img src="img/p2-slide-15.jpg" alt="The same diagram with example wording for each style." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 15</span> The same diagram with example wording for each style.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-11"><div class="text"><h3><span class="n">11.11</span>Goals and personal projects</h3><p class="meta">part 2, slides 16–17 · book pp. 387, 390</p>
+<p><strong>In short:</strong> The goals approach looks at what people want to happen and how they plan to get there. Brian Little's personal projects make goals measurable, and how people rate their projects is related to neuroticism and to life satisfaction.</p>
+<ul>
+<li>The focus is on intention: what people want to happen and how they plan to reach those goals (part 2, slide 16; book p. 387).</li>
+<li>People set themselves different goals, and this variation is part of their personality or brings it out (part 2, slide 16; book p. 387).</li>
+<li><span class="tag">Book only</span> Psychologists use different terms for this: personal strivings (Emmons, 1989), current concerns (Klinger, 1977a, 1977b), personal projects (Little, 1999) and life tasks (Cantor, 1990) (book p. 387).</li>
+<li>Personal projects (<em>Persónuleg verkefni</em>) come from Little (2007) (part 2, slide 16). The book defines a personal project as a set of relevant actions intended to achieve a goal that a person has selected, for example losing weight or making new friends (book p. 387).</li>
+</ul>
+<p><strong>Personal Projects Analysis</strong> <span class="tag">Book only</span> (book p. 387):</p>
+<ol>
+<li>Participants list their personal projects, as many or as few as they see as relevant. College students list an average of 15.</li>
+<li>They rate each project on scales such as importance, difficulty, enjoyment, progress, and its negative and positive impact on their life (Little &amp; Gee, 2007).</li>
+</ol>
+<p><strong>What the ratings show</strong> (part 2, slide 17; book p. 390):</p>
+<ul>
+<li>How people rate their goals is related to neuroticism (<em>taugaveiklun</em>). People high in neuroticism see their projects as stressful, difficult and unlikely to succeed, feel they have little control over them, and make little progress (Little, 1999).</li>
+<li>General life satisfaction is higher in people who feel in control of their goals, feel little stress about them, and are optimistic about succeeding (Palys &amp; Little, 1983).</li>
+<li><span class="tag">Book only</span> Little concluded that bringing personal projects to successful completion "seems to be a pivotal factor in whether we thrive emotionally" (Little, 1999, p. 25). He calls giving our lives meaning through projects "well-doing" rather than well-being (Little, 2020) (book p. 390).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-16.jpg" data-cap="Personality and goals (Persónuleiki og markmið): intentions, different goals as part of personality, and personal projects (Little, 2007)." data-srcl="Part 2 · Slide 16 · key slide" aria-label="Enlarge: Personality and goals (Persónuleiki og markmið): intentions, different goals as part of personality, and personal projects (Little, 2007)."><img src="img/p2-slide-16.jpg" alt="Personality and goals (Persónuleiki og markmið): intentions, different goals as part of personality, and personal projects (Little, 2007)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 16</span> <span class="src key">Key slide</span> Personality and goals (Persónuleiki og markmið): intentions, different goals as part of personality, and personal projects (Little, 2007).</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-12"><div class="text"><h3><span class="n">11.12</span>Social understanding, cognitive social learning and self-efficacy</h3><p class="meta">part 2, slides 18–19 · book pp. 390–391</p>
+<p><strong>In short:</strong> Cognitive social learning theories look at how people think about themselves in relation to their goals. Bandura's key idea is self-efficacy: believing you can carry out the actions needed to reach a goal.</p>
+<ul>
+<li><span class="tag slides">Slides only</span> <em>Félagsskilningur</em> (the slide gives no English term) is about how people process social information, that is, how we interpret and read social situations (part 2, slide 18).</li>
+<li><span class="tag">Book only</span> The cognitive social learning approach emphasizes the cognitive and social processes by which people learn to value and strive for certain goals over others (book p. 390).</li>
+<li><span class="tag">Book only</span> Albert Bandura (1925–2021) was trained in classical behavioural psychology, which saw people as passive responders to reinforcement. He stressed instead that people have intentions and forethought, monitor and evaluate their own progress, and learn by observing others. He called these activities the self-system, which exists for the self-regulation of behaviour in pursuit of goals (Bandura, 1997) (book p. 390).</li>
+<li>Self-efficacy (<em>Álit á eigin færni</em>, Bandura) is the belief that you can reach your goals through certain actions (part 2, slide 19). The book defines it as the belief that one can execute a specific course of action to achieve a goal, like a child who believes she can hit most balls pitched to her (book p. 390).</li>
+<li>It is a self-belief (<em>sjálfstrú</em>) that affects our daily life (part 2, slide 19).</li>
+<li><span class="tag">Book only</span> High self-efficacy leads to effort, persistence and higher goals (Bandura, 1989). Students with higher self-efficacy about their studies persist more and perform better (Multon, Brown, &amp; Lent, 1991) (book pp. 390–391).</li>
+<li><span class="tag">Book only</span> Self-efficacy and performance feed each other: self-efficacy improves performance, and good performance raises self-efficacy. That is why self-efficacy matters most when starting a task. Breaking a complex task into subgoals and modeling (seeing others succeed at it) can both raise self-efficacy (book p. 391).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-19.jpg" data-cap="Self-efficacy (Álit á eigin færni, Bandura): the belief that you can reach your goals through certain actions." data-srcl="Part 2 · Slide 19 · key slide" aria-label="Enlarge: Self-efficacy (Álit á eigin færni, Bandura): the belief that you can reach your goals through certain actions."><img src="img/p2-slide-19.jpg" alt="Self-efficacy (Álit á eigin færni, Bandura): the belief that you can reach your goals through certain actions." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 19</span> <span class="src key">Key slide</span> Self-efficacy (Álit á eigin færni, Bandura): the belief that you can reach your goals through certain actions.</figcaption></figure></div></article>
+<article class="sec has-figs" id="s11-13"><div class="text"><h3><span class="n">11.13</span>Dweck: the theory of mastery orientation</h3><p class="meta">part 2, slide 20 · book pp. 391–392</p>
+<p><strong>In short:</strong> Carol Dweck found that children who see intelligence as fixed give up when things get hard, while children who see it as changeable keep going. How teachers and parents praise children shapes which view they adopt.</p>
+<ul>
+<li>Carol Dweck studied how children react to difficulties: some give up and some keep going (part 2, slide 20; book p. 391, Deiner &amp; Dweck, 1978, 1980).</li>
+<li>The difference lies in whether intelligence is seen as fixed or changeable (<em>Greind sem fasti vs. breytanlegur</em>): the entity view vs the incremental view of intelligence (part 2, slide 20; book p. 391).</li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th></th>
+<th>Entity view</th>
+<th>Incremental view</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Belief</td>
+<td>Intelligence is a fixed, unchangeable internal characteristic</td>
+<td>Intelligence can be increased through effort and persistence</td>
+</tr>
+<tr>
+<td>Academic challenges</td>
+<td>Shies away from them</td>
+<td>Seeks them out</td>
+</tr>
+<tr>
+<td>Outcomes (book)</td>
+<td>Less effort, gives up earlier, lower academic success</td>
+<td>Better academic motivation and higher grades (Romero et al., 2014)</td>
+</tr>
+</tbody>
+</table></div>
+<p>(book p. 391)</p>
+<ul>
+<li>Teachers' encouragement has different effects on children's learning (part 2, slide 20). The book explains why (book pp. 391–392):<ul>
+<li>Praising a child for intelligence ("You are such a smart girl!") reinforces the entity view, because the child concludes that poor grades must mean she is dumb.</li>
+<li>Comforting a student with "not everyone can be good at math" can lower her motivation and expectations (Rattan, Good, &amp; Dweck, 2012).</li>
+<li>Children with an entity view have high self-esteem while they do well, but it drops when they hit a plateau. Children praised for effort keep stable self-esteem, so it is better to praise effort than ability.</li>
+</ul>
+</li>
+<li><span class="tag">Book only</span> School interventions that teach students to see intelligence as malleable lead to more effort and better grades (reviewed in Rattan et al., 2015) (book p. 391).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-20.jpg" data-cap="Dweck&#x27;s theory of mastery orientation: giving up vs keeping going, and intelligence as fixed or changeable (Greind sem fasti vs. breytanlegur)." data-srcl="Part 2 · Slide 20 · key slide" aria-label="Enlarge: Dweck&#x27;s theory of mastery orientation: giving up vs keeping going, and intelligence as fixed or changeable (Greind sem fasti vs. breytanlegur)."><img src="img/p2-slide-20.jpg" alt="Dweck&#x27;s theory of mastery orientation: giving up vs keeping going, and intelligence as fixed or changeable (Greind sem fasti vs. breytanlegur)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 20</span> <span class="src key">Key slide</span> Dweck's theory of mastery orientation: giving up vs keeping going, and intelligence as fixed or changeable (Greind sem fasti vs. breytanlegur).</figcaption></figure></div></article>
+<article class="sec" id="s11-14"><div class="text"><h3><span class="n">11.14</span>Higgins: regulatory focus</h3><p class="meta"><span class="tag">Book only</span> book p. 392</p>
+<p><strong>In short:</strong> E. Tory Higgins's regulatory focus theory says people pursue goals in two different ways: going for gains (promotion focus) or guarding against losses (prevention focus).</p>
+<ul>
+<li><span class="tag">Book only</span> Regulatory focus theory (Higgins, 2012) adds that people regulate their goal-directed behaviour in two distinct ways that serve two different needs (book p. 392).</li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th></th>
+<th>Promotion focus</th>
+<th>Prevention focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concerned with</td>
+<td>Advancement, growth, accomplishments</td>
+<td>Protection, safety, preventing failure</td>
+</tr>
+<tr>
+<td>Behaviour</td>
+<td>Eagerness, approach, "going for the gold"</td>
+<td>Vigilance, caution, preventing negative outcomes</td>
+</tr>
+<tr>
+<td>Works hard to</td>
+<td>Maximize gains</td>
+<td>Minimize losses</td>
+</tr>
+<tr>
+<td>Correlates with</td>
+<td>Extraversion, behavioural activation</td>
+<td>Neuroticism, harm avoidance, and (negatively) impulsivity (Grant &amp; Higgins, 2003)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><span class="tag">Book only</span> These concepts are more about motivation and goal behaviour than the standard traits they correlate with (book p. 392).</li>
+</ul></div></article>
+<article class="sec has-figs" id="s11-15"><div class="text"><h3><span class="n">11.15</span>Mischel's cognitive-affective personality system (CAPS)</h3><p class="meta">part 2, slides 21–22 · book pp. 392–393</p>
+<p><strong>In short:</strong> CAPS treats personality as a stable network of thoughts and feelings that particular situations switch on. Behaviour therefore varies across situations, but in a stable, recognisable pattern.</p>
+<ul>
+<li>Mischel wanted to explain why people behave differently across situations, yet in a stable way, so that the pattern of behaviour is stable (part 2, slide 21; book p. 393).</li>
+<li><span class="tag">Book only</span> Mischel's 1968 book <i>Personality and Assessment</i> had criticised the evidence for traits. Later, Mischel and his former student Youchi Shoda proposed that personality variables do influence behaviour, mainly by changing the psychological meaning of situations (book p. 392).</li>
+<li>Personality is seen as an organization of cognitive and affective activities that influence how people respond in particular situations (part 2, slide 21; book p. 392).</li>
+<li>Personality is seen as a process (<em>Persónuleiki sem ferli</em>) (part 2, slide 21). The book says the emphasis is on personality processes rather than static traits (book p. 392).</li>
+</ul>
+<p><strong>The CAPS diagram</strong> (part 2, slide 22): situations activate personality variables, which produce behaviour.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Personality variables in CAPS</th>
+<th>What they cover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Encoding</td>
+<td>How the situation or action is perceived</td>
+</tr>
+<tr>
+<td>Expectations and beliefs</td>
+<td>Likelihood of success from previous experiences in particular situations; what I want to happen in this situation</td>
+</tr>
+<tr>
+<td>Goals and values</td>
+<td>How much I want to experience or avoid something; outcomes of actions in given situations</td>
+</tr>
+<tr>
+<td>Emotional response</td>
+<td>Feelings about the situation or action</td>
+</tr>
+<tr>
+<td>Personal competencies and self-regulation</td>
+<td>How this relates to me; whether I have the skills; self-efficacy</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>On the behaviour side, the slide lists behaviour signatures (the outward manifestation of personality), individuality (distinct, relatively stable patterns, though personality can change with situations depending on how accessible the units are) and profiles (for example stress vulnerability, where certain situations are perceived as more stressful than others) (part 2, slide 22).</li>
+<li><span class="tag">Book only</span> The book's list of these processes: construals (how one views a situation), goals, expectations, beliefs, feelings, self-regulatory standards, abilities, plans and strategies. People acquire them through their learning history, culture and subculture, genes and biological history (book p. 392).</li>
+<li><span class="tag">Book only</span> "If . . . then . . ." propositions: if situation A, the person does X; if situation B, the person does Y. For example, an aggressive person is not aggressive everywhere but is sensitive to certain situations, such as frustration (book p. 393).</li>
+<li><span class="tag">Book only</span> The summer camp study (Mischel, 2004): children with impulse-control problems were observed in five situations ("teased by a peer", "warned by an adult", "punished by an adult", "praised by an adult", "approached by a peer"). Their verbal aggression was not consistent across situations, but each child had a distinct and repeated "if . . . then . . ." profile, for example aggressive only after being warned by an adult (Mischel, Shoda, &amp; Mendoza-Denton, 2002) (book p. 393).</li>
+<li><span class="tag">Book only</span> Mischel first argued that situations control behaviour most, but later came to believe that the psychological situation, meaning the situation as the individual sees it, organizes behaviour (Mischel, 2004, 2010) (book p. 393).</li>
+</ul></div><div class="figs"><figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-21.jpg" data-cap="Mischel&#x27;s CAPS: behaviour differs across situations but in a stable pattern, and personality is seen as a process (Persónuleiki sem ferli)." data-srcl="Part 2 · Slide 21 · key slide" aria-label="Enlarge: Mischel&#x27;s CAPS: behaviour differs across situations but in a stable pattern, and personality is seen as a process (Persónuleiki sem ferli)."><img src="img/p2-slide-21.jpg" alt="Mischel&#x27;s CAPS: behaviour differs across situations but in a stable pattern, and personality is seen as a process (Persónuleiki sem ferli)." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 21</span> <span class="src key">Key slide</span> Mischel's CAPS: behaviour differs across situations but in a stable pattern, and personality is seen as a process (Persónuleiki sem ferli).</figcaption></figure>
+<figure class="fig slide"><button class="zoom" type="button" data-src="img/p2-slide-22.jpg" data-cap="Personality variables in CAPS and the behaviour they produce in certain situations." data-srcl="Part 2 · Slide 22" aria-label="Enlarge: Personality variables in CAPS and the behaviour they produce in certain situations."><img src="img/p2-slide-22.jpg" alt="Personality variables in CAPS and the behaviour they produce in certain situations." width="1404" height="992" loading="lazy"></button><figcaption><span class="src slide">Part 2 · Slide 22</span> Personality variables in CAPS and the behaviour they produce in certain situations.</figcaption></figure></div></article>
+<aside class="pointers"><p><strong>Pointers to other chapters</strong> (not studied now): Book chapter numbers: Eysenck's theory of extraversion and arousal (Ch 3 and 7) and sensation seeking and optimal level of arousal (Ch 7), linked to pain tolerance and reducing/augmenting; projective tests: Rorschach inkblots (Ch 2 and 9) and the TAT (Ch 11); Dweck is first introduced in Ch 11; Mischel's critique of traits (Ch 4); the Big Five (Ch 3); explanatory style and depression (Ch 13); explanatory style, stress and health (Ch 18); intelligence (course ch 12, the Intelligence part of book Ch 12).</p></aside>
+</section>
+</div>
+
+<dialog class="lb" id="lb" aria-label="Enlarged figure">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-cap"><div><span class="src" id="lb-src"></span> <span id="lb-text"></span></div><button class="lb-close" id="lb-close" type="button">Close</button></div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'),
+      src = document.getElementById('lb-src'), txt = document.getElementById('lb-text');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.zoom');
+    if (b) {
+      img.src = b.dataset.src; img.alt = b.dataset.cap;
+      src.textContent = b.dataset.srcl; txt.textContent = b.dataset.cap;
+      src.className = 'src ' + (b.closest('.fig').classList.contains('book') ? 'book' : 'slide');
+      if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      return;
+    }
+    if (e.target === lb || e.target.id === 'lb-close') lb.close();
+  });
+  try { if (window.matchMedia('(max-width: 700px)').matches) document.getElementById('toc').open = false; } catch (e) {}
+  // Deep links from grading summaries: #s1-5 opens and highlights section 1.5
+  function go() {
+    var id = (location.hash || '').slice(1), el = id && document.getElementById(id);
+    if (!el) return;
+    document.querySelectorAll('.sec.hit').forEach(function (s) { s.classList.remove('hit'); });
+    el.classList.add('hit');
+    el.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', go);
+  if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  setTimeout(go, 60);
+})();
+</script>
+
+</body></html>
